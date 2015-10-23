@@ -34,6 +34,7 @@ p a {
 }
 
 .ValueDisplay {
+  font-family: "Comic Sans MS", cursive, sans-serif;
   height: 25px;
   margin-top: 20px;
   text-align: center;
@@ -46,7 +47,8 @@ p a {
 }
 
 #textBox {
-  font-size: 9px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 12px;
   border-radius: 5px;
   border-style: ridge;
   border-width: medium;
@@ -84,7 +86,7 @@ p a {
 
 .StatsPanel {
   border-style: solid;
-  font-size: 8px; 
+  font-family: "Comic Sans MS", cursive, sans-serif;
   border-color: #4D4D4D;
   border-width: thin;
   border-radius: 5px;
@@ -92,7 +94,6 @@ p a {
   margin-top: 5px;
   height: 60px;
   width: 100px;
-  padding: 2px;
   float: left;
 }
 
@@ -102,7 +103,7 @@ p a {
 
 .StashContainer {
   border-style: solid;
-  font-size: 9px; 
+  font-family: "Comic Sans MS", cursive, sans-serif;
   border-color: #4D4D4D;
   border-width: thin;
   border-radius: 5px;
@@ -117,7 +118,7 @@ p a {
 
 .StashContainerLong {
   border-style: solid;
-  font-size: 9px; 
+  font-family: "Comic Sans MS", cursive, sans-serif;
   border-color: #4D4D4D;
   border-width: thin;
   border-radius: 5px;
@@ -129,7 +130,7 @@ p a {
 }
  
 #BeginEpoch {  
-  font-size: 9px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   margin-left: 120px;
   margin-bottom: 45px;
   margin-top: 45px;
@@ -139,7 +140,7 @@ p a {
 }
 
 #PlanEpoch {  
-  font-size: 9px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   margin: 10px;
   height: 30px;
   background-color: Black;
@@ -147,7 +148,7 @@ p a {
 }
 
 .Upgrade {
-  font-size: 9px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   margin: 10px;
   width: 80%;
   display: block;
@@ -178,7 +179,7 @@ p a {
 }
   
 #CompetitionButtonContainer input {
-  font-size: 7px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   margin: 5px;
   width: 90%;
   display: block;
@@ -200,15 +201,18 @@ p a {
 }
 
 #PurchaseUpgradeButton {
-  font-size: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 14px;  
   margin: 10px;
   height: 30px;
+  width: 80px;
   background-color: Black;
   display: none;
 }
 
 #UpgradeInfoBox {
-  font-size: xx-small;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 12px;
   border-style: solid;
   border-width: medium;
   border-color: #4D4D4D;
@@ -224,7 +228,7 @@ p a {
 }
 
 #EraDetailsContainer {
-  font-size: 9px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   color: #EAEAEA;
 }
 
@@ -236,30 +240,31 @@ p a {
     display: none;
     width: 99%;
     background-color: black;
-    font-size: 9px;
+    font-family: "Comic Sans MS", cursive, sans-serif;
     margin-bottom: 3px;
     color: purple;
 }
 
 .CompetitionContainer {
-  font-size: 8px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  font-size: 12px;
   text-align: center;
   border-style: solid;
   border-width: thin;
   border-color: #4D4D4D;
   padding: 5px;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   width: 300px;
-  height: 200px;
+  height: 220px;
   border-radius: 5px;
 }
 .CompetitionContainer button{
     display: block;
     width: 90%;
     background-color: black;
+    font-family: "Comic Sans MS", cursive, sans-serif;
     margin-left: auto;
     margin-right: auto;
-    font-size: 9px;
     margin-bottom: 3px;
     color: grey;
 }
