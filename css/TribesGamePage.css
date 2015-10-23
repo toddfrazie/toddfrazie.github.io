@@ -1,0 +1,306 @@
+@font-face {
+    font-family: 'piracyregular';
+    src: url('./piracyFont/piracy-webfont.eot');
+    src: url('./piracyFont/piracy-webfont.eot?#iefix') format('embedded-opentype'),
+         url('./piracyFont/piracy-webfont.woff2') format('woff2'),
+         url('./piracyFont/piracy-webfont.woff') format('woff'),
+         url('./piracyFont/piracy-webfont.ttf') format('truetype'),
+         url('./piracyFont/piracy-webfont.svg#piracyregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body {
+  background: black;
+  color: ghostwhite;
+}
+
+.GameZone {
+  margin-left:auto;
+  margin-right:auto;
+  max-width: 1060px;
+  min-width: 1060px;
+}
+
+
+.Title h2 {
+    color: #4D4D4D;
+    margin-bottom: 13px;
+}
+
+.Title p {
+    font-size: 15px;
+    margin-bottom: 13px;
+}
+
+p a {
+    color: grey;
+}
+
+.Tribal {
+  Height: 75px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+  float: left;
+}
+
+.ValueDisplay {
+  font-family: piracyregular;
+  height: 25px;
+  margin-top: 20px;
+  text-align: center;
+  
+}
+
+.ValueContainer{
+   float: left;
+   width: 40px;
+}
+
+#textBox {
+  font-family: piracyregular;
+  font-size: 9px;
+  border-radius: 5px;
+  border-style: ridge;
+  border-width: medium;
+  border-color: #4D4D4D;
+  height: 450px;  
+}
+
+.TextBox {
+  border-style: solid;
+  border-width: medium;
+  border-color: #4D4D4D;
+  overflow-y: scroll;
+  border-radius: 5px;
+  height: 180px;
+  width: 300px;
+  text-align: center;
+}
+
+#DiscoveriesBox::-webkit-scrollbar, .TextBox::-webkit-scrollbar {
+    width: 12px;
+}
+
+#DiscoveriesBox::-webkit-scrollbar-track, .TextBox::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(150,150,150,0.3); 
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#DiscoveriesBox::-webkit-scrollbar-thumb, .TextBox::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    background: rgba(192,192,192,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+.StatsPanel {
+  border-style: solid;
+  font-family: piracyregular;
+  font-size: 8px; 
+  border-color: #4D4D4D;
+  border-width: thin;
+  border-radius: 5px;
+  margin: 3px;
+  margin-top: 5px;
+  height: 60px;
+  width: 100px;
+  padding: 2px;
+  float: left;
+}
+
+ .StatsPanel p {
+  color: #EAEAEA;
+}
+
+.StashContainer {
+  border-style: solid;
+  font-family: piracyregular;
+  font-size: 9px; 
+  border-color: #4D4D4D;
+  border-width: thin;
+  border-radius: 5px;
+  margin: 3px;
+  margin-top: 5px;
+  height: 60px;
+  width: 100px;
+  padding: 2px;
+  float: left;
+
+}
+
+.StashContainerLong {
+  border-style: solid;
+  font-family: piracyregular;
+  font-size: 9px; 
+  border-color: #4D4D4D;
+  border-width: thin;
+  border-radius: 5px;
+  margin: 10px;
+  height: 50px;
+  width: 200px;
+  padding: 2px;
+  float: left;
+}
+ 
+#BeginEpoch {  
+  font-family: piracyregular;
+  font-size: 9px;
+  margin-left: 120px;
+  margin-bottom: 45px;
+  margin-top: 45px;
+  height: 30px;
+  background-color: Black;
+  display: block;
+}
+
+#PlanEpoch {  
+  font-family: piracyregular;
+  font-size: 9px;
+  margin: 10px;
+  height: 30px;
+  background-color: Black;
+  display: none;
+}
+
+.Upgrade {
+  font-family: piracyregular;
+  font-size: 9px;
+  margin: 10px;
+  width: 80%;
+  display: block;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  }
+
+.Raise {
+  display: inline;
+  width: 60%;
+  margin: 3%;
+  margin-left: 10%;
+}
+.Retire {
+  display: inline;
+  width: 12%;
+  margin: 3%;
+}
+
+.Centered {
+  text-align: center;
+}
+
+.OOC {
+  font-family: sans-serif !Important;
+  color: purple !Important;
+  font-size: 12px;  
+}
+  
+#CompetitionButtonContainer input {
+  font-family: piracyregular;
+  font-size: 7px;
+  margin: 5px;
+  width: 90%;
+  display: block;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  background-color: Black;
+  }
+
+#SupplyUpgradeBox button{
+   background-color: rgb(178, 0, 0);
+}
+
+#InspirationUpgradeBox button{
+   background-color: rgb(36, 71, 178);
+}
+
+#DomainUpgradeBox button, #IntroDiv button{
+  background-color: rgb(207, 166, 0);
+}
+
+#PurchaseUpgradeButton {
+  font-family: piracyregular;
+  font-size: 10px;
+  margin: 10px;
+  height: 30px;
+  background-color: Black;
+  display: none;
+}
+
+#UpgradeInfoBox {
+  font-family: piracyregular;
+  font-size: xx-small;
+  border-style: solid;
+  border-width: medium;
+  border-color: #4D4D4D;
+  border-radius: 5px;
+  height: 200px;
+  margin-top: 20px;
+}
+
+#CurrentPopulationContainer{
+  float: left;
+  margin-left: 50px;
+  color: Grey;
+}
+
+#EraDetailsContainer {
+  font-family: piracyregular;
+  font-size: 9px;
+  color: #EAEAEA;
+}
+
+#DiscoveriesBox {
+    overflow-y: scroll;
+}
+
+#DiscoveriesBox button {
+    display: none;
+    width: 99%;
+    background-color: black;
+    font-family: piracyregular;
+    font-size: 9px;
+    margin-bottom: 3px;
+    color: purple;
+}
+
+.CompetitionContainer {
+  font-family: piracyregular;
+  font-size: 8px;
+  text-align: center;
+  border-style: solid;
+  border-width: thin;
+  border-color: #4D4D4D;
+  padding: 5px;
+  margin-bottom: 30px;
+  width: 300px;
+  height: 200px;
+  border-radius: 5px;
+}
+.CompetitionContainer button{
+    display: block;
+    width: 90%;
+    background-color: black;
+    font-family: piracyregular;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 9px;
+    margin-bottom: 3px;
+    color: grey;
+}
+
+#ActionResultBox {
+    text-align: center;
+}
+
+.VictoryImage {
+    width: 200px;
+    margin-top: 30px;
+}
+
+#EndOfGameResultBox, #EventResultBox, #CompetitionResultBox {
+    text-align: center;
+}
