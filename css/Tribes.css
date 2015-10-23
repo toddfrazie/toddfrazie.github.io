@@ -1,0 +1,57 @@
+body {
+  background: black;
+  color: white;
+}
+
+.GameZone {
+  margin-left:auto;
+  margin-right:auto;
+  width:960px;  
+}
+
+.nav a {
+  color: #5a5a5a;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 14px 10px;
+  text-transform: uppercase;
+}
+
+.nav li {
+  display: inline;
+}
+
+.learn-more {
+  background-color: #4D4D4D;
+  margin-bottom: 30px;
+}
+
+.learn-more h3 {
+  font-family: 'Shift', sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.learn-more a {
+  color: Black;
+  
+}
+
+.Title h2 {
+    color: #4D4D4D;
+    margin-bottom: 13px;
+}
+
+.Title p {
+    font-size: 15px;
+    margin-bottom: 13px;
+}
+
+#MoreInfoPanel .row {
+    display: none;
+}
+
+#UpgradeInfoBox{
+  width: 300px;
+}
