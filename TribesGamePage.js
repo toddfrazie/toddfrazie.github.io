@@ -82,7 +82,7 @@ var VictoryOrLossAchieved = false;
 var ShiningScalesTension = 1;
 var LongTalonTribeTension = 1;
 var FolkOfTheWindingFlowTension = 1;
-var TensionCap = 20;
+var TensionCap = 30;
 
 var CompetitionFinished = true;
 
@@ -422,8 +422,7 @@ function CalculateVictory() {
         $('#SupremacyVictory').hide();
         $('#InfluenceVictory').hide();
         
-    }
-    
+    }    
 }
 
 function ClearUpgradeInfoBox() {
@@ -1149,10 +1148,12 @@ function P_RaidShiningScales() {
     ShiningScalesTension = ShiningScalesTension + 8
     ShiningScalesVictoryLevel = ShiningScalesVictoryLevel = 4
     if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0};
-    DecrementGrip(RaidingCost); 
-    var GainedSupply = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 1) + 1))
-    var GainedInspiration = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 3) + 1))
+    DecrementGrip(RaidingCost);
+    var WarriorEffectiveness = CurrentNumberOfWarriors    
+    if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+    var GainedSupply = Math.floor(WarriorEffectiveness * ((Math.random() * 1) + 1))
+    var GainedInspiration = Math.floor(WarriorEffectiveness * ((Math.random() * 2) + 1))
+    var GainedDomain = Math.floor(WarriorEffectiveness * ((Math.random() * 3) + 1))
        
     $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1163,7 +1164,7 @@ function P_RaidShiningScales() {
     IncrementSupply(GainedSupply);
     IncrementInspiration(GainedInspiration);
     IncrementDomain(GainedDomain);
-    CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
+    CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
     
     $('#ShiningScalesRaid').fadeOut();
     $('#ShiningScalesBarter').fadeOut();
@@ -1211,10 +1212,13 @@ function P_RaidLongTalonTribe() {
     LongTalonTribeTension = LongTalonTribeTension + 8
     LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4
     if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0};
-    DecrementGrip(RaidingCost); 
-    var GainedSupply = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 3) + 1))
-    var GainedInspiration = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 1) + 1))
-    var GainedDomain = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 2) + 1))
+    DecrementGrip(RaidingCost);
+    
+    var WarriorEffectiveness = CurrentNumberOfWarriors    
+    if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+    var GainedSupply = Math.floor(WarriorEffectiveness * ((Math.random() * 3) + 1))
+    var GainedInspiration = Math.floor(WarriorEffectiveness * ((Math.random() * 1) + 1))
+    var GainedDomain = Math.floor(WarriorEffectiveness * ((Math.random() * 2) + 1))
  
     
     $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
@@ -1273,10 +1277,14 @@ function P_RaidFolkOfTheWindingFlow() {
     FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 8
     FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4
     if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0};
-    DecrementGrip(RaidingCost); 
-    var GainedSupply = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 2) + 1))
-    var GainedInspiration = Math.floor(CurrentNumberOfWarriors * ((Math.random() * 3) + 1))
-    var GainedDomain = Math.floor(CurrentNumberOfWarriors* ((Math.random() * 2) + 1))
+    DecrementGrip(RaidingCost);
+    
+    var WarriorEffectiveness = CurrentNumberOfWarriors    
+    if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+    
+    var GainedSupply = Math.floor(WarriorEffectiveness * ((Math.random() * 2) + 1))
+    var GainedInspiration = Math.floor(WarriorEffectiveness * ((Math.random() * 3) + 1))
+    var GainedDomain = Math.floor(WarriorEffectiveness* ((Math.random() * 2) + 1))
         
     $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1287,7 +1295,7 @@ function P_RaidFolkOfTheWindingFlow() {
     IncrementSupply(GainedSupply);
     IncrementInspiration(GainedInspiration);
     IncrementDomain(GainedDomain);
-    CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
+    CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
     
     $('#FolkOfTheWindingFlowRaid').fadeOut();
     $('#FolkOfTheWindingFlowBarter').fadeOut();
@@ -1330,25 +1338,25 @@ function CalculateEvent() {
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
         case 1:
-            var D10 = Math.floor((Math.random() * 10) + 1);
-            D10 = D10 + LongTalonTribeTension
-            if (D10 > TensionCap) {
+            var D20 = Math.floor((Math.random() * 20) + 1);
+            D20 = D20 + LongTalonTribeTension
+            if (D20 > TensionCap) {
                CalculateLongTalonTribeRaided();
                NeedToFindEvent= false;
             }                          
             break;
         case 2:
-            var D10 = Math.floor((Math.random() * 10) + 1);
-            D10 = D10 + ShiningScalesTension
-            if (D10 > TensionCap) {
+            var D20 = Math.floor((Math.random() * 20) + 1);
+            D20 = D20 + ShiningScalesTension
+            if (D20 > TensionCap) {
                 CalculateShiningScalesRaided();
                 NeedToFindEvent= false;
             }                          
             break;
         case 3:
-            var D10 = Math.floor((Math.random() * 10) + 1);
-            D10 = D10 + FolkOfTheWindingFlowTension
-            if (D10 > TensionCap) {
+            var D20 = Math.floor((Math.random() * 20) + 1);
+            D20 = D20 + FolkOfTheWindingFlowTension
+            if (D20 > TensionCap) {
                 CalculateFolkOfTheWindingFlowRaided();
                 NeedToFindEvent= false;
             }                          
@@ -2794,8 +2802,8 @@ function CalculateShiningScalesRaided() {
     
     ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
     CompetitionFinished = false;
-    
-    EventLoadedValue = 998;
+    RefreshPage();   
+    EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
     
 }
@@ -2856,8 +2864,8 @@ function CalculateLongTalonTribeRaided() {
     
     LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
     CompetitionFinished = false;
-    
-    EventLoadedValue = 998;
+    RefreshPage();   
+    EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
 }
 
@@ -2898,7 +2906,7 @@ function CalculateFolkOfTheWindingFlowRaided() {
         SelectAndRemoveSelectedRandomTribal();}
         TribalsLost = "Two of your Tribe members were killed in the Raid as well.";
     }else if (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap/1.2)) {
-        SelectAndRemoveSelectedRandomTribal();        
+        SelectAndRemoveSelectedRandomTribal();     
         if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
         SelectAndRemoveSelectedRandomTribal();}
         if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
@@ -2917,8 +2925,8 @@ function CalculateFolkOfTheWindingFlowRaided() {
     
     FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
     CompetitionFinished = false;
-    
-    EventLoadedValue = 998;
+    RefreshPage();
+    EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
 }
 
