@@ -155,7 +155,7 @@ function RefreshPage(){
     CalculateTribalCosts();
     
     CalculateVictory();
-    
+    if (VictoryOrLossAchieved) {CurrentPhase = 5}
     switch (CurrentPhase) {
         case 0:
             $('#IntroDiv').hide();
@@ -207,8 +207,7 @@ function RefreshPage(){
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
-            break;
-            
+            break;         
         
     }
         CompetitionDetails();
@@ -219,8 +218,8 @@ function RefreshPage(){
 function CalculateTribalCosts(){
     CurrentPopulation = CurrentNumberOfHunters + CurrentNumberOfCrafters + CurrentNumberOfExplorers + CurrentNumberOfWarriors
     
-    TotalPopulationBoomCost = Math.floor((5 * Math.pow(1.15, CurrentPopulation)));
-
+    TotalPopulationBoomCost = Math.floor((CurrentPopulation * Math.pow(1.15, CurrentPopulation)));
+ 
     TotalInspirationSurplusCost = Math.floor((5 * Math.pow(1.15, CurrentNumberOfCrafters)));
 
     TotalDomainSurplusCost = Math.floor((5 * Math.pow(1.15, CurrentNumberOfExplorers)));
@@ -507,59 +506,7 @@ function CalculateNewTribeMemberResult() {
         DecrementSupply(UpkeepCost)
         
         if (CurrentPopulation < ((ExpansionLevel*7))) {
-            SelectedRandomTribal = "";
-            SelectedRandomTribalValue = 0;
-            
-            if (CurrentNumberOfHunters == 0) {
-                SelectedRandomTribal = "Hunter"
-                SelectedRandomTribalValue = 1
-                CurrentNumberOfHunters++
-            }else{
-                var HunterDif = HunterExpansionBonus - CurrentNumberOfHunters;
-                var ExplorerDif = ExplorerExpansionBonus - CurrentNumberOfExplorers;
-                var CrafterDif = CrafterExpansionBonus - CurrentNumberOfCrafters;
-                var WarriorDif = WarriorExpansionBonus - CurrentNumberOfWarriors;
-                
-                var MaxValue = Math.max(HunterDif,ExplorerDif,CrafterDif,WarriorDif);
-                var NewTribeMemberNotYetFound = true;
-                while (NewTribeMemberNotYetFound) {
-                    var RandomNumber = Math.floor((Math.random()*4)+1)
-                    switch (RandomNumber) {
-                        case 1:
-                            if (HunterDif == MaxValue) {
-                                SelectedRandomTribal = "Hunter"
-                                SelectedRandomTribalValue = 1
-                                CurrentNumberOfHunters++
-                                NewTribeMemberNotYetFound = false;
-                            }
-                            break;
-                        case 2:
-                            if (ExplorerDif == MaxValue) {
-                                SelectedRandomTribal = "Explorer"
-                                SelectedRandomTribalValue = 2
-                                CurrentNumberOfExplorers++
-                                NewTribeMemberNotYetFound = false;
-                            }
-                            break;
-                        case 3:
-                            if (CrafterDif == MaxValue) {
-                                SelectedRandomTribal = "Crafter"
-                                SelectedRandomTribalValue = 3
-                                CurrentNumberOfCrafters++
-                                NewTribeMemberNotYetFound = false;
-                            }
-                            break;
-                        case 4:
-                            if (WarriorDif == MaxValue) {
-                                SelectedRandomTribal = "Warrior"
-                                SelectedRandomTribalValue = 4
-                                CurrentNumberOfWarriors++
-                                NewTribeMemberNotYetFound = false;
-                            }
-                            break;
-                    }        
-                }
-            }
+            SelectAndAddRandomNeededTribal();
             $('#NewTribeMemberResult').html("A new "+ SelectedRandomTribal +" is raised.")
         }else{$('#NewTribeMemberResult').html("")}  
     }else{
@@ -700,6 +647,7 @@ function CalculateSpearOfTheAncients() {
 // Supply Upgrade Buttons-------------------------------------------------
 
 $('#Population_Boom').click(function(){
+
     $('#UpgradeInfoBoxCost').html(TotalPopulationBoomCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Population Boom");
     $('#UpgradeInfoBoxDescription').html("A new tribe member will join your tribe immediately so long as you have the capacity.");
@@ -1020,7 +968,8 @@ $('#PurchaseUpgradeButton').click(function(){
 
 function P_Population_Boom(){
     DecrementSupply(TotalPopulationBoomCost);
-    CalculateNewTribeMemberResult();
+    SelectAndAddRandomNeededTribal();
+    
 }
 
 function P_Boost_Inspiration(){
@@ -3039,6 +2988,64 @@ var TribalNotFound = true
                 break;
 
         }
+    }
+}
+
+function SelectAndAddRandomNeededTribal() {
+    if (CurrentPopulation < ((ExpansionLevel*7))) {
+            SelectedRandomTribal = "";
+            SelectedRandomTribalValue = 0;
+            
+            if (CurrentNumberOfHunters == 0) {
+                SelectedRandomTribal = "Hunter"
+                SelectedRandomTribalValue = 1
+                CurrentNumberOfHunters++
+            }else{
+                var HunterDif = HunterExpansionBonus - CurrentNumberOfHunters;
+                var ExplorerDif = ExplorerExpansionBonus - CurrentNumberOfExplorers;
+                var CrafterDif = CrafterExpansionBonus - CurrentNumberOfCrafters;
+                var WarriorDif = WarriorExpansionBonus - CurrentNumberOfWarriors;
+                
+                var MaxValue = Math.max(HunterDif,ExplorerDif,CrafterDif,WarriorDif);
+                var NewTribeMemberNotYetFound = true;
+                while (NewTribeMemberNotYetFound) {
+                    var RandomNumber = Math.floor((Math.random()*4)+1)
+                    switch (RandomNumber) {
+                        case 1:
+                            if (HunterDif == MaxValue) {
+                                SelectedRandomTribal = "Hunter"
+                                SelectedRandomTribalValue = 1
+                                CurrentNumberOfHunters++
+                                NewTribeMemberNotYetFound = false;
+                            }
+                            break;
+                        case 2:
+                            if (ExplorerDif == MaxValue) {
+                                SelectedRandomTribal = "Explorer"
+                                SelectedRandomTribalValue = 2
+                                CurrentNumberOfExplorers++
+                                NewTribeMemberNotYetFound = false;
+                            }
+                            break;
+                        case 3:
+                            if (CrafterDif == MaxValue) {
+                                SelectedRandomTribal = "Crafter"
+                                SelectedRandomTribalValue = 3
+                                CurrentNumberOfCrafters++
+                                NewTribeMemberNotYetFound = false;
+                            }
+                            break;
+                        case 4:
+                            if (WarriorDif == MaxValue) {
+                                SelectedRandomTribal = "Warrior"
+                                SelectedRandomTribalValue = 4
+                                CurrentNumberOfWarriors++
+                                NewTribeMemberNotYetFound = false;
+                            }
+                            break;
+                    }        
+                }
+            }
     }
 }
 
