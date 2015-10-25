@@ -4,7 +4,7 @@ var main = function() {
 
 var CurrentPhase = 99;
 var PurchaseUpgradeLoadedUpgrade = 0;
-var CurrentEpoch = 1;
+var CurrentEra = 1;
 
 var CurrentNumberOfHunters = 1;
 var CurrentNumberOfCrafters = 1;
@@ -76,7 +76,7 @@ var BarteringCost = 0;
 var ShiningScalesVictoryLevel = 1;
 var LongTalonTribeVictoryLevel = 1;
 var FolkOfTheWindingFlowVictoryLevel = 1;
-var VictoryLevelCap = 60;
+var VictoryLevelCap = 50;
 var VictoryOrLossAchieved = false;
 
 var ShiningScalesTension = 1;
@@ -111,7 +111,7 @@ window.onload = function() {
     $('#LongTalonTribeBarter').hide();
     $('#FolkOfTheWindingFlowRaid').hide();
     $('#FolkOfTheWindingFlowBarter').hide();
-    RefreshPage()
+    RefreshPage();
 };
 
 function RefreshPage(){
@@ -159,7 +159,7 @@ function RefreshPage(){
     switch (CurrentPhase) {
         case 0:
             $('#IntroDiv').hide();
-            $('#BeginEpoch').fadeIn();
+            $('#BeginEra').fadeIn();
             $('#UpgradeBox').fadeIn();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -167,7 +167,7 @@ function RefreshPage(){
             $('#EndOfGameResultBox').hide();
             break;
         case 1:
-            $('#BeginEpoch').hide();
+            $('#BeginEra').hide();
             $('#UpgradeBox').hide();
             $('#HarvestResultBox').fadeIn();
             $('#EventResultBox').hide();
@@ -175,7 +175,7 @@ function RefreshPage(){
             $('#EndOfGameResultBox').hide();
             break;
         case 2:
-            $('#BeginEpoch').hide();
+            $('#BeginEra').hide();
             $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').fadeIn();
@@ -183,7 +183,7 @@ function RefreshPage(){
             $('#EndOfGameResultBox').hide();
             break;
         case 4:
-            $('#BeginEpoch').hide();
+            $('#BeginEra').hide();
             $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -192,7 +192,7 @@ function RefreshPage(){
             $('#EndOfGameResultBox').hide();
             break;
         case 5:
-            $('#BeginEpoch').hide();
+            $('#BeginEra').hide();
             $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -201,7 +201,7 @@ function RefreshPage(){
             break;
         case 99:
             $('#IntroDiv').fadeIn();
-            $('#BeginEpoch').hide();
+            $('#BeginEra').hide();
             $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -211,9 +211,39 @@ function RefreshPage(){
         
     }
         CompetitionDetails();
+        DisplayDetails();
         
 }
 
+function DisplayDetails() {
+    $('#D_Population').html(CurrentPopulation);
+    $('#D_Era').html(CurrentEra);
+    
+    $('#D_River').html(NumberOfRiverExpansions);
+    $('#D_Savanna').html(NumberOfSavannaExpansions);
+    $('#D_Forest').html(NumberOfForestExpansions);
+    $('#D_Hill').html(NumberOfHillExpansions);
+    
+    $('#D_Supremacy').html(CurrentSupremacy);
+    $('#D_Influence').html(CurrentInfluence);
+    $('#D_Discoveries').html(CurrentDiscovery);
+    
+    $('#D_LongTalonTribeTension').html(LongTalonTribeTension);
+    $('#D_LongTalonTribeVictory').html(LongTalonTribeVictoryLevel);    
+    $('#D_ShiningScalesTension').html(ShiningScalesTension);
+    $('#D_ShiningScalesVictory').html(ShiningScalesVictoryLevel);
+    $('#D_FolkOfTheWindingFlowTension').html(FolkOfTheWindingFlowTension);
+    $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);
+    
+    if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
+        $('#DetailImage').attr("src","http://i.imgur.com/N4Uepe3.jpg");
+    }else if (CurrentInfluence > CurrentSupremacy && CurrentInfluence > CurrentDiscovery * 100) {
+        $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
+    }else if (CurrentDiscovery * 100 > CurrentInfluence && CurrentDiscovery * 100 > CurrentSupremacy) {
+        $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
+    }
+    
+}
 
 function CalculateTribalCosts(){
     CurrentPopulation = CurrentNumberOfHunters + CurrentNumberOfCrafters + CurrentNumberOfExplorers + CurrentNumberOfWarriors
@@ -457,12 +487,11 @@ function ChangeWarriorStats(NoW){
     $('#ExpectedGrip').text(Calc);
 }
 
-//Caculate Epoch Results.----------------------------------------------------------------------------
+//Caculate Era Results.----------------------------------------------------------------------------
 
-$('#BeginEpoch').click(BeginEpoch);
-function BeginEpoch() {
+$('#BeginEra').click(BeginEra);
+function BeginEra() {
     CurrentPhase = 1;
-    CurrentEpoch++
     // Calculate returns from Hunting/Crafting/Exploring
     CalculateHuntingResult();
     CalculateCraftingResult();
@@ -492,8 +521,8 @@ function BeginEpoch() {
     
     CurrentSupremacy = CurrentSupremacy + ExpansionLevel;
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
-    CalculateEpochTensionIncrease();
-    CalculateEpochVictoryIncrease();
+    CalculateEraTensionIncrease();
+    CalculateEraVictoryIncrease();
 
     RefreshPage();
 }
@@ -516,7 +545,7 @@ function CalculateNewTribeMemberResult() {
     }
 }
 
-function CalculateEpochTensionIncrease() {
+function CalculateEraTensionIncrease() {
     LongTalonTribeTension = LongTalonTribeTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (ExpansionLevel/2));
     ShiningScalesTension = ShiningScalesTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CurrentDiscovery/2));
     FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CultureLevel/2));
@@ -740,7 +769,7 @@ $('#Improve_Culture').click(function(){
     $('#UpgradeInfoBoxCost').html(TotalCultureInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Cultural Innovation");
     $('#UpgradeInfoBoxDescription').html("Advancing in art and sophistication, your tribe begins to leave its mark on the surrounding land and peoples.\
-                                         <br/><span class=\"OOC\">This upgrade will increase your culture. Each Epoch, your culture will be added to your Influence. Higher Culture will give larger returns when Bartering</span>");
+                                         <br/><span class=\"OOC\">This upgrade will increase your culture. Each Era, your culture will be added to your Influence. Higher Culture will give larger returns when Bartering</span>");
     
     PurchasedUpgradeLoadedUpgrade = 211;
     if (CurrentInspiration >= TotalCultureInspirationCost) {$('#PurchaseUpgradeButton').show();}
@@ -1599,7 +1628,8 @@ $('#EventOption1Button').click(function(){
         break;
     case 1000:
         CurrentPhase = 0;
-        ShowAllCompetition()
+        CurrentEra++
+        ShowAllCompetition();
         RefreshPage();
         break;
     default:
@@ -1816,7 +1846,7 @@ function EC_RisingWaters_Evacuate() {
 }
 
 function EC_RisingWaters_Fortify() {
-    PassXEpochs(NumberOfRiverExpansions);
+    PassXEras(NumberOfRiverExpansions);
     RefreshEvent();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Rising Waters")    
@@ -2048,7 +2078,7 @@ function E_FavorableConditions() {
     RefreshPage();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Favorable Conditions");
-    $('#EventNar').html("Favorable conditions in the Savanna will serve as a surplus in boosting your gains next Epoch.");
+    $('#EventNar').html("Favorable conditions in the Savanna will serve as a surplus in boosting your gains next Era.");
     
     $('#EventOption1Button').show();
     EventLoadedValue = 999;
@@ -2059,7 +2089,7 @@ function E_FavorableConditions() {
 function E_InventionNotEnough(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Invention")
-    $('#EventNar').html("With more <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, your crafters might happen upon suprising innovations. For now, you are deficient in that resource.");
+    $('#EventNar').html("With "+TotalInventionInspirationCost+" stashed <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, your crafters might happen upon suprising innovations. For now, you are deficient in that resource.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
 }
@@ -2256,7 +2286,7 @@ function E_ProposedTrade() {
             Quantity = CurrentInspiration;
         }
         
-        if (Quantity > CurrentEpoch) {
+        if (Quantity > CurrentEra) {
             CombinationNotYetFound = false
         }
     }    
@@ -2264,7 +2294,7 @@ function E_ProposedTrade() {
     $('#EventResultBoxHeader').html("Trade Proposal")
     $('#EventNar').html(SelectedRandomRival + "  proposes a trade. How do you respond?");
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Accept Trade:<br/>Give " + SelectedRandomRival + " "+CurrentEpoch+" " + SelectedRandomResource + " and receive "+CurrentEpoch+" " + SelectedSecondRandomResource + " in return. \
+    $('#EventOption1Description').html("Accept Trade:<br/>Give " + SelectedRandomRival + " "+CurrentEra+" " + SelectedRandomResource + " and receive "+CurrentEra+" " + SelectedSecondRandomResource + " in return. \
                                     This will improve your relations");
     $('#EventOption1Button').show();
 
@@ -2278,24 +2308,24 @@ function E_ProposedTrade() {
 function EC_ProposedTrade_Accept() {
     switch (SelectedRandomResourceValue) {
         case 1:
-            DecrementSupply(CurrentEpoch);
+            DecrementSupply(CurrentEra);
             break;
         case 2:
-            DecrementDomain(CurrentEpoch);
+            DecrementDomain(CurrentEra);
             break;
         case 3:
-            DecrementInspiration(CurrentEpoch);
+            DecrementInspiration(CurrentEra);
             break;
     }
     switch (SelectedSecondRandomResourceValue) {
         case 1:
-            IncrementSupply(CurrentEpoch);
+            IncrementSupply(CurrentEra);
             break;
         case 2:
-            IncrementDomain(CurrentEpoch);
+            IncrementDomain(CurrentEra);
             break;
         case 3:
-            IncrementInspiration(CurrentEpoch);
+            IncrementInspiration(CurrentEra);
             break;
     }
     
@@ -2606,7 +2636,7 @@ function E_Discover() {
 function E_DiscoverNotEnough(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Dicovery")
-    $('#EventNar').html("Your explorers claim they have found clues that might lead to a discovery. With more <span style=\"color: rgb(207, 166, 0);\">Domain</span> \
+    $('#EventNar').html("Your explorers claim they have found clues that might lead to a discovery. With "+TotalDiscoveryDomainCost+" stashed <span style=\"color: rgb(207, 166, 0);\">Domain</span> \
                          they might uncover something important.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
@@ -2687,7 +2717,7 @@ $('#Map_Of_The_Ancients').click(function(){
     $('#UpgradeInfoBoxDescription').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
                                          From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
                                          some known but much unknown to your tribe.\
-                                         <br/><span class=\"OOC\"> At the start of each Epoch, gain some Domain. The amount gained increases each Epoch.The amount gained increases each Epoch. \
+                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era.The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#PurchaseUpgradeButton').hide();
 })
@@ -2697,7 +2727,7 @@ $('#Ancient_Garden').click(function(){
     $('#UpgradeInfoBoxHeader').html("Ancient Garden");
     $('#UpgradeInfoBoxDescription').html("Your explorers have discovered a deeply hidden grove marked with the serpent symbol of those that came before. \
                                          Within the grove, fruits and berries grow in abundant quantity and to great size. So too do the beasts.\
-                                         <br/><span class=\"OOC\"> At the start of each Epoch, gain some Supply. The amount gained increases each Epoch. \
+                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Supply. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (AncientGarden) + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#PurchaseUpgradeButton').hide();
 })
@@ -2707,7 +2737,7 @@ $('#Ancient_Cache').click(function(){
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("Ancient Cache");
     $('#UpgradeInfoBoxDescription').html("A cave lined with stone carved serpent motif contains a cache of tools made with strange but effective designs and materials.\
-                                         <br/><span class=\"OOC\"> At the start of each Epoch, gain some Overall. The amount gained increases each Epoch. \
+                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Overall. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + CalculatedBounty + " to each.");
     $('#PurchaseUpgradeButton').hide();
 })
@@ -2718,7 +2748,7 @@ $('#Pinnacle_Stone').click(function(){
     $('#UpgradeInfoBoxDescription').html("The giant stone monolith at the pinnacle of this great expanse is, at a distance, a towering coiled serpent. \
                                          But, once the likewise coiling path is ascended and the monolith approached, its base contains pictographs \
                                          highlighting the life and ways of those who came before.\
-                                         <br/><span class=\"OOC\"> At the start of each Epoch, gain some Inspiration. The amount gained increases each Epoch. \
+                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Inspiration. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (PinnacleStone) + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#PurchaseUpgradeButton').hide();
 })
@@ -2728,7 +2758,7 @@ $('#Spear_Of_The_Ancients').click(function(){
     $('#UpgradeInfoBoxHeader').html("Spear Of The Ancients");
     $('#UpgradeInfoBoxDescription').html("An alien spear is found lodged in the roots of an ancient tree. The shaft of the spear is appears wrapped \
                                          in serpents and the head shines like the sun. The weapon is found to best any match when tested.\
-                                         <br/><span class=\"OOC\"> At the start of each Epoch, gain some Grip. The amount gained increases each Epoch. \
+                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Grip. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (SpearOfTheAncients) + " <span style=\"color: grey;\">Grip</span>");
     $('#PurchaseUpgradeButton').hide();
 })
@@ -2742,7 +2772,7 @@ function ShowEventEnd() {
     EventLoadedValue = 1000;
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Calm")    
-    $('#EventNar').html("Your relationship with the neighboring tribes is calm for now. <br/>A new Epoch Begins.");        
+    $('#EventNar').html("Your relationships with the neighboring tribes is calm for now. <br/>A new Era Begins.");        
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3141,17 +3171,17 @@ function SelectSecondRandomResource(){
     }
 }
 
-function PassXEpochs(NumberOfEpochs) {
+function PassXEras(NumberOfEras) {
     var Iterations = 0;
-    while (NumberOfEpochs > Iterations) { 
-        CalculateEpochTensionIncrease();
-        CalculateEpochVictoryIncrease();
-        CurrentEpoch++
+    while (NumberOfEras > Iterations) { 
+        CalculateEraTensionIncrease();
+        CalculateEraVictoryIncrease();
+        CurrentEra++
         Iterations++
     }
 }
 
-function CalculateEpochVictoryIncrease() {
+function CalculateEraVictoryIncrease() {
     ShiningScalesVictoryLevel++
     LongTalonTribeVictoryLevel++
     FolkOfTheWindingFlowVictoryLevel++
