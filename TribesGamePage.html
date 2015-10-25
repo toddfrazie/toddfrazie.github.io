@@ -15,7 +15,7 @@
 		<div class="container">
 		  <h2>Pinnacle Stone</h2>
 		  <p>Strive. Thrive. Survive.</p>
-		  <p><a href="TribesHowToPlay.html" target="_blank">How To Play</a></p>
+		  <p><a title="Opens a new tab with instructions" href="TribesHowToPlay.html" target="_blank">How To Play</a></p>
 		</div>
 	  </div><!--end Title-->
  
@@ -26,7 +26,7 @@
                 <div id="LeftSide" class="col-sm-4">
 				  
 					  <div class="row">
-						<img id="HunterTribal" class="Tribal" src="http://i.imgur.com/x0Alvme.jpg">
+						<img title="Hunter" id="HunterTribal" class="Tribal" src="http://i.imgur.com/x0Alvme.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfHunter" class="ValueDisplay" style="color: rgb(178, 0, 0);"></h1></div>
 						<div class="StatsPanel"><p id="HunterStats">Bounty: <span id="ExpectedSupply"></span><span id="SupplySurplusDenotion"></span><br/>
 						Tool Level: <span id="HunterMultiplier"></span>
@@ -35,7 +35,7 @@
 					  </div>
 
 					  <div class="row">
-						<img id="ExplorerTribal" class="Tribal" src="http://i.imgur.com/BuwVh8z.jpg">
+						<img title="Explorer" id="ExplorerTribal" class="Tribal" src="http://i.imgur.com/BuwVh8z.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfExplorer" class="ValueDisplay" style="color: rgb(207, 166, 0);"></h1></div>					  
 						<div class="StatsPanel"><p id="ExplorerStats">Bounty: <span id="ExpectedDomain"></span><span id="DomainSurplusDenotion"></span><br/>
 						Tool Level: <span id="ExplorerMultiplier"></span>
@@ -44,7 +44,7 @@
 					  </div>
 					
 					  <div class="row">
-						<img id="CrafterTribal" class="Tribal" src="http://i.imgur.com/JwbS0fc.jpg">
+						<img title="Crafter" id="CrafterTribal" class="Tribal" src="http://i.imgur.com/JwbS0fc.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfCrafter" class="ValueDisplay" style="color: rgb(36, 71, 178);"></h1></div>						
 						<div class="StatsPanel"><p id="CrafterStats">Bounty: <span id="ExpectedInspiration"></span><span id="InspirationSurplusDenotion"></span><br/>
 						Tool Level: <span id="CrafterMultiplier"></span>
@@ -53,7 +53,7 @@
 					  </div>
 
 					  <div id="NumberOfWarriorContainer" class="row">
-						<img id="WarriorTribal" class="Tribal" src="http://i.imgur.com/p7eQNKb.jpg">
+						<img title="Warrior" id="WarriorTribal" class="Tribal" src="http://i.imgur.com/p7eQNKb.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfWarrior" class="ValueDisplay" style="color: grey;"></h1></div>
 						<div class="StatsPanel"><p id="WarriorStats">Bounty: <span id="ExpectedGrip"></span><span id="GripSurplusDenotion"></span><br/>
 						Tool Level: <span id="WarriorMultiplier"></span>
@@ -62,33 +62,122 @@
 					  </div>
 
 					  <div class="row" style="height: 120px">
-						  <button id="BeginEpoch">Continue</button>
+						  <button id="BeginEra">Continue</button>
 					  </div>
 					  
-					  <div id="SupremacyContainer" class="row">
-						<img class="Tribal" src="http://i.imgur.com/N4Uepe3.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfExpansion" class="ValueDisplay" style="color: Indigo;">0</h1></div>						
-						<div class="StashContainerLong"><p style="color: Indigo;">Supremacy</p><p id="StashedSupremacy"></p></div>
-					  </div>
-					  
-					  <div id="DiscoveryContainer" class="row">
-						<img class="Tribal" src="http://i.imgur.com/DnKwg6g.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfDiscovery" class="ValueDisplay" style="color: Purple;">0</h1></div>
-						<div class="StashContainerLong" id="DiscoveriesBox"><p style="color: Purple;">Discoveries</p><p id="StashedDiscovery"></p>
-						<button id="Map_Of_The_Ancients">Map Of The Ancients</button>
-						<button id="Ancient_Garden">Ancient Garden</button>
-						<button id="Ancient_Cache">Ancient Cache</button>
-						<button id="Pinnacle_Stone">Pinnacle Stone</button>
-						<button id="Spear_Of_The_Ancients">Spear Of The Ancients</button>
+					  <div id="DetailsBowContainer" class="row">
+						<img id="DetailImage" src="http://i.imgur.com/DnKwg6g.jpg">						
+						<div id="DetailsBox">
+						  <h4 style="text-align: center">Details</h4>
+						  <hr>
+						  <p>					
+							<table style="width: 98%">
+							  <tr>
+								<td>Population</td>
+								<td><span id="D_Population"></span></td>
+							  </tr>
+							  <tr>
+								<td>Current Era</td>
+								<td><span id="D_Era"></span></td>
+							  </tr>
+							</table>
+							<br/>
+							<table style="width: 98%">
+							  <th>Expansions</th>
+							  <tr>
+								<td>River</td>
+								<td><span id="D_River"></span></td>
+							  </tr>
+							  <tr>
+								<td>Savanna</td>
+								<td><span id="D_Savanna"></span></td>
+							  </tr>
+							  <tr>
+								<td>Forest</td>
+								<td><span id="D_Forest"></span></td>
+							  </tr>
+							  <tr>
+								<td>Hill</td>
+								<td><span id="D_Hill"></span></td>
+							  </tr>
+							</table>
+							<br/>
+							<table style="width: 98%">
+							  <th colspan="3">Victory Conditions</th>
+							  <tr>
+								<td>Supremacy</td>
+								<td style="text-align: right;"><span id="D_Supremacy"></span></td>
+								<td><span>/500</span></td>
+							  </tr>
+							  <tr>
+								<td>Influence</td>
+								<td style="text-align: right;"><span id="D_Influence"></span></td>
+								<td><span>/500</span></td>
+							  </tr>
+							  <tr>
+								<td>Discoveries</td>
+								<td style="text-align: right;"><span id="D_Discoveries"></span></td>
+								<td><span>/5</span></td>
+							  </tr>
+							</table>
+							<br/>
+							<table style="width: 98%">
+							  <th colspan="3" style="color: OrangeRed;">Long Talon Tribe</th>
+							  <tr>
+								<td>Tension</td>
+								<td style="text-align: right;"><span id="D_LongTalonTribeTension"></span></td>
+								<td><span>/30</span></td>
+							  </tr>
+							  <tr>
+								<td>Victory</td>
+								<td style="text-align: right;"><span id="D_LongTalonTribeVictory"></span></td>
+								<td><span>/50</span></td>
+							  </tr>
+							</table>
+							<br/>
+							<table style="width: 98%">
+							  <th colspan="3" style="color: DarkGoldenRod;">Shining Scales</th>
+							  <tr>
+								<td>Tension</td>
+								<td style="text-align: right;"><span id="D_ShiningScalesTension"></span></td>
+								<td><span>/30</span></td>
+							  </tr>
+							  <tr>
+								<td>Victory</td>
+								<td style="text-align: right;"><span id="D_ShiningScalesVictory"></span></td>
+								<td><span>/50</span></td>
+							  </tr>
+							</table>
+							<br/>
+							<table style="width: 98%">
+							  <th colspan="3" style="color: Aqua;">Folk Of The Winding Flow</th>
+							  <tr>
+								<td>Tension</td>
+								<td style="text-align: right;"><span id="D_FolkOfTheWindingFlowTension"></span></td>
+								<td><span>/30</span></td>
+							  </tr>
+							  <tr>
+								<td>Victory</td>
+								<td style="text-align: right;"><span id="D_FolkOfTheWindingFlowVictory"></span></td>
+								<td><span>/50</span></td>
+							  </tr>
+							</table>
+							<hr>
+							<div id="DiscoveriesBox"><p style="color: Purple;">Discoveries</p>
+							  <button id="Map_Of_The_Ancients">Map Of The Ancients</button>
+							  <button id="Ancient_Garden">Ancient Garden</button>
+							  <button id="Ancient_Cache">Ancient Cache</button>
+							  <button id="Pinnacle_Stone">Pinnacle Stone</button>
+							  <button id="Spear_Of_The_Ancients">Spear Of The Ancients</button>
+							</div>
+							<div id="InventionsBox"><p style="color: Blue;">Inventions</p>
+							  <button id="Map_Of_The_Ancients">Pottery</button>
+							  <button id="Ancient_Garden">War Tactics</button>
+							</div>
+							
+						  </p>			  
 						</div>
 					  </div>
-					  
-					  <div id="InfluenceContainer" class="row">
-						<img class="Tribal" src="http://i.imgur.com/MzfHbw2.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfCulture" class="ValueDisplay" style="color: Pink;">0</h1></div>
-						<div class="StashContainerLong"><p style="color: Pink;">Influence</p><p id="StashedInfluence"></p></div>
-					  </div>
-
 				
               </div><!--End Left Side col-lg-6 -->
 
@@ -158,19 +247,19 @@
 						  </div>
 						  <hr>
 						  <div id="InspirationUpgradeBox">
-							<button id="Improve_Hunting_Tools" class="Upgrade">Imp. Hunting Tools</button>
-							<button id="Improve_Exploring_Tools" class="Upgrade">Imp. Exploring Tools</button>
-							<button id="Improve_Crafting_Tools" class="Upgrade">Imp. Crafting Tools</button>
-							<button id="Improve_War_Tools" class="Upgrade">Imp. War Tools</button>
+							<button id="Improve_Hunting_Tools" class="Upgrade">Improve Hunting Tools</button>
+							<button id="Improve_Exploring_Tools" class="Upgrade">Improve Exploring Tools</button>
+							<button id="Improve_Crafting_Tools" class="Upgrade">Improve Crafting Tools</button>
+							<button id="Improve_War_Tools" class="Upgrade">Improve War Tools</button>
 							<button id="Improve_Culture" class="Upgrade">Cultural Innovation</button>	
 						  </div>
 						</div>
 						<div id="EndOfGameResultBox">
 							<h4 id="EndOfGameHeader"></h4>
 							<p id="EndOfGameParagraph"></p>
-							<img id="DiscoveryVictory" class="VictoryImage" src="http://i.imgur.com/DnKwg6g.jpg">
-							<img id="SupremacyVictory" class="VictoryImage" src="http://i.imgur.com/N4Uepe3.jpg">
-							<img id="InfluenceVictory" class="VictoryImage" src="http://i.imgur.com/MzfHbw2.jpg">
+							<img id="DiscoveryVictory" class="VictoryImage" src="./images/Serpent.jpg">
+							<img id="SupremacyVictory" class="VictoryImage" src="./images/Yellow_Map.jpg">
+							<img id="InfluenceVictory" class="VictoryImage" src="./images/Jewel.jpg">
 						</div>
 					  </div>
 					</div>
