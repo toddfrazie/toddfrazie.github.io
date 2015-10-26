@@ -29,7 +29,7 @@
 						<img title="Hunter" id="HunterTribal" class="Tribal" src="http://i.imgur.com/x0Alvme.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfHunter" class="ValueDisplay" style="color: rgb(178, 0, 0);"></h1></div>
 						<div class="StatsPanel"><p id="HunterStats">Bounty: <span id="ExpectedSupply"></span><span id="SupplySurplusDenotion"></span><br/>
-						Tool Level: <span id="HunterMultiplier"></span>
+						Efficiency: <span id="HunterMultiplier"></span>
 						Capacity: <span id="HunterPopulationSoftCap"></span></p></div>
 						<div class="StashContainer"><p style="color:  rgb(178, 0, 0);">Supply</p><p id="StashedSupply"></p></div>
 					  </div>
@@ -38,7 +38,7 @@
 						<img title="Explorer" id="ExplorerTribal" class="Tribal" src="http://i.imgur.com/BuwVh8z.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfExplorer" class="ValueDisplay" style="color: rgb(207, 166, 0);"></h1></div>					  
 						<div class="StatsPanel"><p id="ExplorerStats">Bounty: <span id="ExpectedDomain"></span><span id="DomainSurplusDenotion"></span><br/>
-						Tool Level: <span id="ExplorerMultiplier"></span>
+						Efficiency: <span id="ExplorerMultiplier"></span>
 						Capacity: <span id="ExplorerPopulationSoftCap"></span></p></div>
 						<div class="StashContainer"><p style="color: rgb(207, 166, 0);">Domain</p><p id="StashedDomain"></p></div>
 					  </div>
@@ -47,7 +47,7 @@
 						<img title="Crafter" id="CrafterTribal" class="Tribal" src="http://i.imgur.com/JwbS0fc.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfCrafter" class="ValueDisplay" style="color: rgb(36, 71, 178);"></h1></div>						
 						<div class="StatsPanel"><p id="CrafterStats">Bounty: <span id="ExpectedInspiration"></span><span id="InspirationSurplusDenotion"></span><br/>
-						Tool Level: <span id="CrafterMultiplier"></span>
+						Efficiency: <span id="CrafterMultiplier"></span>
 						Capacity: <span id="CrafterPopulationSoftCap"></span></p></div>
 						<div class="StashContainer"><p style="color: rgb(36, 71, 178);">Inspiration</p><p id="StashedInspiration"></p></div>
 					  </div>
@@ -56,7 +56,7 @@
 						<img title="Warrior" id="WarriorTribal" class="Tribal" src="http://i.imgur.com/p7eQNKb.jpg">
 						<div class="ValueContainer"><h1 id="NumberOfWarrior" class="ValueDisplay" style="color: grey;"></h1></div>
 						<div class="StatsPanel"><p id="WarriorStats">Bounty: <span id="ExpectedGrip"></span><span id="GripSurplusDenotion"></span><br/>
-						Tool Level: <span id="WarriorMultiplier"></span>
+						Efficiency: <span id="WarriorMultiplier"></span>
 						Capacity: <span id="WarriorPopulationSoftCap"></span></p></div>
 						<div class="StashContainer"><p style="color: grey;">Grip</p><p id="StashedGrip"></p></div>
 					  </div>
@@ -171,8 +171,8 @@
 							  <button id="Spear_Of_The_Ancients">Spear Of The Ancients</button>
 							</div>
 							<div id="InventionsBox"><p style="color: Blue;">Inventions</p>
-							  <button id="Map_Of_The_Ancients">Pottery</button>
-							  <button id="Ancient_Garden">War Tactics</button>
+							  <button id="Pottery">Pottery</button>
+							  <button id="War_Tactics">War Tactics</button>
 							</div>
 							
 						  </p>			  
@@ -233,10 +233,10 @@
 						  </div>
 						<div id="UpgradeBox">
 						  <div id="SupplyUpgradeBox">
+							<button id="Population_Boom" class="Upgrade">Population Boom</button>
 							<button id="Boost_Domain" class="Upgrade">Boost Domain</button>
 							<button id="Boost_Inspiration" class="Upgrade">Boost Inspiration</button>
 							<button id="Boost_Grip" class="Upgrade">Boost Grip</button>
-							<button id="Population_Boom" class="Upgrade">Population Boom</button>
 						  </div>
 						  <hr>
 						  <div id="DomainUpgradeBox">
