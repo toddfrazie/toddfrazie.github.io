@@ -240,7 +240,7 @@ function DisplayDetails() {
     }else if (CurrentInfluence > CurrentSupremacy && CurrentInfluence > CurrentDiscovery * 100) {
         $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
     }else if (CurrentDiscovery * 100 > CurrentInfluence && CurrentDiscovery * 100 > CurrentSupremacy) {
-        $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
+        $('#DetailImage').attr("src","http://i.imgur.com/DnKwg6g.jpg");
     }
     
 }
@@ -248,7 +248,7 @@ function DisplayDetails() {
 function CalculateTribalCosts(){
     CurrentPopulation = CurrentNumberOfHunters + CurrentNumberOfCrafters + CurrentNumberOfExplorers + CurrentNumberOfWarriors
     
-    TotalPopulationBoomCost = Math.floor((CurrentPopulation * Math.pow(1.15, CurrentPopulation)));
+    TotalPopulationBoomCost = Math.floor((3 * Math.pow(1.15, CurrentPopulation)));
  
     TotalInspirationSurplusCost = Math.floor((5 * Math.pow(1.15, CurrentNumberOfCrafters)));
 
@@ -265,9 +265,9 @@ function CalculateTribalCosts(){
     
     TotalCultureInspirationCost = Math.floor((5 * CultureLevel) * Math.pow(1.15,CultureLevel));
 
-    TotalDiscoveryDomainCost = Math.floor((30 * (CurrentDiscovery+1)) * Math.pow(1.30,(CurrentDiscovery)));
+    TotalDiscoveryDomainCost = Math.floor((25 * (CurrentDiscovery+1)) * Math.pow(1.07,(CurrentDiscovery)));
     
-    TotalInventionInspirationCost = Math.floor((20 * InventionLevel) * Math.pow(1.15,InventionLevel));
+    TotalInventionInspirationCost = Math.floor(30 * Math.pow(1.15,InventionLevel));
     
     RaidingCost = Math.floor((2 * (CurrentNumberOfWarriors)) * Math.pow(1.07,CurrentNumberOfWarriors));
     
@@ -581,7 +581,7 @@ function ContinueFromActionToBegin() {
 
 //In depth Calculation for turns---------------------------------------------------
 function CalculateHuntingResult() {
-    var Calc = CurrentNumberOfHunters * HunterMultiplier;
+    var Calc = Math.floor(CurrentNumberOfHunters * HunterMultiplier);
     if (SupplySurplus && !(Pottery)) {Calc = Calc * 2
     }else if (SupplySurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Calc > 0) {
@@ -591,7 +591,7 @@ function CalculateHuntingResult() {
 }
 
 function CalculateCraftingResult() {
-    var Calc = CurrentNumberOfCrafters * CrafterMultiplier;
+    var Calc = Math.floor(CurrentNumberOfCrafters * CrafterMultiplier);
     if (InspirationSurplus && !(Pottery)) {Calc = Calc * 2
     }else if (InspirationSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Calc > 0) {
@@ -601,7 +601,7 @@ function CalculateCraftingResult() {
 }
 
 function CalculateExploringResult() {
-    var Calc = CurrentNumberOfExplorers * ExplorerMultiplier;
+    var Calc = Math.floor(CurrentNumberOfExplorers * ExplorerMultiplier);
     if (DomainSurplus && !(Pottery)) {Calc = Calc * 2
     }else if (DomainSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Calc > 0) {
@@ -611,7 +611,7 @@ function CalculateExploringResult() {
 }
 
 function CalculateWarResult() {
-    var Calc = CurrentNumberOfWarriors * WarriorMultiplier;
+    var Calc = Math.floor(CurrentNumberOfWarriors * WarriorMultiplier);
     if (GripSurplus && !(Pottery)) {Calc = Calc * 2
     }else if (GripSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Calc > 0) {
@@ -721,8 +721,8 @@ $('#Improve_Hunting_Tools').click(function(){
     $('#UpgradeInfoBoxCost').html(HunterToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Hunting Tools");
     $('#UpgradeInfoBoxDescription').html("With improved hunting tools, your Tribe can hunt more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the level of your Hunting tools by 1. \
-                                         Your Supply bounty will be the product of your number of Hunters and your Hunting Tool level.</span>");
+                                         <br/><span class=\"OOC\">This upgrade will increase the Efficiency of your Hunters by 0.5. \
+                                         Your Supply bounty will be the product of your number of Hunters and your Hunting Efficiency.</span>");
     
     PurchasedUpgradeLoadedUpgrade = 201;
     if (CurrentInspiration >= HunterToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
@@ -733,8 +733,8 @@ $('#Improve_Crafting_Tools').click(function(){
     $('#UpgradeInfoBoxCost').html(CrafterToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Crafting Tools");
     $('#UpgradeInfoBoxDescription').html("With improved crafting tools, your Tribe can craft more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the level of your Crafting tools by 1. \
-                                         Your Inspiration bounty will be the product of your number of Crafters and your Crafting Tool level.</span>");
+                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Crafters by 0.5. \
+                                         Your Inspiration bounty will be the product of your number of Crafters and your Crafting Efficiency.</span>");
     
     PurchasedUpgradeLoadedUpgrade = 202;
     if (CurrentInspiration >= CrafterToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
@@ -745,8 +745,8 @@ $('#Improve_Exploring_Tools').click(function(){
     $('#UpgradeInfoBoxCost').html(ExplorerToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Exploring Tools");
     $('#UpgradeInfoBoxDescription').html("With improved exploring tools, your Tribe can explore more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the level of your Exploring tools by 1. \
-                                         Your Domain bounty will be the product of your number of Explorers and your Exploring Tool level.</span>");
+                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Explorers by 0.5. \
+                                         Your Domain bounty will be the product of your number of Explorers and your Exploring Efficiency.</span>");
     
     PurchasedUpgradeLoadedUpgrade = 203;
     if (CurrentInspiration >= ExplorerToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
@@ -757,8 +757,8 @@ $('#Improve_War_Tools').click(function(){
     $('#UpgradeInfoBoxCost').html(WarriorToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve War Tools");
     $('#UpgradeInfoBoxDescription').html("With improved war tools, your Tribe can maintain its grip on the its assets more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the level of your War tools by 1. \
-                                         Your Grip bounty will be the product of your number of Warriors and your War Tool level.</span>");
+                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Warriors by 0.5. \
+                                         Your Grip bounty will be the product of your number of Warriors and your War Efficiency.</span>");
     
     PurchasedUpgradeLoadedUpgrade = 204;
     if (CurrentInspiration >= WarriorToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
@@ -1019,25 +1019,25 @@ function P_Boost_Grip(){
 function P_Improve_Hunting_Tools(){
     DecrementInspiration(HunterToolInspirationCost);    
     ImprovedToolsLevel++
-    HunterMultiplier++
+    HunterMultiplier = HunterMultiplier + 0.5
 }
 
 function P_Improve_Crafting_Tools(){
     DecrementInspiration(CrafterToolInspirationCost);    
     ImprovedToolsLevel++
-    CrafterMultiplier++
+    CrafterMultiplier = CrafterMultiplier + 0.5
 }
 
 function P_Improve_Exploring_Tools(){
     DecrementInspiration(ExplorerToolInspirationCost);    
     ImprovedToolsLevel++
-    ExplorerMultiplier++
+    ExplorerMultiplier = ExplorerMultiplier + 0.5
 }
 
 function P_Improve_War_Tools(){
     DecrementInspiration(WarriorToolInspirationCost);    
     ImprovedToolsLevel++
-    WarriorMultiplier++
+    WarriorMultiplier = WarriorMultiplier + 0.5
 }
 
 function P_Improve_Culture(){
@@ -2113,6 +2113,7 @@ function EC_Pottery_InventPottery() {
     CurrentInfluence = CurrentInfluence + TotalInventionInspirationCost;
     Pottery = true;
     InventionLevel++;
+    $('#Pottery').show();
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2121,7 +2122,16 @@ function EC_Pottery_InventPottery() {
                         <br/>This will increase the bonus from Surplus. It has also increased your Influence significantly!");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
-} 
+}
+
+$('#Pottery').click(function() {
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("Pottery");
+    $('#UpgradeInfoBoxDescription').html("Pottery, crafted from clay, more easily holds goods for transport and storage.\
+                                         <br/><span class=\"OOC\">Increases the effectiveness of Surplus by 0.5.</span>");
+    $('#PurchaseUpgradeButton').hide();
+    
+})
 
 // Improved War Tactics ----------------------------------------
 
@@ -2143,6 +2153,7 @@ function EC_ImprovedWarTactics_InventImprovedWarTactics() {
     DecrementInspiration(TotalInventionInspirationCost);
     CurrentInfluence = CurrentInfluence + TotalInventionInspirationCost;
     ImprovedWarTactics = true;
+    $('#War_Tactics').show();
     InventionLevel++;
     RefreshEvent();
     RefreshPage();
@@ -2153,6 +2164,15 @@ function EC_ImprovedWarTactics_InventImprovedWarTactics() {
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
+
+$('#War_Tactics').click(function() {
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("War Tactics");
+    $('#UpgradeInfoBoxDescription').html("Innovative minds have devised methods of war that grant an edge during raids.\
+                                         <br/><span class=\"OOC\">Increases the effectiveness of your Warriors during raids by 0.5.</span>");
+    $('#PurchaseUpgradeButton').hide();
+    
+})
 
 // Demand Tribute----------------------------------------
 
