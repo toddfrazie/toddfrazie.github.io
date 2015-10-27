@@ -21,7 +21,7 @@ var WarriorMultiplier = 1;
 var CurrentSupply = 10;
 var CurrentInspiration = 10;
 var CurrentDomain = 10;
-var CurrentGrip = 10;
+var CurrentGrip = 1000;
 
 var CurrentSupremacy = 0;
 var CurrentDiscovery = 0;
@@ -2364,12 +2364,12 @@ function EC_ProposedTrade_Accept() {
     
     switch (SelectedRandomRivalValue) {
         case 1:
-            ShiningScalesTension--;
-            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
-            break;
-        case 2:
             LongTalonTribeTension--;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
+            break;
+        case 2:
+            ShiningScalesTension--;
+            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 3:
             FolkOfTheWindingFlowTension--;
@@ -2393,10 +2393,10 @@ function EC_ProposedTrade_Deny() {
     
     switch (SelectedRandomRivalValue) {
         case 1:
-            ShiningScalesTension++;
+            LongTalonTribeTension++;
             break;
         case 2:
-            LongTalonTribeTension++;
+            ShiningScalesTension++;
             break;
         case 3:
             FolkOfTheWindingFlowTension++;
@@ -2512,11 +2512,11 @@ function EC_WaywardAndDesperate_Aid() {
     DecrementSupply(4);    
     switch (SelectedRandomRivalValue) {
         case 1:
-            ShiningScalesTension--;
+            LongTalonTribeTension--;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 2:
-            LongTalonTribeTension--;
+            ShiningScalesTension--;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
             break;
         case 3:
@@ -2579,14 +2579,14 @@ function EC_Alliance_Assist() {
     
     switch (SelectedRandomRivalValue) {
         case 1:
-            ShiningScalesTension = ShiningScalesTension - 8;
-            ShiningScalesVictoryLevel++;
-            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
-            break;
-        case 2:
             LongTalonTribeTension = LongTalonTribeTension - 8;
             LongTalonTribeVictoryLevel++;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
+            break;
+        case 2:
+            ShiningScalesTension = ShiningScalesTension - 8;
+            ShiningScalesVictoryLevel++;
+            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 3:
             FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 8;
@@ -2597,14 +2597,14 @@ function EC_Alliance_Assist() {
     
     switch (SelectedSecondRandomRivalValue) {
         case 1:
-            ShiningScalesTension = ShiningScalesTension + 4;
-            ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4;
-            if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
-            break;
-        case 2:
             LongTalonTribeTension = LongTalonTribeTension + 4;
             LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4;
             if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0}
+            break;
+        case 2:
+            ShiningScalesTension = ShiningScalesTension + 4;
+            ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4;
+            if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
             break;
         case 3:
             FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 4;
