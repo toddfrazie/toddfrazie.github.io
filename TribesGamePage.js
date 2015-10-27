@@ -21,7 +21,7 @@ var WarriorMultiplier = 1;
 var CurrentSupply = 10;
 var CurrentInspiration = 10;
 var CurrentDomain = 10;
-var CurrentGrip = 1000;
+var CurrentGrip = 10;
 
 var CurrentSupremacy = 0;
 var CurrentDiscovery = 0;
@@ -527,7 +527,7 @@ function BeginEra() {
 }
 
 function CalculateNewTribeMemberResult() {
-    var UpkeepCost = Math.floor(CurrentPopulation/2)
+    var UpkeepCost = Math.floor(CurrentPopulation/3)
     if (CurrentSupply - UpkeepCost >= 0) {
         $("#UpkeepResult").html(UpkeepCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span> was consumed for Upkeep.")
         DecrementSupply(UpkeepCost)
