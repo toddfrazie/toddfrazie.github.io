@@ -4,6 +4,7 @@ var main = function() {
 
 var CurrentPhase = 99;
 var PurchaseUpgradeLoadedUpgrade = 0;
+var LoadedAction = 0;
 var CurrentEra = 1;
 
 var CurrentNumberOfHunters = 1;
@@ -20,7 +21,7 @@ var WarriorMultiplier = 1;
 var CurrentSupply = 10;
 var CurrentInspiration = 10;
 var CurrentDomain = 10;
-var CurrentGrip = 10;
+var CurrentGrip = 1000;
 
 var CurrentSupremacy = 0;
 var CurrentDiscovery = 0;
@@ -83,8 +84,6 @@ var ShiningScalesTension = 1;
 var LongTalonTribeTension = 1;
 var FolkOfTheWindingFlowTension = 1;
 var TensionCap = 30;
-
-var CompetitionFinished = true;
 
 var EventLoadedValue = 0;
 
@@ -271,7 +270,7 @@ function CalculateTribalCosts(){
     
     RaidingCost = Math.floor((2 * (CurrentNumberOfWarriors)) * Math.pow(1.07,CurrentNumberOfWarriors));
     
-    BarteringCost = Math.floor((2 * (CultureLevel)) * Math.pow(1.07,CultureLevel));
+    BarteringCost = Math.floor(2 * Math.pow(1.15,CultureLevel));
 }
 
 function CompetitionDetails() {
@@ -572,12 +571,7 @@ function ShowAllCompetition() {
     $('#FolkOfTheWindingFlowBarter').fadeIn();
 }
 
-$('#ActionContinueButton').click(ContinueFromActionToBegin); 
-function ContinueFromActionToBegin() {
-    CurrentPhase = 0;
-    if (VictoryOrLossAchieved) {CurrentPhase = 5}
-    RefreshPage();
-}
+
 
 //In depth Calculation for turns---------------------------------------------------
 function CalculateHuntingResult() {
@@ -970,22 +964,22 @@ $('#PurchaseUpgradeButton').click(function(){
     case 991:
         P_River_Expansion()
         ShowAllCompetition()
-        ContinueFromActionToBegin()
+        ContinueToBegin()
         break;
     case 992:
         P_Forest_Expansion()
         ShowAllCompetition()
-        ContinueFromActionToBegin()
+        ContinueToBegin()
         break;
     case 993:
         P_Savanna_Expansion()
         ShowAllCompetition()
-        ContinueFromActionToBegin() 
+        ContinueToBegin() 
         break;
     case 994:
         P_Hill_Expansion()
         ShowAllCompetition()
-        ContinueFromActionToBegin() 
+        ContinueToBegin() 
         break; 
     
     default:
@@ -1084,6 +1078,13 @@ function P_Hill_Expansion(){
 
 // Competition Logic ------------------------------------------------------------------------------------
 
+$('#ActionContinueButton').click(ContinueToBegin); 
+function ContinueToBegin() {
+    CurrentPhase = 0;
+    if (VictoryOrLossAchieved) {CurrentPhase = 5}
+    RefreshPage();
+}
+
 $('#ShiningScalesRaid').click(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Raid the Shining Scales</span>");
@@ -1180,9 +1181,9 @@ function P_RaidShiningScales() {
     DecrementGrip(RaidingCost);
     var WarriorEffectiveness = CurrentNumberOfWarriors    
     if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-    var GainedSupply = Math.floor(WarriorEffectiveness * ((Math.random() * 1) + 1))
-    var GainedInspiration = Math.floor(WarriorEffectiveness * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor(WarriorEffectiveness * ((Math.random() * 3) + 1))
+    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
+    var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
+    var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
        
     $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1196,6 +1197,8 @@ function P_RaidShiningScales() {
     CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
     
     $('#ShiningScalesRaid').fadeOut();
+    $('#LongTalonTribeRaid').fadeOut();
+    $('#FolkOfTheWindingFlowRaid').fadeOut();
     $('#ShiningScalesBarter').fadeOut();
 }
 
@@ -1207,9 +1210,9 @@ function P_BarterShiningScales() {
     ShiningScalesVictoryLevel++
     if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
     DecrementGrip(BarteringCost); 
-    var GainedSupply = Math.floor((CultureLevel) * ((Math.random() * 1) + 1))
-    var GainedInspiration = Math.floor((CultureLevel) * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor((CultureLevel) * ((Math.random() * 3) + 1))
+    var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
+    var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
+    var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
     $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                 <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1222,6 +1225,8 @@ function P_BarterShiningScales() {
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
     
     $('#ShiningScalesRaid').fadeOut();
+    $('#LongTalonTribeBarter').fadeOut();
+    $('#FolkOfTheWindingFlowBarter').fadeOut();    
     $('#ShiningScalesBarter').fadeOut();
 }
 
@@ -1245,9 +1250,9 @@ function P_RaidLongTalonTribe() {
     
     var WarriorEffectiveness = CurrentNumberOfWarriors    
     if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-    var GainedSupply = Math.floor(WarriorEffectiveness * ((Math.random() * 3) + 1))
-    var GainedInspiration = Math.floor(WarriorEffectiveness * ((Math.random() * 1) + 1))
-    var GainedDomain = Math.floor(WarriorEffectiveness * ((Math.random() * 2) + 1))
+    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
+    var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
+    var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
  
     
     $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
@@ -1261,7 +1266,9 @@ function P_RaidLongTalonTribe() {
     IncrementDomain(GainedDomain);
     CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
     
+    $('#ShiningScalesRaid').fadeOut();
     $('#LongTalonTribeRaid').fadeOut();
+    $('#FolkOfTheWindingFlowRaid').fadeOut();
     $('#LongTalonTribeBarter').fadeOut();
 }
 
@@ -1273,9 +1280,9 @@ function P_BarterLongTalonTribe() {
     LongTalonTribeVictoryLevel++
     if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
     DecrementGrip(BarteringCost); 
-    var GainedSupply = Math.floor((CultureLevel) * ((Math.random() * 3) + 1))
-    var GainedInspiration = Math.floor((CultureLevel) * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor((CultureLevel) * ((Math.random() * 1) + 1))
+    var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
+    var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
+    var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
     $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                 <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1289,6 +1296,8 @@ function P_BarterLongTalonTribe() {
     
     $('#LongTalonTribeRaid').fadeOut();
     $('#LongTalonTribeBarter').fadeOut();
+    $('#FolkOfTheWindingFlowBarter').fadeOut();    
+    $('#ShiningScalesBarter').fadeOut();
 }
 
 function P_RaidFolkOfTheWindingFlow() {
@@ -1311,9 +1320,9 @@ function P_RaidFolkOfTheWindingFlow() {
     var WarriorEffectiveness = CurrentNumberOfWarriors    
     if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
     
-    var GainedSupply = Math.floor(WarriorEffectiveness * ((Math.random() * 2) + 1))
-    var GainedInspiration = Math.floor(WarriorEffectiveness * ((Math.random() * 3) + 1))
-    var GainedDomain = Math.floor(WarriorEffectiveness* ((Math.random() * 2) + 1))
+    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
+    var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
+    var GainedDomain = Math.floor((WarriorEffectiveness/2)* ((Math.random() * 2) + 1))
         
     $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1326,6 +1335,8 @@ function P_RaidFolkOfTheWindingFlow() {
     IncrementDomain(GainedDomain);
     CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
     
+    $('#ShiningScalesRaid').fadeOut();
+    $('#LongTalonTribeRaid').fadeOut();
     $('#FolkOfTheWindingFlowRaid').fadeOut();
     $('#FolkOfTheWindingFlowBarter').fadeOut();
 
@@ -1339,9 +1350,9 @@ function P_BarterFolkOfTheWindingFlow() {
     FolkOfTheWindingFlowVictoryLevel++
     if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
     DecrementGrip(BarteringCost); 
-    var GainedSupply = Math.floor((CultureLevel) * ((Math.random() * 2) + 1))
-    var GainedInspiration = Math.floor((CultureLevel) * ((Math.random() * 3) + 1))
-    var GainedDomain = Math.floor((CultureLevel) * ((Math.random() * 1) + 1))
+    var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
+    var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
+    var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
     $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>: \
                                 <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                 <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1354,7 +1365,9 @@ function P_BarterFolkOfTheWindingFlow() {
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
     
     $('#FolkOfTheWindingFlowRaid').fadeOut();
-    $('#FolkOfTheWindingFlowBarter').fadeOut();
+    $('#LongTalonTribeBarter').fadeOut();
+    $('#FolkOfTheWindingFlowBarter').fadeOut();    
+    $('#ShiningScalesBarter').fadeOut();
 
 }
 
@@ -2851,7 +2864,6 @@ function CalculateShiningScalesRaided() {
                             <br/>" + TribalsLost);
     
     ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
-    CompetitionFinished = false;
     RefreshPage();   
     EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
@@ -2913,7 +2925,6 @@ function CalculateLongTalonTribeRaided() {
                             <br/>" + TribalsLost);
     
     LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
-    CompetitionFinished = false;
     RefreshPage();   
     EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
@@ -2974,7 +2985,6 @@ function CalculateFolkOfTheWindingFlowRaided() {
                             <br/>" + TribalsLost);
     
     FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
-    CompetitionFinished = false;
     RefreshPage();
     EventLoadedValue = 999;
     $('#EventOption1Button').show(); 
