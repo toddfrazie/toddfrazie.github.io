@@ -42,6 +42,9 @@ var InventionLevel = 1;
 var Pottery = false;
 var ImprovedWarTactics = false;
 
+var Agenda = 0;
+var AgendaDuration = 9;
+
 var HunterExpansionBonus = 0;
 var CrafterExpansionBonus = 0;
 var ExplorerExpansionBonus = 0;
@@ -232,7 +235,8 @@ function DisplayDetails() {
     $('#D_ShiningScalesTension').html(ShiningScalesTension);
     $('#D_ShiningScalesVictory').html(ShiningScalesVictoryLevel);
     $('#D_FolkOfTheWindingFlowTension').html(FolkOfTheWindingFlowTension);
-    $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);
+    $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);    
+
     
     if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
         $('#DetailImage').attr("src","http://i.imgur.com/N4Uepe3.jpg");
@@ -522,6 +526,38 @@ function BeginEra() {
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
     CalculateEraTensionIncrease();
     CalculateEraVictoryIncrease();
+    
+    if (Agenda != 0) {
+        AgendaDuration--
+        if (AgendaDuration < 1) {
+            Agenda = 0
+            AgendaDuration = 9
+        }
+    }
+    switch (Agenda) {
+        case 0:
+            $('#Path_Of_War').hide();
+            $('#Path_Of_Peace').hide();
+            $('#Path_Of_Seclusion').hide();
+            break;
+        case 1:
+            $('#Path_Of_War').show();
+            $('#Path_Of_Peace').hide();
+            $('#Path_Of_Seclusion').hide();
+            break;
+        case 2:
+            $('#Path_Of_Peace').show();
+            $('#Path_Of_War').hide();
+            $('#Path_Of_Seclusion').hide();
+            break;
+        case 3:
+            $('#Path_Of_Seclusion').show();
+            $('#Path_Of_War').hide();
+            $('#Path_Of_Peace').hide();
+            break;
+        default:
+            break;            
+    }
 
     RefreshPage();
 }
@@ -545,9 +581,21 @@ function CalculateNewTribeMemberResult() {
 }
 
 function CalculateEraTensionIncrease() {
-    LongTalonTribeTension = LongTalonTribeTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (ExpansionLevel/2));
-    ShiningScalesTension = ShiningScalesTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CurrentDiscovery/2));
-    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CultureLevel/2));
+    
+    if (Agenda == 1) {
+        LongTalonTribeTension = LongTalonTribeTension + Math.floor(2*((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (ExpansionLevel/2)));
+        ShiningScalesTension = ShiningScalesTension + Math.floor(2*((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CurrentDiscovery/2)));
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor(2*((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CultureLevel/2))); 
+    }else if (Agenda == 2){
+        LongTalonTribeTension = LongTalonTribeTension + Math.floor(((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (ExpansionLevel/2))/2);
+        ShiningScalesTension = ShiningScalesTension + Math.floor(((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CurrentDiscovery/2))/2);
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor(((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CultureLevel/2))/2);   
+    }else{
+        LongTalonTribeTension = LongTalonTribeTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (ExpansionLevel/2));
+        ShiningScalesTension = ShiningScalesTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CurrentDiscovery/2));
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CultureLevel/2));   
+    }
+    
     console.log("LongTalonTribeTension " + LongTalonTribeTension);
     console.log("ShiningScalesTension " + ShiningScalesTension);
     console.log("FolkOfTheWindingFlowTension " + FolkOfTheWindingFlowTension);
@@ -563,12 +611,16 @@ function ContinueToEvent() {
 }
 
 function ShowAllCompetition() {
-    $('#ShiningScalesRaid').fadeIn();
-    $('#ShiningScalesBarter').fadeIn();
-    $('#LongTalonTribeRaid').fadeIn();
-    $('#LongTalonTribeBarter').fadeIn();
-    $('#FolkOfTheWindingFlowRaid').fadeIn();
-    $('#FolkOfTheWindingFlowBarter').fadeIn();
+    if (Agenda != 3) {
+        if (Agenda != 2) {
+            $('#ShiningScalesRaid').fadeIn();
+            $('#LongTalonTribeRaid').fadeIn();
+            $('#FolkOfTheWindingFlowRaid').fadeIn();
+        }
+        $('#ShiningScalesBarter').fadeIn();
+        $('#LongTalonTribeBarter').fadeIn();
+        $('#FolkOfTheWindingFlowBarter').fadeIn();
+    }
 }
 
 
@@ -578,6 +630,7 @@ function CalculateHuntingResult() {
     var Calc = Math.floor(CurrentNumberOfHunters * HunterMultiplier);
     if (SupplySurplus && !(Pottery)) {Calc = Calc * 2
     }else if (SupplySurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#HunterResult').html("Your hunters return with " +Calc+ " <span style=\"color: rgb(178, 0, 0);\">Supply</span> for the tribe");
         IncrementSupply(Calc)
@@ -588,6 +641,7 @@ function CalculateCraftingResult() {
     var Calc = Math.floor(CurrentNumberOfCrafters * CrafterMultiplier);
     if (InspirationSurplus && !(Pottery)) {Calc = Calc * 2
     }else if (InspirationSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#CrafterResult').html("Your crafters gained " +Calc+ " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> for your tribe");
         IncrementInspiration(Calc)
@@ -598,6 +652,7 @@ function CalculateExploringResult() {
     var Calc = Math.floor(CurrentNumberOfExplorers * ExplorerMultiplier);
     if (DomainSurplus && !(Pottery)) {Calc = Calc * 2
     }else if (DomainSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#ExplorerResult').html("Your explorers have expanded your tribe's territory by " +Calc+ " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
         IncrementDomain(Calc)
@@ -608,6 +663,7 @@ function CalculateWarResult() {
     var Calc = Math.floor(CurrentNumberOfWarriors * WarriorMultiplier);
     if (GripSurplus && !(Pottery)) {Calc = Calc * 2
     }else if (GripSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#WarResult').html("Your warriors have secured your tribe's hold by " +Calc+ " <span style=\"color: grey;\">Grip</span>");
         IncrementGrip(Calc)
@@ -1181,6 +1237,7 @@ function P_RaidShiningScales() {
     DecrementGrip(RaidingCost);
     var WarriorEffectiveness = CurrentNumberOfWarriors    
     if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
     var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
     var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
     var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
@@ -1250,6 +1307,7 @@ function P_RaidLongTalonTribe() {
     
     var WarriorEffectiveness = CurrentNumberOfWarriors    
     if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
     var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
     var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
     var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
@@ -1319,7 +1377,7 @@ function P_RaidFolkOfTheWindingFlow() {
     
     var WarriorEffectiveness = CurrentNumberOfWarriors    
     if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-    
+    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
     var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
     var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
     var GainedDomain = Math.floor((WarriorEffectiveness/2)* ((Math.random() * 2) + 1))
@@ -1376,6 +1434,7 @@ function P_BarterFolkOfTheWindingFlow() {
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
+   
     
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
@@ -1548,7 +1607,7 @@ function CalculateEvent() {
             }
         }else if (CategoryRandom == 3) // Uncategorized Event
         {
-            var UncategorizedEvent = Math.floor((Math.random() * 3) + 1);
+            var UncategorizedEvent = Math.floor((Math.random() * 4) + 1);
             switch (UncategorizedEvent) {
                 case 1:
                     if (CurrentDomain > (TotalDiscoveryDomainCost) && !(CurrentDiscovery == 5) && NeedToFindEvent) {
@@ -1582,7 +1641,14 @@ function CalculateEvent() {
                                 }
                             break;
                        }
-                   }else{E_InventionNotEnough(); NeedToFindEvent= false;}  
+                   }else{E_InventionNotEnough(); NeedToFindEvent= false;}
+                   break;
+                case 4:
+                    if (NeedToFindEvent) {
+                        E_CouncilOfElders();
+                        NeedToFindEvent= false;
+                    }
+                    break;
             }
         }
             
@@ -1632,6 +1698,9 @@ $('#EventOption1Button').click(function(){
         break;
     case 305:
         EC_Alliance_Assist();
+        break;
+    case 306:
+        EC_CouncilOfElders_PathOfWar();
         break;
     case 998:
         CalculateEvent();
@@ -1692,6 +1761,9 @@ $('#EventOption2Button').click(function(){
     case 305:
         EC_Alliance_TurnAway();
         break;
+    case 306:
+        EC_CouncilOfElders_PathOfPeace();
+        break;
     default:
         alert("Ya done broke it.  EventOption2")
    }
@@ -1709,8 +1781,22 @@ $('#EventOption3Button').click(function(){
     case 204:
         EC_BrushFire_StandYourGround();
         break;
+    case 306:
+        EC_CouncilOfElders_PathOfSeclusion();
+        break;
     default:
         alert("Ya done broke it.  EventOption3")
+   }
+});
+
+$('#EventOption4Button').click(function(){  
+   
+   switch (EventLoadedValue) {
+    case 306:
+        EC_CouncilOfElders_MiddlePath()
+        break;
+    default:
+        alert("Ya done broke it.  EventOption4")
    }
 });
 
@@ -1723,6 +1809,8 @@ function RefreshEvent() {
     $('#EventOption2Button').hide();
     $('#EventOption3Description').html("");   
     $('#EventOption3Button').hide();
+    $('#EventOption4Description').html("");   
+    $('#EventOption4Button').hide();
 }
 
 function NonEvent() {
@@ -2648,6 +2736,120 @@ function EC_Alliance_TurnAway() {
     $('#EventOption1Button').show();
 }
 
+//Council of Elders -------------------------------------------------------------
+
+function E_CouncilOfElders() {
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Council Of Elders")
+
+    $('#EventNar').html("A council of Elders is called in your Tribe to discuss your agenda for the coming age. Which will you adapt? \
+                        This agenda will remain for 10 Eras or until a new Council is called.");
+    
+    $('#EventOption1Description').show();
+    $('#EventOption1Description').html("Path of War:<br/>\
+                                    <br/>This will increase Tension growth each Era while improving the effectiveness of your raids.");
+    $('#EventOption1Button').show();
+    
+    $('#EventOption2Description').show();
+    $('#EventOption2Description').html("Path of Peace:<br/>\
+                                       <br/>This will slow the Increase of Tension over time and increase the effectiveness of your bartering.  You will not be allowed to Raid.");
+    $('#EventOption2Button').show();
+    
+    $('#EventOption3Description').show();
+    $('#EventOption3Description').html("Path of Seclusion:<br/>\
+                                       <br/>This will forbid your Tribe from Bartering or Raiding as they focus inward. Your bounty will increase for each resource.");
+    $('#EventOption3Button').show();
+    
+    $('#EventOption4Description').show();
+    $('#EventOption4Description').html("The Middle Path:<br/>\
+                                       <br/>This will have no effect on your Tribe, keeping your options open.");
+    $('#EventOption4Button').show();
+    EventLoadedValue = 306;    
+}
+
+function EC_CouncilOfElders_PathOfWar() {
+    $('#Path_Of_War').show();
+    $('#Path_Of_Peace').hide();
+    $('#Path_Of_Seclusion').hide();
+    Agenda = 1;
+    AgendaDuration = 10;    
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Council of Elders")   
+    $('#EventNar').html("You have chosen the Path of War. May your enemies feel your wrath!");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+function EC_CouncilOfElders_PathOfPeace() {
+    $('#Path_Of_War').hide();
+    $('#Path_Of_Peace').show();
+    $('#Path_Of_Seclusion').hide();
+    Agenda = 2;
+    AgendaDuration = 10;    
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Council of Elders")   
+    $('#EventNar').html("You have chosen the Path of Peace. May you live long and prosper.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+function EC_CouncilOfElders_PathOfSeclusion() {
+    $('#Path_Of_War').hide();
+    $('#Path_Of_Peace').hide();
+    $('#Path_Of_Seclusion').show();
+    Agenda = 3;
+    AgendaDuration = 10;    
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Council of Elders")   
+    $('#EventNar').html("You have chosen the Path of Seclusion. Security, Solidarity, and inner growth will be your bounty.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+function EC_CouncilOfElders_MiddlePath() {
+    $('#Path_Of_War').hide();
+    $('#Path_Of_Peace').hide();
+    $('#Path_Of_Seclusion').hide();
+    Agenda = 0;
+    AgendaDuration = 10;    
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Council of Elders")   
+    $('#EventNar').html("You have chosen the Middle Path. May you find prosperity in the balance.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+$('#Path_Of_War').click(function(){
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("Path of War");
+    $('#UpgradeInfoBoxDescription').html("You have chosen the Path of War. May your enemies feel your wrath!\
+                                         <br/><span class=\"OOC\"> Your Warriors contribute twice as much during raids. But your tension increases twice as fast each era.<br/>"+AgendaDuration+" turns remaining.</span>");
+    $('#PurchaseUpgradeButton').hide();
+})
+
+$('#Path_Of_Peace').click(function(){
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("Path of Peace");
+    $('#UpgradeInfoBoxDescription').html("You have chosen the Path of Peace. May you live long and prosper.\
+                                         <br/><span class=\"OOC\"> You cannot Raid, but your tension increases half as fast each era.<br/>"+AgendaDuration+" turns remaining.</span>");
+    $('#PurchaseUpgradeButton').hide();
+})
+
+$('#Path_Of_Seclusion').click(function(){
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("Path of Seclusion");
+    $('#UpgradeInfoBoxDescription').html("You have chosen the Path of Seclusion. Security, Solidarity, and inner growth will be your bounty.\
+                                         <br/><span class=\"OOC\"> You cannot Raid or Barter. But, your Bounty will be multiplied by 1.5. <br/>"+AgendaDuration+" turns remaining.</span>");
+    $('#PurchaseUpgradeButton').hide();
+})
 
 // Discovery Logic ---------------------------------------------------------------
 
