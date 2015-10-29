@@ -1072,28 +1072,28 @@ function P_Improve_Hunting_Tools(){
     DecrementInspiration(HunterToolInspirationCost);
     ImprovedToolsLevel++
     HunterMultiplier = HunterMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
+    CurrentInfluence = CurrentInfluence + Math.floor(HunterMultiplier * 5)
 }
 
 function P_Improve_Crafting_Tools(){
     DecrementInspiration(CrafterToolInspirationCost);
     ImprovedToolsLevel++
     CrafterMultiplier = CrafterMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
+    CurrentInfluence = CurrentInfluence + Math.floor(CrafterMultiplier * 5)
 }
 
 function P_Improve_Exploring_Tools(){
     DecrementInspiration(ExplorerToolInspirationCost);
     ImprovedToolsLevel++
     ExplorerMultiplier = ExplorerMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
+    CurrentInfluence = CurrentInfluence + Math.floor(ExplorerMultiplier * 5)
 }
 
 function P_Improve_War_Tools(){
     DecrementInspiration(WarriorToolInspirationCost);    
     ImprovedToolsLevel++
     WarriorMultiplier = WarriorMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
+    CurrentInfluence = CurrentInfluence + Math.floor(WarriorMultiplier * 5)
 }
 
 function P_Improve_Culture(){
