@@ -1232,7 +1232,7 @@ function P_RaidShiningScales() {
     }
     
     ShiningScalesTension = ShiningScalesTension + 8
-    ShiningScalesVictoryLevel = ShiningScalesVictoryLevel = 4
+    ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4
     if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0};
     DecrementGrip(RaidingCost);
     var WarriorEffectiveness = CurrentNumberOfWarriors    
@@ -1261,8 +1261,7 @@ function P_RaidShiningScales() {
 
 function P_BarterShiningScales() {
     CurrentPhase = 4;
-    ShiningScalesTension--
-    ShiningScalesTension--
+    ShiningScalesTension = ShiningScalesTension - 4
     ShiningScalesVictoryLevel++
     ShiningScalesVictoryLevel++
     if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
@@ -1332,8 +1331,7 @@ function P_RaidLongTalonTribe() {
 
 function P_BarterLongTalonTribe() {
     CurrentPhase = 4;
-    LongTalonTribeTension--
-    LongTalonTribeTension--
+    LongTalonTribeTension = LongTalonTribeTension + 4
     LongTalonTribeVictoryLevel++
     LongTalonTribeVictoryLevel++
     if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
@@ -1402,8 +1400,7 @@ function P_RaidFolkOfTheWindingFlow() {
 
 function P_BarterFolkOfTheWindingFlow() {
     CurrentPhase = 4;
-    FolkOfTheWindingFlowTension--
-    FolkOfTheWindingFlowTension--
+    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 4
     FolkOfTheWindingFlowVictoryLevel++
     FolkOfTheWindingFlowVictoryLevel++
     if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
@@ -1557,10 +1554,10 @@ function CalculateEvent() {
             }
         }else if (CategoryRandom == 2) // Competition Event
         {
-            var RelationsEvent = Math.floor((Math.random() * 5) + 1);    
+            var RelationsEvent = Math.floor((Math.random() * 4) + 1);    
             switch (RelationsEvent) {
                 case 1:
-                    if (CurrentSupply > 5 && CurrentInspiration > 5 && CurrentDomain > 5 && NeedToFindEvent) {
+                    if (CurrentSupply > 2 && CurrentInspiration > 2 && CurrentDomain > 2 && NeedToFindEvent) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         if (D10 > 3) {
                             E_DemandTribute();
@@ -1578,15 +1575,6 @@ function CalculateEvent() {
                     }
                     break;
                 case 3:
-                    if ((CultureLevel > 3) && NeedToFindEvent) {
-                        var D10 = Math.floor((Math.random() * 10) + 1);
-                        if (D10 > 3) {
-                            E_Recruitment();
-                            NeedToFindEvent= false;
-                        }
-                    }
-                    break;
-                case 4:
                     if (CurrentSupply > 4 && NeedToFindEvent) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         if (D10 > 3) {
@@ -1595,8 +1583,8 @@ function CalculateEvent() {
                         }                   
                     }
                     break;
-                case 5:
-                    if(NeedToFindEvent) {
+                case 4:
+                    if(NeedToFindEvent && Agenda < 2) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         if (D10 > 3) {
                             E_Alliance();
@@ -1691,7 +1679,7 @@ $('#EventOption1Button').click(function(){
         EC_ProposedTrade_Accept();
         break;
     case 303:
-        EC_Recruitment_Recruit();
+
         break;
     case 304:
         EC_WaywardAndDesperate_Aid();
@@ -1753,7 +1741,7 @@ $('#EventOption2Button').click(function(){
         EC_ProposedTrade_Deny();
         break;
     case 303:
-        EC_Recruitment_TurnAway();
+
         break;
     case 304:
         ShowEventEnd();
@@ -2500,79 +2488,6 @@ function EC_ProposedTrade_Deny() {
     $('#EventOption1Button').show();
 }
 
-// Recruitment ----------------------------------
-
-function E_Recruitment() {
-    SelectRandomRival();
-    SelectSelectedRandomTribal();
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Recruitment")
-
-    $('#EventNar').html("Thanks to your growing influence, a young "+SelectedRandomTribal+" is defecting from " + SelectedRandomRival + " and would like to join your tribe.");
-    
-    $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Recruit:<br/>\
-                                    <br/>The "+SelectedRandomTribal+" is allowed to join your ranks. This will increase Tension between your tribes");
-    $('#EventOption1Button').show();
-    
-    $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Turn Away:<br/>\
-                                       <br/>This will keep tensions normal between your tribes.");
-    $('#EventOption2Button').show();
-    
-    EventLoadedValue = 303;
-}
-
-function EC_Recruitment_Recruit() {
-    switch (SelectedRandomTribalValue) {
-        case 1:
-            CurrentNumberOfHunters++
-            break;
-        case 2:
-            CurrentNumberOfExplorers++
-            break;
-        case 3:
-            CurrentNumberOfCrafters++
-            break;
-        case 4:
-            CurrentNumberOfWarriors++
-            break;
-    }
-    switch (SelectedRandomRivalValue) {
-        case 1:
-            LongTalonTribeTension++
-            LongTalonTribeTension++
-            break;
-        case 2:
-            ShiningScalesTension++
-            ShiningScalesTension++
-            break;
-        case 3:
-            FolkOfTheWindingFlowTension++
-            FolkOfTheWindingFlowTension++
-            break;
-    }    
-    RefreshEvent();
-    RefreshPage();
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Recruitment")    
-    $('#EventNar').html("You accept the recruit.\
-                        <br/>This has increased tension between your tribes.");
-    EventLoadedValue = 999;
-    $('#EventOption1Button').show();
-}
-
-function EC_Recruitment_TurnAway() {
-    RefreshEvent();
-    RefreshPage();
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Recruitment")    
-    $('#EventNar').html("You turn the recruit away.\
-                        <br/>" +SelectedRandomRival + " respect your decision.");
-    EventLoadedValue = 999;
-    $('#EventOption1Button').show();
-}
-
 // Wayward And Desperate -----------------------------------------------------------
 
 function E_WaywardAndDesperate() {
@@ -3017,7 +2932,7 @@ function CalculateShiningScalesRaided() {
     var LostSupply = 1 * ShiningScalesVictoryLevel;
     var LostInspiration = 2 * ShiningScalesVictoryLevel;
     var LostDomain = 3 * ShiningScalesVictoryLevel;
-    var LostGrip = Math.floor(CurrentGrip/2);
+    var LostGrip = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
     
     LostSupply = LostSupply - (LostGrip);
     LostInspiration = LostInspiration - (LostGrip);
@@ -3077,7 +2992,7 @@ function CalculateLongTalonTribeRaided() {
     var LostSupply = 3 * LongTalonTribeVictoryLevel;
     var LostInspiration = 1 * LongTalonTribeVictoryLevel;
     var LostDomain = 2 * LongTalonTribeVictoryLevel;
-    var LostGrip = Math.floor(CurrentGrip/2);
+    var LostGrip = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
     
     LostSupply = LostSupply - (LostGrip);
     LostInspiration = LostInspiration - (LostGrip);
@@ -3137,7 +3052,7 @@ function CalculateFolkOfTheWindingFlowRaided() {
     var LostSupply = 2 * FolkOfTheWindingFlowVictoryLevel;
     var LostInspiration = 3 * FolkOfTheWindingFlowVictoryLevel;
     var LostDomain = 1 * FolkOfTheWindingFlowVictoryLevel;
-    var LostGrip = Math.floor(CurrentGrip/2);
+    var LostGrip = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
     
     LostSupply = LostSupply - (LostGrip);
     LostInspiration = LostInspiration - (LostGrip);
