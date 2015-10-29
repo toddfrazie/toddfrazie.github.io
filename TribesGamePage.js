@@ -1437,7 +1437,7 @@ function P_BarterFolkOfTheWindingFlow() {
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-    
+
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
         case 1:
@@ -1991,7 +1991,7 @@ function EC_HostileWildlife_HuntingParty() {
         ResultText = "The hunt proves tragic. " + HuntersLost + " of your Hunters has been killed."
     }
     CurrentNumberOfHunters = CurrentNumberOfHunters - HuntersLost;
-    var Bounty = CurrentNumberOfHunters * 10
+    var Bounty = CurrentNumberOfHunters * 4
     IncrementSupply(Bounty);
     RefreshEvent();
     RefreshPage();
@@ -2072,8 +2072,6 @@ function EC_Visions_Ignore() {
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
-
- 
 // Brush Fire -----------------------------------
 
 function E_BrushFire() {    
@@ -2489,14 +2487,20 @@ function EC_ProposedTrade_Accept() {
     switch (SelectedRandomRivalValue) {
         case 1:
             LongTalonTribeTension--;
+            LongTalonTribeTension--;
+            LongTalonTribeVictoryLevel++;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
             break;
         case 2:
             ShiningScalesTension--;
+            ShiningScalesTension--;
+            ShiningScalesVictoryLevel++;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 3:
             FolkOfTheWindingFlowTension--;
+            FolkOfTheWindingFlowTension--;
+            FolkOfTheWindingFlowVictoryLevel++;
             if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
             break;
     }  
@@ -2589,7 +2593,7 @@ function EC_WaywardAndDesperate_Aid() {
 // Assist ----------------------------------------------------------------------
 
 function E_Alliance() {
-    var RewardAmount = (CurrentPopulation * 2)
+    var RewardAmount = (CurrentPopulation)
     SelectRandomResource();
     SelectRandomRival();
     SelectSecondRandomRival();
@@ -2715,7 +2719,7 @@ function E_CouncilOfElders() {
     
     $('#EventOption2Description').show();
     $('#EventOption2Description').html("Path of Peace:<br/>\
-                                       <br/>This will slow the Increase of Tension over time and increase the effectiveness of your bartering.  You will not be allowed to Raid.");
+                                       <br/>This will slow the Increase of Tension over time.  You will not be allowed to Raid.");
     $('#EventOption2Button').show();
     
     $('#EventOption3Description').show();
