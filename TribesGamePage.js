@@ -220,6 +220,8 @@ function RefreshPage(){
 function DisplayDetails() {
     $('#D_Population').html(CurrentPopulation);
     $('#D_Era').html(CurrentEra);
+    $('#D_Culture').html(CultureLevel);
+    $('#D_Upkeep').html(Math.floor(CurrentPopulation/3));
     
     $('#D_River').html(NumberOfRiverExpansions);
     $('#D_Savanna').html(NumberOfSavannaExpansions);
@@ -1067,27 +1069,31 @@ function P_Boost_Grip(){
 
 //---------------------------------
 function P_Improve_Hunting_Tools(){
-    DecrementInspiration(HunterToolInspirationCost);    
+    DecrementInspiration(HunterToolInspirationCost);
     ImprovedToolsLevel++
     HunterMultiplier = HunterMultiplier + 0.5
+    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
 }
 
 function P_Improve_Crafting_Tools(){
-    DecrementInspiration(CrafterToolInspirationCost);    
+    DecrementInspiration(CrafterToolInspirationCost);
     ImprovedToolsLevel++
     CrafterMultiplier = CrafterMultiplier + 0.5
+    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
 }
 
 function P_Improve_Exploring_Tools(){
-    DecrementInspiration(ExplorerToolInspirationCost);    
+    DecrementInspiration(ExplorerToolInspirationCost);
     ImprovedToolsLevel++
     ExplorerMultiplier = ExplorerMultiplier + 0.5
+    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
 }
 
 function P_Improve_War_Tools(){
     DecrementInspiration(WarriorToolInspirationCost);    
     ImprovedToolsLevel++
     WarriorMultiplier = WarriorMultiplier + 0.5
+    CurrentInfluence = CurrentInfluence + (ImprovedToolsLevel * 5)
 }
 
 function P_Improve_Culture(){
@@ -1431,7 +1437,6 @@ function P_BarterFolkOfTheWindingFlow() {
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-   
     
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
@@ -1477,7 +1482,7 @@ function CalculateEvent() {
                     if (NumberOfRiverExpansions > 0 && NeedToFindEvent) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         D10 = D10 + Math.floor(NumberOfRiverExpansions / 2)
-                        if (D10 > 4) {
+                        if (D10 > 3) {
                             E_HostileWildlife();
                             NeedToFindEvent= false;
                         }
@@ -1487,7 +1492,7 @@ function CalculateEvent() {
                     if (NumberOfRiverExpansions > 0 && NeedToFindEvent) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         D10 = D10 + Math.floor(NumberOfRiverExpansions / 2)
-                        if (D10 > 4) {
+                        if (D10 > 3) {
                             E_RisingWaters();
                             NeedToFindEvent= false;
                         }
@@ -1502,7 +1507,7 @@ function CalculateEvent() {
                         case 1:
                             var D10 = Math.floor((Math.random() * 10) + 1);
                             D10 = D10 + Math.floor(NumberOfSavannaExpansions / 2)
-                            if (D10 > 4) {
+                            if (D10 > 3) {
                                E_WildStorms();
                                NeedToFindEvent= false;
                             }                          
@@ -1510,7 +1515,7 @@ function CalculateEvent() {
                         case 2:
                             var D10 = Math.floor((Math.random() * 10) + 1);
                             D10 = D10 + Math.floor(NumberOfSavannaExpansions / 2)
-                            if (D10 > 4) {
+                            if (D10 > 3) {
                                 E_FavorableConditions();
                                 NeedToFindEvent= false;
                             }                          
@@ -1525,7 +1530,7 @@ function CalculateEvent() {
                         case 1:
                             var D10 = Math.floor((Math.random() * 10) + 1);
                             D10 = D10 + Math.floor(NumberOfForestExpansions / 2)
-                            if (D10 > 4) {
+                            if (D10 > 3) {
                                 E_BrushFire();
                                 NeedToFindEvent= false;
                             }
@@ -1533,7 +1538,7 @@ function CalculateEvent() {
                         case 2:
                             var D10 = Math.floor((Math.random() * 10) + 1);
                             D10 = D10 + Math.floor(NumberOfForestExpansions / 2)
-                            if (D10 > 4) {
+                            if (D10 > 3 && CurrentNumberOfCrafters > 0) {
                                 E_Visions();
                                 NeedToFindEvent= false;
                             }
@@ -1545,7 +1550,7 @@ function CalculateEvent() {
                 if (NumberOfHillExpansions > 0 && NeedToFindEvent) {
                     var D10 = Math.floor((Math.random() * 10) + 1);
                     D10 = D10 + Math.floor(NumberOfHillExpansions / 2)
-                    if (D10 > 4) {
+                    if (D10 > 3) {
                         E_Caverns();
                         NeedToFindEvent= false;
                     }
@@ -1672,6 +1677,9 @@ $('#EventOption1Button').click(function(){
     case 205:
         EC_Caverns_Explore();
         break;
+    case 206:
+        EC_Visions_Take();
+        break;
     case 301:
         EC_DemandTribute_GiveTribute();
         break;
@@ -1733,6 +1741,9 @@ $('#EventOption2Button').click(function(){
         break;
     case 205:
         ShowEventEnd();
+        break;
+    case 206:
+        EC_Visions_Ignore();
         break;
     case 301:
         EC_DemandTribute_DenyTribute();
@@ -2016,16 +2027,53 @@ function EC_HostileWildlife_Migrate() {
 // Visions ------------------------------------
 
 function E_Visions() {
-    IncrementInspiration(20);
-    RefreshPage();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Visions")
-    $('#EventNar').html("A tribe member has happened upon flora along the trees that, upon injesting, drove him to great creative lengths. Your tribe gains 20 <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
+    $('#EventNar').html("A tribe member has happened upon flora along the trees that, according to the elders, may inspire great insight should the mind endure.");
     
+    $('#EventOption1Description').show();
+    $('#EventOption1Description').html("Take:<br/>Allow the crafter to ingest the sacred growth.");
     $('#EventOption1Button').show();
-    EventLoadedValue = 999;
+    
+    $('#EventOption2Description').show();
+    $('#EventOption2Description').html("Ignore:<br/>The risks are too great. Leave it.");
+    $('#EventOption2Button').show();
+    
+    EventLoadedValue = 206;
 }
 
+function EC_Visions_Take() {
+        RefreshEvent();
+    var VisionsRandom = (Math.floor((Math.random() * 2) + 1))
+    if (VisionsRandom == 1) {
+        CurrentNumberOfCrafters--
+        RefreshPage();  
+        $('#EventResultBoxHeader').show()
+        $('#EventResultBoxHeader').html("Visions")    
+        $('#EventNar').html("Your crafter returns from the ordeal, though only in part. This crafter now resides beyond sanity.");        
+    }else{
+        IncrementInspiration(20);
+        RefreshPage();  
+        $('#EventResultBoxHeader').show()
+        $('#EventResultBoxHeader').html("Visions")    
+        $('#EventNar').html("Your crafter endures and finds great insight in the ordeal. Your tribe gains 20 <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
+    }
+
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+function EC_Visions_Ignore() {
+    RefreshEvent();
+    RefreshPage();  
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Visions")    
+    $('#EventNar').html("Wisdom prevails and the flora is left to its place.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+ 
 // Brush Fire -----------------------------------
 
 function E_BrushFire() {    
