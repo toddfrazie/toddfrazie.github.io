@@ -1337,7 +1337,7 @@ function P_RaidLongTalonTribe() {
 
 function P_BarterLongTalonTribe() {
     CurrentPhase = 4;
-    LongTalonTribeTension = LongTalonTribeTension + 4
+    LongTalonTribeTension = LongTalonTribeTension - 4
     LongTalonTribeVictoryLevel++
     LongTalonTribeVictoryLevel++
     if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
@@ -1406,7 +1406,7 @@ function P_RaidFolkOfTheWindingFlow() {
 
 function P_BarterFolkOfTheWindingFlow() {
     CurrentPhase = 4;
-    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 4
+    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4
     FolkOfTheWindingFlowVictoryLevel++
     FolkOfTheWindingFlowVictoryLevel++
     if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
