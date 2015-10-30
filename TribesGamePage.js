@@ -253,7 +253,7 @@ function DisplayDetails() {
 function CalculateTribalCosts(){
     CurrentPopulation = CurrentNumberOfHunters + CurrentNumberOfCrafters + CurrentNumberOfExplorers + CurrentNumberOfWarriors
     
-    TotalPopulationBoomCost = Math.floor((3 * Math.pow(1.15, CurrentPopulation)));
+    TotalPopulationBoomCost = Math.floor((2 * Math.pow(1.15, CurrentPopulation)));
  
     TotalInspirationSurplusCost = Math.floor((5 * Math.pow(1.15, CurrentNumberOfCrafters)));
 
