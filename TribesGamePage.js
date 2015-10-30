@@ -2568,13 +2568,16 @@ function EC_WaywardAndDesperate_Aid() {
     switch (SelectedRandomRivalValue) {
         case 1:
             LongTalonTribeTension--;
+            LongTalonTribeTension--;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 2:
             ShiningScalesTension--;
+            ShiningScalesTension--;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
             break;
         case 3:
+            FolkOfTheWindingFlowTension--;
             FolkOfTheWindingFlowTension--;
             if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
             break;
@@ -2981,9 +2984,9 @@ function ShowEventEnd() {
 
 function CalculateShiningScalesRaided() {
     ShiningScalesVictoryLevel++
-    var LostSupply = 1 * ShiningScalesVictoryLevel;
-    var LostInspiration = 2 * ShiningScalesVictoryLevel;
-    var LostDomain = 3 * ShiningScalesVictoryLevel;
+    var LostSupply = Math.floor((1 * ShiningScalesVictoryLevel)/2);
+    var LostInspiration = Math.floor((2 * ShiningScalesVictoryLevel)/2);
+    var LostDomain = Math.floor((3 * ShiningScalesVictoryLevel)/2);
     var LostGrip = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
     
     LostSupply = LostSupply - (LostGrip);
@@ -3041,9 +3044,9 @@ function CalculateShiningScalesRaided() {
 
 function CalculateLongTalonTribeRaided() {
     LongTalonTribeVictoryLevel++
-    var LostSupply = 3 * LongTalonTribeVictoryLevel;
-    var LostInspiration = 1 * LongTalonTribeVictoryLevel;
-    var LostDomain = 2 * LongTalonTribeVictoryLevel;
+    var LostSupply = Math.floor((3 * LongTalonTribeVictoryLevel)/2);
+    var LostInspiration = Math.floor((1 * LongTalonTribeVictoryLevel)/2);
+    var LostDomain = Math.floor((2 * LongTalonTribeVictoryLevel)/2);
     var LostGrip = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
     
     LostSupply = LostSupply - (LostGrip);
@@ -3101,9 +3104,9 @@ function CalculateLongTalonTribeRaided() {
 
 function CalculateFolkOfTheWindingFlowRaided() {
     FolkOfTheWindingFlowVictoryLevel++
-    var LostSupply = 2 * FolkOfTheWindingFlowVictoryLevel;
-    var LostInspiration = 3 * FolkOfTheWindingFlowVictoryLevel;
-    var LostDomain = 1 * FolkOfTheWindingFlowVictoryLevel;
+    var LostSupply = 2 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
+    var LostInspiration = 3 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
+    var LostDomain = 1 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
     var LostGrip = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
     
     LostSupply = LostSupply - (LostGrip);
