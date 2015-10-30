@@ -2989,10 +2989,12 @@ function CalculateShiningScalesRaided() {
     var LostDomain = Math.floor((3 * ShiningScalesVictoryLevel)/2);
     var LostGrip = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
     
-    LostSupply = LostSupply - (LostGrip);
-    LostInspiration = LostInspiration - (LostGrip);
-    LostDomain = LostDomain - (LostGrip);
-    
+    if (CurrentGrip > LostGrip) {LostSupply,LostInspiration,LostDomain = 0;
+    }else{
+        LostSupply = LostSupply - (LostGrip);
+        LostInspiration = LostInspiration - (LostGrip);
+        LostDomain = LostDomain - (LostGrip);
+    }
     if (LostSupply < 0) {LostSupply = 0}
     if (LostInspiration < 0) {LostInspiration = 0}
     if (LostDomain < 0) {LostDomain = 0}
@@ -3049,10 +3051,12 @@ function CalculateLongTalonTribeRaided() {
     var LostDomain = Math.floor((2 * LongTalonTribeVictoryLevel)/2);
     var LostGrip = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
     
-    LostSupply = LostSupply - (LostGrip);
-    LostInspiration = LostInspiration - (LostGrip);
-    LostDomain = LostDomain - (LostGrip);
-    
+    if (CurrentGrip > LostGrip) {LostSupply,LostInspiration,LostDomain = 0;
+    }else{
+        LostSupply = LostSupply - (LostGrip);
+        LostInspiration = LostInspiration - (LostGrip);
+        LostDomain = LostDomain - (LostGrip);
+    }
     if (LostSupply < 0) {LostSupply = 0}
     if (LostInspiration < 0) {LostInspiration = 0}
     if (LostDomain < 0) {LostDomain = 0}
@@ -3109,9 +3113,13 @@ function CalculateFolkOfTheWindingFlowRaided() {
     var LostDomain = 1 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
     var LostGrip = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
     
-    LostSupply = LostSupply - (LostGrip);
-    LostInspiration = LostInspiration - (LostGrip);
-    LostDomain = LostDomain - (LostGrip);
+    if (CurrentGrip > LostGrip) {LostSupply,LostInspiration,LostDomain = 0;
+    }else{
+        LostSupply = LostSupply - (LostGrip);
+        LostInspiration = LostInspiration - (LostGrip);
+        LostDomain = LostDomain - (LostGrip);
+    }
+
     
     if (LostSupply < 0) {LostSupply = 0}
     if (LostInspiration < 0) {LostInspiration = 0}
