@@ -43,7 +43,7 @@ var Pottery = false;
 var ImprovedWarTactics = false;
 
 var Agenda = 0;
-var AgendaDuration = 9;
+var AgendaDuration = 8;
 
 var HunterExpansionBonus = 0;
 var CrafterExpansionBonus = 0;
@@ -531,9 +531,9 @@ function BeginEra() {
     
     if (Agenda != 0) {
         AgendaDuration--
-        if (AgendaDuration < 1) {
+        if (AgendaDuration <= 1) {
             Agenda = 0
-            AgendaDuration = 9
+            AgendaDuration = 8
         }
     }
     switch (Agenda) {
@@ -2671,6 +2671,8 @@ function EC_Alliance_Assist() {
             break;
     }
     
+    CurrentSupremacy = CurrentSupremacy + CurrentNumberOfWarriors;
+    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2686,12 +2688,15 @@ function EC_Alliance_TurnAway() {
  
     switch (SelectedRandomRivalValue) {
         case 1:
-            ShiningScalesTension++;
-            break;
-        case 2:
+            LongTalonTribeTension++;
             LongTalonTribeTension++;
             break;
+        case 2:
+            ShiningScalesTension++;
+            ShiningScalesTension++;
+            break;
         case 3:
+            FolkOfTheWindingFlowTension++;
             FolkOfTheWindingFlowTension++;
             break;
     }
@@ -2713,7 +2718,7 @@ function E_CouncilOfElders() {
     $('#EventResultBoxHeader').html("Council Of Elders")
 
     $('#EventNar').html("A council of Elders is called in your Tribe to discuss your agenda for the coming age. Which will you adapt? \
-                        This agenda will remain for 10 Eras or until a new Council is called.");
+                        This agenda will remain for 8 Eras or until a new Council is called.");
     
     $('#EventOption1Description').show();
     $('#EventOption1Description').html("Path of War:<br/>\
@@ -2757,7 +2762,7 @@ function EC_CouncilOfElders_PathOfPeace() {
     $('#Path_Of_Peace').show();
     $('#Path_Of_Seclusion').hide();
     Agenda = 2;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2772,7 +2777,7 @@ function EC_CouncilOfElders_PathOfSeclusion() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').show();
     Agenda = 3;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2787,7 +2792,7 @@ function EC_CouncilOfElders_MiddlePath() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').hide();
     Agenda = 0;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2922,7 +2927,7 @@ $('#Map_Of_The_Ancients').click(function(){
     $('#UpgradeInfoBoxDescription').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
                                          From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
                                          some known but much unknown to your tribe.\
-                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era.The amount gained increases each Era. \
+                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#PurchaseUpgradeButton').hide();
 })
