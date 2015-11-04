@@ -345,7 +345,6 @@ function CompetitionDetails() {
             break;
         default:
             $('#D_ShiningScalesTension').css('color','Red')
-            $('#ShiningScalesBarter').hide();
             break;
     }
     
@@ -361,7 +360,6 @@ function CompetitionDetails() {
             break;
         default:
             $('#D_LongTalonTribeTension').css('color','Red')
-            $('#LongTalonTribeBarter').hide();
             break;
     }
     
@@ -377,7 +375,6 @@ function CompetitionDetails() {
             break;
         default:
             $('#D_FolkOfTheWindingFlowTension').css('color','Red')
-            $('#FolkOfTheWindingFlowBarter').hide();
             break;
     }
 
