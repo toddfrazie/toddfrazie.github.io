@@ -84,8 +84,7 @@ var VictoryOrLossAchieved = false;
 var ShiningScalesTension = 1;
 var LongTalonTribeTension = 1;
 var FolkOfTheWindingFlowTension = 1;
-var CurrentBarterThisTurn = 1;
-var CurrentRaidThisTurn = 1
+var CurrentRaidBarterThisTurn = 1;
 var TensionCap = 30;
 
 var EventLoadedValue = 0;
@@ -327,9 +326,9 @@ function CalculateTribalCosts(){
     
     TotalInventionInspirationCost = Math.floor(30 * Math.pow(1.15,InventionLevel));
     
-    RaidingCost = Math.floor((5 * CurrentRaidThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
+    RaidingCost = Math.floor((5 * CurrentRaidBarterThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
     
-    BarteringCost = Math.floor((2 * CurrentBarterThisTurn) * Math.pow(1.15,CultureLevel));
+    BarteringCost = Math.floor((2 * CurrentRaidBarterThisTurn) * Math.pow(1.15,CultureLevel));
 }
 
 function CompetitionDetails() {
@@ -568,10 +567,8 @@ function BeginEra() {
     if (PinnacleStone > 0) {CalculatePinnacleStone()}
     if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
 
-    CurrentRaidThisTurn--;
-    if (CurrentRaidThisTurn < 1) {CurrentRaidThisTurn = 1}
-    CurrentBarterThisTurn--;
-    if (CurrentBarterThisTurn < 1) {CurrentBarterThisTurn = 1}
+    CurrentRaidBarterThisTurn--;
+    if (CurrentRaidBarterThisTurn < 1) {CurrentRaidBarterThisTurn = 1}
     
     CurrentSupremacy = CurrentSupremacy + ExpansionLevel;
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
@@ -1119,7 +1116,7 @@ function P_RaidShiningScales() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
         
-        CurrentRaidThisTurn++;
+        CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1153,7 +1150,7 @@ function P_BarterShiningScales() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        CurrentBarterThisTurn++;
+        CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1207,7 +1204,7 @@ function P_RaidLongTalonTribe() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
         
-        CurrentRaidThisTurn++;
+        CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1243,7 +1240,7 @@ function P_BarterLongTalonTribe() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        CurrentBarterThisTurn++;
+        CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1297,7 +1294,7 @@ function P_RaidFolkOfTheWindingFlow() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
         
-        CurrentRaidThisTurn++;
+        CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1331,7 +1328,7 @@ function P_BarterFolkOfTheWindingFlow() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        CurrentBarterThisTurn++;
+        CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
