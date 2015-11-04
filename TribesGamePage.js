@@ -329,7 +329,7 @@ function CalculateTribalCosts(){
     
     RaidingCost = Math.floor((5 * CurrentRaidThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
     
-    BarteringCost = Math.floor((5 * CurrentBarterThisTurn) * Math.pow(1.15,CultureLevel));
+    BarteringCost = Math.floor((2 * CurrentBarterThisTurn) * Math.pow(1.15,CultureLevel));
 }
 
 function CompetitionDetails() {
