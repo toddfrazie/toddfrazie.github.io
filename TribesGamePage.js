@@ -568,8 +568,10 @@ function BeginEra() {
     if (PinnacleStone > 0) {CalculatePinnacleStone()}
     if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
 
-    CurrentRaidThisTurn = 1;
-    CurrentBarterThisTurn = 1;
+    CurrentRaidThisTurn--;
+    if (CurrentRaidThisTurn < 1) {CurrentRaidThisTurn = 1}
+    CurrentBarterThisTurn--;
+    if (CurrentBarterThisTurn < 1) {CurrentBarterThisTurn = 1}
     
     CurrentSupremacy = CurrentSupremacy + ExpansionLevel;
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
