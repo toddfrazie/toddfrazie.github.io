@@ -288,11 +288,12 @@ opacity: 1;
     text-align: center;
 }
 
-#SupplyUpgrades {
-  display: none;
+.HiddenSupplyUpgradeBox > button{display: none;}
+.ExpandedSupplyUpgradeBox > h4{display: none;}
+.ExpandedSupplyUpgradeBox {
   position: absolute;
-  left: 90px;
-  top: 90px;
+  left: 85px;
+  top: 88px;
   width: 230px;
   background-color: black;
   border-style: solid;
@@ -301,11 +302,12 @@ opacity: 1;
   border-radius: 5px;
 }
 
-#DomainUpgrades {
-  display: none;
+.HiddenDomainUpgradeBox > button{display: none;}
+.ExpandedDomainUpgradeBox > h4{display: none;}
+.ExpandedDomainUpgradeBox {
   position: absolute;
-  left: 90px;
-  top: 230px;
+  left: 85px;
+  top: 225px;
   width: 230px;
   background-color: black;
   border-style: solid;
@@ -314,11 +316,12 @@ opacity: 1;
   border-radius: 5px;
 }
 
-#InspirationUpgrades {
-  display: none;
+.HiddenInspirationUpgradeBox > button{display: none;}
+.ExpandedInspirationUpgradeBox > h4{display: none;}
+.ExpandedInspirationUpgradeBox {
   position: absolute;
-  left: 90px;
-  top: 370px;
+  left: 85px;
+  top: 365px;
   width: 230px;
   background-color: black;
   border-style: solid;
@@ -327,11 +330,13 @@ opacity: 1;
   border-radius: 5px;
 }
 
-#GripUpgrades {
-  display: none;
+.HiddenGripUpgradeBox > button{display: none;}
+.HiddenGripUpgradeBox > h5{display: none;}
+.ExpandedGripUpgradeBox > h4{display: none;}
+.ExpandedGripUpgradeBox {
   position: absolute;
-  left: 90px;
-  top: 505px;
+  left: 85px;
+  top: 500px;
   width: 230px;
   background-color: black;
   border-style: solid;
