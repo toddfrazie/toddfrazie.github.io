@@ -26,10 +26,9 @@ p a {
 }
 
 .Tribal {
-  Height: 75px;
-  margin-bottom: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
+  Height: 120px;
+  margin: 5px;
+  border-radius: 8px;
   float: left;
 }
 
@@ -39,50 +38,38 @@ p a {
   margin: 10px;
 }
 
-.ValueDisplay {
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  height: 25px;
-  margin-top: 20px;
-  text-align: center;
-  
-}
-
-.ValueContainer{
-   float: left;
-   width: 40px;
-}
-
 #textBox {
   font-family: "Comic Sans MS", cursive, sans-serif;
   font-size: 12px;
   border-radius: 5px;
-  border-style: ridge;
-  border-width: medium;
-  border-color: #4D4D4D;
-  height: 450px;  
+/*  border-style: solid;
+  border-width: thin;
+  border-color: #4D4D4D;*/
+  height: 350px;  
 }
 
 .TextBox {
-  border-style: solid;
-  border-width: medium;
-  border-color: #4D4D4D;
-  overflow-y: scroll;
   border-radius: 5px;
-  height: 180px;
   width: 300px;
   text-align: center;
 }
 
 #DetailsBox {
+  margin-top: 5px;
   font-family: "Comic Sans MS", cursive, sans-serif;
   font-size: small;
-  border-style: solid;
-  border-width: medium;
-  border-color: #4D4D4D;
-  overflow-y: scroll;
+/*  border-style: solid;
+  border-width: thin;
+  border-color: #4D4D4D;*/
+  width: 180px;
+/*  overflow-y: scroll;
+  height: 650px;*/
   border-radius: 5px;
-  height: 230px;
-  width: 160px;
+  opacity: 0.7;
+}
+
+#DetailsBox:hover {
+opacity: 1;
 }
 
 
@@ -103,16 +90,20 @@ p a {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 
-.StatsPanel {
+.SquarePanel {
   border-style: solid;
-  font-family: "Comic Sans MS", cursive, sans-serif;
   border-color: #4D4D4D;
   border-width: thin;
+  font-family: "Comic Sans MS", cursive, sans-serif;
   border-radius: 5px;
   margin: 3px;
   margin-top: 5px;
-  height: 60px;
-  width: 115px;
+  width: 250px;
+  height: 130px;
+}
+
+.StatsPanel {
+  margin-top: 12px;
   float: left;
 }
 
@@ -120,42 +111,20 @@ p a {
   color: #EAEAEA;
 }
 
-.StashContainer {
-  border-style: solid;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  border-color: #4D4D4D;
-  border-width: thin;
-  border-radius: 5px;
-  margin: 3px;
-  margin-top: 5px;
-  height: 60px;
-  width: 100px;
-  padding: 2px;
-  float: left;
-
-}
-
-.StashContainerLong {
-  border-style: solid;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  border-color: #4D4D4D;
-  border-width: thin;
-  border-radius: 5px;
-  margin: 10px;
-  height: 50px;
-  width: 200px;
-  padding: 2px;
-  float: left;
-}
  
 #BeginEra {  
   font-family: "Comic Sans MS", cursive, sans-serif;
-  margin-left: 120px;
-  margin-bottom: 45px;
-  margin-top: 45px;
-  height: 30px;
-  background-color: Black;
+  margin-left: 50px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: 50px;
+  width: 100px;
+  background-image: url(http://i.imgur.com/qEdH0sN.jpg);
+  background-size:     cover;
+  background-repeat:   no-repeat;
+  background-position: center center; 
   display: block;
+  border-radius: 5px;
 }
 
 #PlanEra {  
@@ -181,11 +150,6 @@ p a {
   margin: 3%;
   margin-left: 10%;
 }
-.Retire {
-  display: inline;
-  width: 12%;
-  margin: 3%;
-}
 
 .Centered {
   text-align: center;
@@ -195,6 +159,10 @@ p a {
   font-family: sans-serif !Important;
   color: purple !Important;
   font-size: 12px;  
+}
+
+.LargerText {
+  font-size: larger;    
 }
   
 #CompetitionButtonContainer input {
@@ -211,12 +179,29 @@ p a {
    background-color: rgb(178, 0, 0);
 }
 
+#SupplyUpgrades button{
+   background-color: rgb(178, 0, 0);
+}
+
 #InspirationUpgradeBox button{
+   background-color: rgb(36, 71, 178);
+}
+
+#InspirationUpgrades button{
    background-color: rgb(36, 71, 178);
 }
 
 #DomainUpgradeBox button, #IntroDiv button{
   background-color: rgb(207, 166, 0);
+}
+
+#DomainUpgrades button{
+  background-color: rgb(207, 166, 0);
+}
+
+#GripUpgrades button{
+  background-color: grey;
+  width: 48%;
 }
 
 #PurchaseUpgradeButton {
@@ -227,17 +212,6 @@ p a {
   width: 80px;
   background-color: Black;
   display: none;
-}
-
-#UpgradeInfoBox {
-  font-family: "Comic Sans MS", cursive, sans-serif;
-  font-size: 12px;
-  border-style: solid;
-  border-width: medium;
-  border-color: #4D4D4D;
-  border-radius: 5px;
-  height: 200px;
-  margin-top: 20px;
 }
 
 #CurrentPopulationContainer{
@@ -313,3 +287,56 @@ p a {
 #EndOfGameResultBox, #EventResultBox, #CompetitionResultBox {
     text-align: center;
 }
+
+#SupplyUpgrades {
+  display: none;
+  position: absolute;
+  left: 90px;
+  top: 90px;
+  width: 230px;
+  background-color: black;
+  border-style: solid;
+  border-width: medium;
+  border-color: #4D4D4D;
+  border-radius: 5px;
+}
+
+#DomainUpgrades {
+  display: none;
+  position: absolute;
+  left: 90px;
+  top: 230px;
+  width: 230px;
+  background-color: black;
+  border-style: solid;
+  border-width: medium;
+  border-color: #4D4D4D;
+  border-radius: 5px;
+}
+
+#InspirationUpgrades {
+  display: none;
+  position: absolute;
+  left: 90px;
+  top: 370px;
+  width: 230px;
+  background-color: black;
+  border-style: solid;
+  border-width: medium;
+  border-color: #4D4D4D;
+  border-radius: 5px;
+}
+
+#GripUpgrades {
+  display: none;
+  position: absolute;
+  left: 90px;
+  top: 505px;
+  width: 230px;
+  background-color: black;
+  border-style: solid;
+  border-width: medium;
+  border-color: #4D4D4D;
+  border-radius: 5px;
+}
+
