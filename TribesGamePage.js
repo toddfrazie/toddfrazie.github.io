@@ -84,6 +84,8 @@ var VictoryOrLossAchieved = false;
 var ShiningScalesTension = 1;
 var LongTalonTribeTension = 1;
 var FolkOfTheWindingFlowTension = 1;
+var CurrentBarterThisTurn = 1;
+var CurrentRaidThisTurn = 1
 var TensionCap = 30;
 
 var EventLoadedValue = 0;
@@ -325,9 +327,9 @@ function CalculateTribalCosts(){
     
     TotalInventionInspirationCost = Math.floor(30 * Math.pow(1.15,InventionLevel));
     
-    RaidingCost = Math.floor((2 * (CurrentNumberOfWarriors)) * Math.pow(1.07,CurrentNumberOfWarriors));
+    RaidingCost = Math.floor((5 * CurrentRaidThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
     
-    BarteringCost = Math.floor(2 * Math.pow(1.15,CultureLevel));
+    BarteringCost = Math.floor((5 * CurrentBarterThisTurn) * Math.pow(1.15,CultureLevel));
 }
 
 function CompetitionDetails() {
@@ -566,13 +568,8 @@ function BeginEra() {
     if (PinnacleStone > 0) {CalculatePinnacleStone()}
     if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
 
-    
-    //$('#ShiningScalesRaid').hide();
-    //$('#ShiningScalesBarter').hide();
-    //$('#LongTalonTribeRaid').hide();
-    //$('#LongTalonTribeBarter').hide();
-    //$('#FolkOfTheWindingFlowRaid').hide();
-    //$('#FolkOfTheWindingFlowBarter').hide();
+    CurrentRaidThisTurn = 1;
+    CurrentBarterThisTurn = 1;
     
     CurrentSupremacy = CurrentSupremacy + ExpansionLevel;
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
@@ -646,10 +643,6 @@ function CalculateEraTensionIncrease() {
         ShiningScalesTension = ShiningScalesTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CurrentDiscovery/2));
         FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor((((ExpansionLevel) + (CurrentDiscovery) + (CultureLevel))/4) + (CultureLevel/2));   
     }
-    
-    console.log("LongTalonTribeTension " + LongTalonTribeTension);
-    console.log("ShiningScalesTension " + ShiningScalesTension);
-    console.log("FolkOfTheWindingFlowTension " + FolkOfTheWindingFlowTension);
 }
 
 
@@ -660,21 +653,6 @@ function ContinueToEvent() {
     CalculateEvent();
     RefreshPage();
 }
-
-function CheckAllCompetition() {
-    if (Agenda != 3) {
-        if (Agenda != 2) {
-            //$('#ShiningScalesRaid').fadeIn();
-            //$('#LongTalonTribeRaid').fadeIn();
-            //$('#FolkOfTheWindingFlowRaid').fadeIn();
-        }
-        //$('#ShiningScalesBarter').fadeIn();
-        //$('#LongTalonTribeBarter').fadeIn();
-        //$('#FolkOfTheWindingFlowBarter').fadeIn();
-    }
-}
-
-
 
 //In depth Calculation for turns---------------------------------------------------
 function CalculateHuntingResult() {
@@ -953,7 +931,6 @@ function P_River_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 2
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        CheckAllCompetition();
         ContinueToBegin();
     }else if (CurrentDomain >= TotalExpansionDomainCost || CurrentPhase == 99) {
         DecrementDomain(TotalExpansionDomainCost);    
@@ -986,7 +963,6 @@ function P_Forest_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 3
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 2
-        CheckAllCompetition();
         ContinueToBegin();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);
@@ -1019,7 +995,6 @@ function P_Savanna_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 3
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        CheckAllCompetition()
         ContinueToBegin()
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
@@ -1053,7 +1028,6 @@ function P_Hill_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 2
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 3
-        CheckAllCompetition()
         ContinueToBegin()
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
@@ -1070,45 +1044,25 @@ function P_Hill_Expansion(){
 // Beginning of Game Intro Logic -------------------------------------------------------------------
 
 $('#River_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and are a good portal to new territory.\
-                                         <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
-                                         3 Hunters <br/> \
-                                         2 Explorers <br/> \
-                                         1 Crafter <br/> \
-                                         1 Warrior <br/> \</span>");
+    $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and are a good portal to new territory.");
 });
 $('#River_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#River_Expansion_Intro').click(function(){P_River_Expansion();});
 
 $('#Forest_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and are difficult to encroach upon.\
-                                         <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
-                                         1 Hunter <br/> \
-                                         1 Explorer <br/> \
-                                         3 Crafters <br/> \
-                                         2 Warriors <br/> \</span>");
+    $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and are difficult to encroach upon.");
 });
 $('#Forest_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#Forest_Expansion_Intro').click(function(){P_Forest_Expansion();});
 
 $('#Savanna_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons and host a good deal of wildlife.\
-                                         <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
-                                         2 Hunters <br/> \
-                                         3 Explorers <br/> \
-                                         1 Crafter <br/> \
-                                         1 Warrior <br/> \</span>");
+    $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons and host a good deal of wildlife.");
 });
 $('#Savanna_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#Savanna_Expansion_Intro').click(function(){P_Savanna_Expansion();});
 
 $('#Hill_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and provide great seclusion for craft.\
-                                         <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
-                                         1 Hunter <br/> \
-                                         1 Explorer <br/> \
-                                         2 Crafters <br/> \
-                                         3 Warriors <br/> \</span>");
+    $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and provide great seclusion for craft.");
 });
 $('#Hill_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#Hill_Expansion_Intro').click(function(){P_Hill_Expansion();});
@@ -1163,10 +1117,7 @@ function P_RaidShiningScales() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
         
-        //$('#ShiningScalesRaid').fadeOut();
-        //$('#LongTalonTribeRaid').fadeOut();
-        //$('#FolkOfTheWindingFlowRaid').fadeOut();
-        //$('#ShiningScalesBarter').fadeOut();
+        CurrentRaidThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1200,10 +1151,7 @@ function P_BarterShiningScales() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        //$('#ShiningScalesRaid').fadeOut();
-        //$('#LongTalonTribeBarter').fadeOut();
-        //$('#FolkOfTheWindingFlowBarter').fadeOut();    
-        //$('#ShiningScalesBarter').fadeOut();
+        CurrentBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1257,10 +1205,7 @@ function P_RaidLongTalonTribe() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
         
-        //$('#ShiningScalesRaid').fadeOut();
-        //$('#LongTalonTribeRaid').fadeOut();
-        //$('#FolkOfTheWindingFlowRaid').fadeOut();
-        //$('#LongTalonTribeBarter').fadeOut();
+        CurrentRaidThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1296,10 +1241,7 @@ function P_BarterLongTalonTribe() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        //$('#LongTalonTribeRaid').fadeOut();
-        //$('#LongTalonTribeBarter').fadeOut();
-        //$('#FolkOfTheWindingFlowBarter').fadeOut();    
-        //$('#ShiningScalesBarter').fadeOut();
+        CurrentBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1353,10 +1295,7 @@ function P_RaidFolkOfTheWindingFlow() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
         
-        //$('#ShiningScalesRaid').fadeOut();
-        //$('#LongTalonTribeRaid').fadeOut();
-        //$('#FolkOfTheWindingFlowRaid').fadeOut();
-        //$('#FolkOfTheWindingFlowBarter').fadeOut();
+        CurrentRaidThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
@@ -1390,11 +1329,8 @@ function P_BarterFolkOfTheWindingFlow() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        //$('#FolkOfTheWindingFlowRaid').fadeOut();
-        //$('#LongTalonTribeBarter').fadeOut();
-       // $('#FolkOfTheWindingFlowBarter').fadeOut();    
-        //$('#ShiningScalesBarter').fadeOut();
-        //$('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
+        CurrentBarterThisTurn++;
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 }
@@ -1680,7 +1616,6 @@ $('#EventOption1Button').click(function(){
     case 1000:
         CurrentPhase = 0;
         CurrentEra++
-        CheckAllCompetition();
         RefreshPage();
         break;
     default:
@@ -2688,7 +2623,7 @@ function E_CouncilOfElders() {
     $('#EventResultBoxHeader').html("Council Of Elders")
 
     $('#EventNar').html("A council of Elders is called in your Tribe to discuss your agenda for the coming age. Which will you adapt? \
-                        This agenda will remain for 10 Eras or until a new Council is called.");
+                        This agenda will remain for 8 Eras or until a new Council is called.");
     
     $('#EventOption1Description').show();
     $('#EventOption1Description').html("<span class=\"LargerText\">Path of War</span><br/>\
@@ -3385,9 +3320,6 @@ function CalculateEraVictoryIncrease() {
     ShiningScalesVictoryLevel++
     LongTalonTribeVictoryLevel++
     FolkOfTheWindingFlowVictoryLevel++
-    console.log("LongTalonTribeVictoryLevel: " + LongTalonTribeVictoryLevel)
-    console.log("ShiningScalesVictoryLevel: " + ShiningScalesVictoryLevel)
-    console.log("FolkOfTheWindingFlowVictoryLevel: " + FolkOfTheWindingFlowVictoryLevel)
 }
 
 //Following Functions Increment Stashes------------------------------------------------------
