@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="http://toddfrazie.github.io/css/TribesGamePage.css">
   </head>
   
- <body>
+<body>
 	  
 	  <div class="Title">
 		<div class="container">
@@ -20,56 +20,15 @@
 	  </div><!--end Title-->
  
 	<!--<div id="SideBar"class="col-lg-2"></div>-->
-    <div class="GameZone">
-        <div class="Container">
-				<!--<div id="LefterSide"class="col-lg-2"> Here, display Upgrades Purchased, as well as a Rules page Link</div>-->
-                <div id="LeftSide" class="col-sm-4">
-				  
-					  <div class="row">
-						<img title="Hunter" id="HunterTribal" class="Tribal" src="http://i.imgur.com/x0Alvme.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfHunter" class="ValueDisplay" style="color: rgb(178, 0, 0);"></h1></div>
-						<div class="StatsPanel"><p id="HunterStats">Bounty: <span id="ExpectedSupply"></span><span id="SupplySurplusDenotion"></span><br/>
-						Efficiency: <span id="HunterMultiplier"></span>
-						Capacity: <span id="HunterPopulationSoftCap"></span></p></div>
-						<div class="StashContainer"><p style="color:  rgb(178, 0, 0);">Supply</p><p id="StashedSupply"></p></div>
-					  </div>
 
-					  <div class="row">
-						<img title="Explorer" id="ExplorerTribal" class="Tribal" src="http://i.imgur.com/BuwVh8z.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfExplorer" class="ValueDisplay" style="color: rgb(207, 166, 0);"></h1></div>					  
-						<div class="StatsPanel"><p id="ExplorerStats">Bounty: <span id="ExpectedDomain"></span><span id="DomainSurplusDenotion"></span><br/>
-						Efficiency: <span id="ExplorerMultiplier"></span>
-						Capacity: <span id="ExplorerPopulationSoftCap"></span></p></div>
-						<div class="StashContainer"><p style="color: rgb(207, 166, 0);">Domain</p><p id="StashedDomain"></p></div>
-					  </div>
-					
-					  <div class="row">
-						<img title="Crafter" id="CrafterTribal" class="Tribal" src="http://i.imgur.com/JwbS0fc.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfCrafter" class="ValueDisplay" style="color: rgb(36, 71, 178);"></h1></div>						
-						<div class="StatsPanel"><p id="CrafterStats">Bounty: <span id="ExpectedInspiration"></span><span id="InspirationSurplusDenotion"></span><br/>
-						Efficiency: <span id="CrafterMultiplier"></span>
-						Capacity: <span id="CrafterPopulationSoftCap"></span></p></div>
-						<div class="StashContainer"><p style="color: rgb(36, 71, 178);">Inspiration</p><p id="StashedInspiration"></p></div>
-					  </div>
+								
+			<div id="LefterSide"class="col-sm-3">
 
-					  <div id="NumberOfWarriorContainer" class="row">
-						<img title="Warrior" id="WarriorTribal" class="Tribal" src="http://i.imgur.com/p7eQNKb.jpg">
-						<div class="ValueContainer"><h1 id="NumberOfWarrior" class="ValueDisplay" style="color: grey;"></h1></div>
-						<div class="StatsPanel"><p id="WarriorStats">Bounty: <span id="ExpectedGrip"></span><span id="GripSurplusDenotion"></span><br/>
-						Efficiency: <span id="WarriorMultiplier"></span>
-						Capacity: <span id="WarriorPopulationSoftCap"></span></p></div>
-						<div class="StashContainer"><p style="color: grey;">Grip</p><p id="StashedGrip"></p></div>
-					  </div>
 
-					  <div class="row" style="height: 120px">
-						  <button id="BeginEra">Continue</button>
-					  </div>
-					  
-					  <div id="DetailsBowContainer" class="row">
-						<img id="DetailImage" src="http://i.imgur.com/DnKwg6g.jpg">						
 						<div id="DetailsBox">
-						  <h4 style="text-align: center">Details</h4>
-						  <hr>
+						<!--<h4 style="text-align: center">Details</h4>
+						  <hr>-->
+						<div id="TestProgressBar"></div>
 						  <p>
 							<table style="width: 98%">
 							  <th colspan="3">Victory Conditions</th>
@@ -187,15 +146,145 @@
 						  </p>			  
 						</div>
 					  </div>
+				</div><!--end LefterSide -->
 				
-              </div><!--End Left Side col-lg-6 -->
+			<div class="GameZone">
+			<div class="Container">
+				
+                <div id="LeftSide" class="col-sm-4" style="margin-left: 0px;">
+				  
+					  <div class="row">
+						<div class="SquarePanel">
+						  <img title="Hunter" id="HunterTribal" class="Tribal" src="http://i.imgur.com/x0Alvme.jpg">
+						  <div class="StatsPanel">
+							<table style="width: 120px">
+							  <tr>
+								<td>Hunters</td>
+								<td style="text-align: right;"><span id="NumberOfHunter"></span></td>
+								<td style="text-align: left;">/<span id="HunterPopulationSoftCap"></span></td>								
+							  </tr>
+							  <tr>
+								<td>Efficiency</td>
+								<td style="text-align: right;"><span id="HunterMultiplier"></span></td>
+								<td style="text-align: left;"><span id="SupplySurplusDenotion"></span></td>
+							  </tr>
+							</table>
+							<h4><span style="color: rgb(178, 0, 0);">Supply</span> <span id="StashedSupply"></span></h4>
+							<h4 id="SupplyUpgradesClick" title='click to select upgrades'>&#711;</h4>
+						  </div>
+						</div>
+					  </div>
+					  
+					  <div id="SupplyUpgrades" class="HiddenUpgradeBox">
+							<button id="Population_Boom" class="Upgrade">Population Boom</button>
+							<button id="Boost_Domain" class="Upgrade">Boost Domain</button>
+							<button id="Boost_Inspiration" class="Upgrade">Boost Inspiration</button>
+							<button id="Boost_Grip" class="Upgrade">Boost Grip</button>
+					  </div>
+					  
+					  <div class="row">
+						<div class="SquarePanel">
+						  <img title="Explorer" id="ExplorerTribal" class="Tribal" src="http://i.imgur.com/BuwVh8z.jpg">
+						  <div class="StatsPanel">
+							<table style="width: 120px">
+							  <tr>
+								<td>Explorers</td>
+								<td style="text-align: right;"><span id="NumberOfExplorer"></span></td>
+								<td style="text-align: left;">/<span id="ExplorerPopulationSoftCap"></span></td>								
+							  </tr>
+							  <tr>
+								<td>Efficiency</td>
+								<td style="text-align: right;"><span id="ExplorerMultiplier"></span></td>
+								<td style="text-align: left;"><span id="DomainSurplusDenotion"></span></td>
+							  </tr>
+							</table>
+							<h4><span style="color: rgb(207, 166, 0);">Domain</span> <span id="StashedDomain"></span></h4>
+							<h4 id="DomainUpgradesClick" title='click to select upgrades'>&#711;</h4>
+						  </div>
+						</div>
+					  </div>
+					  
+					  <div id="DomainUpgrades" class="HiddenUpgradeBox">
+							<button id="River_Expansion" class="Upgrade">River Expansion</button>
+							<button id="Savanna_Expansion" class="Upgrade">Savanna Expansion</button>
+							<button id="Forest_Expansion" class="Upgrade">Forest Expansion</button>
+							<button id="Hill_Expansion" class="Upgrade">Hill Expansion</button>
+					  </div>
+					  
+					  <div class="row">
+						<div class="SquarePanel">
+						  <img title="Crafter" id="CrafterTribal" class="Tribal" src="http://i.imgur.com/JwbS0fc.jpg">
+						  <div class="StatsPanel">
+							<table style="width: 120px">
+							  <tr>
+								<td>Crafters</td>
+								<td style="text-align: right;"><span id="NumberOfCrafter"></span></td>
+								<td style="text-align: left;">/<span id="CrafterPopulationSoftCap"></span></td>								
+							  </tr>
+							  <tr>
+								<td>Efficiency</td>
+								<td style="text-align: right;"><span id="CrafterMultiplier"></span></td>
+								<td style="text-align: left;"><span id="InspirationSurplusDenotion"></span></td>
+							  </tr>
+							</table>
+							<h4><span style="color: rgb(36, 71, 178);">Inspiration</span> <span id="StashedInspiration"></span></h4>
+							<h4 id="InspirationUpgradesClick" title='click to select upgrades'>&#711;</h4>
+						  </div>
+						</div>
+					  </div>
+					  
+					  <div id="InspirationUpgrades" class="HiddenUpgradeBox">
+							<button id="Improve_Hunting_Tools" class="Upgrade">Improve Hunting Tools</button>
+							<button id="Improve_Exploring_Tools" class="Upgrade">Improve Exploring Tools</button>
+							<button id="Improve_Crafting_Tools" class="Upgrade">Improve Crafting Tools</button>
+							<button id="Improve_War_Tools" class="Upgrade">Improve War Tools</button>
+							<button id="Improve_Culture" class="Upgrade">Cultural Innovation</button>	
+					  </div>
+					  
+					  <div class="row">
+						<div class="SquarePanel">
+						  <img title="Warrior" id="WarriorTribal" class="Tribal" src="http://i.imgur.com/p7eQNKb.jpg">
+						  <div class="StatsPanel">
+							<table style="width: 120px">
+							  <tr>
+								<td>Crafters</td>
+								<td style="text-align: right;"><span id="NumberOfWarrior"></span></td>
+								<td style="text-align: left;">/<span id="WarriorPopulationSoftCap"></span></td>								
+							  </tr>
+							  <tr>
+								<td>Efficiency</td>
+								<td style="text-align: right;"><span id="WarriorMultiplier"></span></td>
+								<td style="text-align: left;"><span id="GripSurplusDenotion"></span></td>
+							  </tr>
+							</table>		
+							<h4><span style="color: grey;">Grip</span> <span id="StashedGrip"></span></h4>
+							<h4 id="GripUpgradesClick" title='click to select upgrades'>&#711;</h4>
+						  </div>
+						</div>
+					  </div>
+					  
+					  <div id="GripUpgrades" class="HiddenUpgradeBox">
+						<h5 style="color: OrangeRed; font-weight: bold;" id="LongTalonTribeAbout">Long Talon Tribe</h5>
+						<button id="LongTalonTribeRaid">Raid</button>
+						<button id="LongTalonTribeBarter">Barter</button>
+						<h5 style="color: DarkGoldenRod; font-weight: bold;" id="ShiningScalesAbout">Shining Scales</h5>
+						<button id="ShiningScalesRaid">Raid</button>
+						<button id="ShiningScalesBarter">Barter</button>
+						<h5 style="color: Aqua; font-weight: bold;" id="FolkOfTheWindingFlowAbout">Folk Of The Winding Flow</h5>
+						<button id="FolkOfTheWindingFlowRaid">Raid</button>
+						<button id="FolkOfTheWindingFlowBarter">Barter</button>
+					  </div>
+					  					
+			
 
-								
-
-
-
-			  <div class="col-sm-4">
-						
+					  
+	              </div><!--End Left Side col-sm-4 -->
+				  
+	
+			  <div class="col-sm-4">						
+					  <div class="row" style="height: 100px">
+						  <button id="BeginEra"></button>
+					  </div>
 
 					  <div id="PurchaseUpgradeParent" class="row">
 						<div  id="textBox" class="TextBox">
@@ -203,14 +292,19 @@
 							<h4 id="IntroDivHeader"></h4>
 							<p id="IntroDivStory"></p>
 							<button id="River_Expansion_Intro" class="Upgrade">River Region</button>
-							<hr>
+
 							<button id="Savanna_Expansion_Intro" class="Upgrade">Savanna Region</button>
-							<hr>
+
 							<button id="Forest_Expansion_Intro" class="Upgrade">Forest Region</button>
-							<hr>
+
 							<button id="Hill_Expansion_Intro" class="Upgrade">Hill Region</button>
-							<hr>
+
 						  </div>
+						  <div id="UpgradeInfoBox">
+							<h4 class="Centered" id="UpgradeInfoBoxHeader"></h4>
+							<p id="UpgradeInfoBoxCost"></p>
+							<p id="UpgradeInfoBoxDescription"></p>
+						  </div>	
 						  <div id="EventResultBox">							
 							<h4 class="Centered" id="EventResultBoxHeader"></h4>
 							<p id="EventNar"></p>
@@ -242,30 +336,7 @@
 							<p id="RaidBarterResult"></p>
 							<p class="Centered"><button id="ActionContinueButton" style="background-color: black">Continue</button></p>
 						  </div>
-						<div id="UpgradeBox">
-						  <div id="SupplyUpgradeBox">
-							<button id="Population_Boom" class="Upgrade">Population Boom</button>
-							<button id="Boost_Domain" class="Upgrade">Boost Domain</button>
-							<button id="Boost_Inspiration" class="Upgrade">Boost Inspiration</button>
-							<button id="Boost_Grip" class="Upgrade">Boost Grip</button>
-						  </div>
-						  <hr>
-						  <div id="DomainUpgradeBox">
-							<button id="River_Expansion" class="Upgrade">River Expansion</button>
-							<button id="Savanna_Expansion" class="Upgrade">Savanna Expansion</button>
-							<button id="Forest_Expansion" class="Upgrade">Forest Expansion</button>
-							<button id="Hill_Expansion" class="Upgrade">Hill Expansion</button>
-						  </div>
-						  <hr>
-						  <div id="InspirationUpgradeBox">
-							<button id="Improve_Hunting_Tools" class="Upgrade">Improve Hunting Tools</button>
-							<button id="Improve_Exploring_Tools" class="Upgrade">Improve Exploring Tools</button>
-							<button id="Improve_Crafting_Tools" class="Upgrade">Improve Crafting Tools</button>
-							<button id="Improve_War_Tools" class="Upgrade">Improve War Tools</button>
-							<button id="Improve_Culture" class="Upgrade">Cultural Innovation</button>	
-						  </div>
-						</div>
-						<div id="EndOfGameResultBox">
+						  <div id="EndOfGameResultBox">
 							<h4 id="EndOfGameHeader"></h4>
 							<p id="EndOfGameParagraph"></p>
 							<img id="DiscoveryVictory" class="VictoryImage" src="http://i.imgur.com/DnKwg6g.jpg">
@@ -274,53 +345,10 @@
 						</div>
 					  </div>
 					</div>
-					  
 
-					<div id="PurchaseUpgradeParent" class="row">
-					  <div id="UpgradeInfoBox" class="TextBox">
-						<h4 class="Centered" id="UpgradeInfoBoxHeader"></h4>
-						<p id="UpgradeInfoBoxCost"></p>
-						<p id="UpgradeInfoBoxDescription"></p>
-						<button id="PurchaseUpgradeButton">Commit</button>
-					  </div>		  
-					</div>
 			  
 			</div> <!--End RightSide col-lg-4 -->
-			
-			<div class="col-sm-4">
-			  <div class="row">
-				<div class="CompetitionContainer">
-				  <h4 style="color: OrangeRed;margin-bottom: 20px;">Long Talon Tribe</h4>
-				  <p id="LongTalonTribeRelations"></p>
-				  <p id="LongTalonTribeProgress"></p>
-				  <button id="LongTalonTribeAbout" style="margin-bottom: 20px;margin-top: 20px;">About</button>
-				  <button id="LongTalonTribeRaid">Raid</button>
-				  <button id="LongTalonTribeBarter">Barter</button>
-				</div>				
-			  </div>
-			  <div class="row">
-				<div class="CompetitionContainer">
-				  <h4 style="color: DarkGoldenRod;margin-bottom: 20px;">Shining Scales</h4>
-				  <p id="ShiningScalesRelations"></p>
-				  <p id="ShiningScalesProgress"></p>
-				  <button id="ShiningScalesAbout" style="margin-bottom: 20px;margin-top: 20px;">About</button>
-				  <button id="ShiningScalesRaid">Raid</button>
-				  <button id="ShiningScalesBarter">Barter</button>
-				</div>
-			  </div> 
-			  <div class="row">
-				<div class="CompetitionContainer">
-				  <h4 style="color: Aqua;margin-bottom: 20px;">Folk of the Winding Flow</h4>
-				  <p id="FolkOfTheWindingFlowRelations"></p>
-				  <p id="FolkOfTheWindingFlowProgress"></p>
-				  <button id="FolkOfTheWindingFlowAbout" style="margin-bottom: 20px;margin-top: 20px;">About</button>
-				  <button id="FolkOfTheWindingFlowRaid">Raid</button>
-				  <button id="FolkOfTheWindingFlowBarter">Barter</button>
-				</div>				
-			  </div>
-			</div>
-		
-				
+
         </div><!--End Container -->
     </div><!--End Game Zone -->
 
