@@ -41,7 +41,7 @@ var Pottery = false;
 var ImprovedWarTactics = false;
 
 var Agenda = 0;
-var AgendaDuration = 9;
+var AgendaDuration = 8;
 
 var HunterExpansionBonus = 0;
 var CrafterExpansionBonus = 0;
@@ -110,28 +110,35 @@ window.onload = function() {
 
 
 //UI Functions---------------------------------------------------
-
-$('#SupplyUpgradesClick').mouseenter(function(){$('#SupplyUpgrades').show();});
+$('#SupplyUpgrades').mouseenter(function(){
+    $('#SupplyUpgrades').attr('class','ExpandedSupplyUpgradeBox');
+});
 $('#SupplyUpgrades').mouseleave(function(){
-    $('#SupplyUpgrades').hide();
+    $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
     ClearUpgradeInfoBox();
 });
 
-$('#DomainUpgradesClick').mouseenter(function(){$('#DomainUpgrades').show();});
+$('#DomainUpgrades').mouseenter(function(){
+    $('#DomainUpgrades').attr('class','ExpandedDomainUpgradeBox');
+});
 $('#DomainUpgrades').mouseleave(function(){
-    $('#DomainUpgrades').hide();
+    $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
     ClearUpgradeInfoBox();
 });
 
-$('#InspirationUpgradesClick').mouseenter(function(){$('#InspirationUpgrades').show();});
+$('#InspirationUpgrades').mouseenter(function(){
+    $('#InspirationUpgrades').attr('class','ExpandedInspirationUpgradeBox');
+});
 $('#InspirationUpgrades').mouseleave(function(){
-    $('#InspirationUpgrades').hide();
+    $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
     ClearUpgradeInfoBox();
 });
 
-$('#GripUpgradesClick').mouseenter(function(){$('#GripUpgrades').show();});
+$('#GripUpgrades').mouseenter(function(){
+    $('#GripUpgrades').attr('class','ExpandedGripUpgradeBox');
+});
 $('#GripUpgrades').mouseleave(function(){
-    $('#GripUpgrades').hide();
+    $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
     ClearUpgradeInfoBox();
 });
 
@@ -191,10 +198,10 @@ function RefreshPage(){
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
-            $('#SupplyUpgradesClick').show();
-            $('#DomainUpgradesClick').show();
-            $('#InspirationUpgradesClick').show();
-            $('#GripUpgradesClick').show();
+            $('#SupplyUpgrades').show();
+            $('#DomainUpgrades').show();
+            $('#InspirationUpgrades').show();
+            if (Agenda != 3){$('#GripUpgrades').show();}
             break;
         case 1:
             $('#BeginEra').hide();
@@ -202,10 +209,10 @@ function RefreshPage(){
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
-            $('#SupplyUpgradesClick').hide();
-            $('#DomainUpgradesClick').hide();
-            $('#InspirationUpgradesClick').hide();
-            $('#GripUpgradesClick').hide();
+            $('#SupplyUpgrades').hide();
+            $('#DomainUpgrades').hide();
+            $('#InspirationUpgrades').hide();
+            $('#GripUpgrades').hide();
             break;
         case 2:
             $('#BeginEra').hide();
@@ -213,10 +220,10 @@ function RefreshPage(){
             $('#EventResultBox').fadeIn();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
-            $('#SupplyUpgradesClick').hide();
-            $('#DomainUpgradesClick').hide();
-            $('#InspirationUpgradesClick').hide();
-            $('#GripUpgradesClick').hide();
+            $('#SupplyUpgrades').hide();
+            $('#DomainUpgrades').hide();
+            $('#InspirationUpgrades').hide();
+            $('#GripUpgrades').hide();
             break;
         case 4:
             $('#BeginEra').hide();
@@ -225,10 +232,10 @@ function RefreshPage(){
             $('#CompetitionResultBox').hide();
             $('#ActionResultBox').fadeIn();
             $('#EndOfGameResultBox').hide();
-            $('#SupplyUpgradesClick').hide();
-            $('#DomainUpgradesClick').hide();
-            $('#InspirationUpgradesClick').hide();
-            $('#GripUpgradesClick').hide();
+            $('#SupplyUpgrades').hide();
+            $('#DomainUpgrades').hide();
+            $('#InspirationUpgrades').hide();
+            $('#GripUpgrades').hide();
             break;
         case 5:
             $('#BeginEra').hide();
@@ -236,10 +243,10 @@ function RefreshPage(){
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').fadeIn();
-            $('#SupplyUpgradesClick').hide();
-            $('#DomainUpgradesClick').hide();
-            $('#InspirationUpgradesClick').hide();
-            $('#GripUpgradesClick').hide();
+            $('#SupplyUpgrades').hide();
+            $('#DomainUpgrades').hide();
+            $('#InspirationUpgrades').hide();
+            $('#GripUpgrades').hide();
             break;
         case 99:
             $('#IntroDiv').fadeIn();
@@ -248,10 +255,10 @@ function RefreshPage(){
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
-            $('#SupplyUpgradesClick').hide();
-            $('#DomainUpgradesClick').hide();
-            $('#InspirationUpgradesClick').hide();
-            $('#GripUpgradesClick').hide();
+            $('#SupplyUpgrades').hide();
+            $('#DomainUpgrades').hide();
+            $('#InspirationUpgrades').hide();
+            $('#GripUpgrades').hide();
             break;         
         
     }
@@ -546,11 +553,6 @@ function BeginEra() {
     CalculateWarResult();
     CalculateNewTribeMemberResult();
     
-    $('SupplyUpgrades').hide();
-    $('DomainUpgrades').hide();
-    $('InspirationUpgrades').hide();
-    $('GripUpgrades').hide();
-    
     //Clear All Boosters (must remain after returns calculated)
     SupplySurplus = false
     InspirationSurplus = false
@@ -565,12 +567,12 @@ function BeginEra() {
     if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
 
     
-    $('#ShiningScalesRaid').hide();
-    $('#ShiningScalesBarter').hide();
-    $('#LongTalonTribeRaid').hide();
-    $('#LongTalonTribeBarter').hide();
-    $('#FolkOfTheWindingFlowRaid').hide();
-    $('#FolkOfTheWindingFlowBarter').hide();
+    //$('#ShiningScalesRaid').hide();
+    //$('#ShiningScalesBarter').hide();
+    //$('#LongTalonTribeRaid').hide();
+    //$('#LongTalonTribeBarter').hide();
+    //$('#FolkOfTheWindingFlowRaid').hide();
+    //$('#FolkOfTheWindingFlowBarter').hide();
     
     CurrentSupremacy = CurrentSupremacy + ExpansionLevel;
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
@@ -579,9 +581,9 @@ function BeginEra() {
     
     if (Agenda != 0) {
         AgendaDuration--
-        if (AgendaDuration < 1) {
+        if (AgendaDuration <= 1) {
             Agenda = 0
-            AgendaDuration = 9
+            AgendaDuration = 8
         }
     }
     switch (Agenda) {
@@ -659,16 +661,16 @@ function ContinueToEvent() {
     RefreshPage();
 }
 
-function ShowAllCompetition() {
+function CheckAllCompetition() {
     if (Agenda != 3) {
         if (Agenda != 2) {
-            $('#ShiningScalesRaid').fadeIn();
-            $('#LongTalonTribeRaid').fadeIn();
-            $('#FolkOfTheWindingFlowRaid').fadeIn();
+            //$('#ShiningScalesRaid').fadeIn();
+            //$('#LongTalonTribeRaid').fadeIn();
+            //$('#FolkOfTheWindingFlowRaid').fadeIn();
         }
-        $('#ShiningScalesBarter').fadeIn();
-        $('#LongTalonTribeBarter').fadeIn();
-        $('#FolkOfTheWindingFlowBarter').fadeIn();
+        //$('#ShiningScalesBarter').fadeIn();
+        //$('#LongTalonTribeBarter').fadeIn();
+        //$('#FolkOfTheWindingFlowBarter').fadeIn();
     }
 }
 
@@ -783,7 +785,7 @@ function P_Population_Boom(){
     if (CurrentSupply >= TotalPopulationBoomCost && (CurrentPopulation < (ExpansionLevel*7))) {
         DecrementSupply(TotalPopulationBoomCost);
         SelectAndAddRandomNeededTribal();
-        $('#SupplyUpgrades').hide();
+        $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -798,7 +800,7 @@ function P_Boost_Inspiration(){
     if (CurrentSupply >= TotalInspirationSurplusCost && (InspirationSurplus == false)) {
         DecrementSupply(TotalInspirationSurplusCost);
         InspirationSurplus = true
-        $('#SupplyUpgrades').hide();
+        $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
         RefreshPage();
     }
     else{CannotBeDone();}
@@ -814,7 +816,7 @@ function P_Boost_Domain(){
     if (CurrentSupply >= TotalDomainSurplusCost && (DomainSurplus == false)) {
         DecrementSupply(TotalDomainSurplusCost);
         DomainSurplus = true
-        $('#SupplyUpgrades').hide();
+        $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
         RefreshPage();
     }
     else{CannotBeDone();}
@@ -830,7 +832,7 @@ function P_Boost_Grip(){
     if (CurrentSupply >= TotalGripSurplusCost && (GripSurplus == false)) {
         DecrementSupply(TotalGripSurplusCost);
         GripSurplus = true
-        $('#SupplyUpgrades').hide();
+        $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
         RefreshPage();
     }
     else{CannotBeDone();}
@@ -852,7 +854,7 @@ function P_Improve_Hunting_Tools(){
         ImprovedToolsLevel++
         HunterMultiplier = HunterMultiplier + 0.5
         CurrentInfluence = CurrentInfluence + Math.floor(HunterMultiplier * 5)
-        $('#InspirationUpgrades').hide();
+        $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -871,7 +873,7 @@ function P_Improve_Crafting_Tools(){
         ImprovedToolsLevel++
         CrafterMultiplier = CrafterMultiplier + 0.5
         CurrentInfluence = CurrentInfluence + Math.floor(CrafterMultiplier * 5)
-        $('#InspirationUpgrades').hide();
+        $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -890,7 +892,7 @@ function P_Improve_Exploring_Tools(){
         ImprovedToolsLevel++
         ExplorerMultiplier = ExplorerMultiplier + 0.5
         CurrentInfluence = CurrentInfluence + Math.floor(ExplorerMultiplier * 5)
-        $('#InspirationUpgrades').hide();
+        $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -909,7 +911,7 @@ function P_Improve_War_Tools(){
         ImprovedToolsLevel++
         WarriorMultiplier = WarriorMultiplier + 0.5
         CurrentInfluence = CurrentInfluence + Math.floor(WarriorMultiplier * 5)
-        $('#InspirationUpgrades').hide();
+        $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -925,7 +927,7 @@ function P_Improve_Culture(){
     if (CurrentInspiration >= TotalCultureInspirationCost) {
         DecrementInspiration(TotalCultureInspirationCost);    
         CultureLevel++
-        $('#InspirationUpgrades').hide();
+        $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}  
 }
@@ -951,7 +953,7 @@ function P_River_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 2
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        ShowAllCompetition();
+        CheckAllCompetition();
         ContinueToBegin();
     }else if (CurrentDomain >= TotalExpansionDomainCost || CurrentPhase == 99) {
         DecrementDomain(TotalExpansionDomainCost);    
@@ -960,7 +962,7 @@ function P_River_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 2
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        $('#DomainUpgrades').hide();
+        $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -984,7 +986,7 @@ function P_Forest_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 3
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 2
-        ShowAllCompetition();
+        CheckAllCompetition();
         ContinueToBegin();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);
@@ -993,7 +995,7 @@ function P_Forest_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 3
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 2
-        $('#DomainUpgrades').hide();
+        $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -1017,7 +1019,7 @@ function P_Savanna_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 3
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        ShowAllCompetition()
+        CheckAllCompetition()
         ContinueToBegin()
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
@@ -1026,7 +1028,7 @@ function P_Savanna_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 3
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        $('#DomainUpgrades').hide();
+        $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -1051,7 +1053,7 @@ function P_Hill_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 2
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 3
-        ShowAllCompetition()
+        CheckAllCompetition()
         ContinueToBegin()
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
@@ -1060,7 +1062,7 @@ function P_Hill_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 2
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 3
-        $('#DomainUpgrades').hide();
+        $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -1128,7 +1130,7 @@ $('#ShiningScalesRaid').hover(function(){
 });
 $('#ShiningScalesRaid').click(function(){P_RaidShiningScales();});
 function P_RaidShiningScales() {
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {
+    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0 && Agenda != 2) {
         CurrentPhase = 4;        
         var WarriorsLost = ""
         var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
@@ -1161,11 +1163,11 @@ function P_RaidShiningScales() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
         
-        $('#ShiningScalesRaid').fadeOut();
-        $('#LongTalonTribeRaid').fadeOut();
-        $('#FolkOfTheWindingFlowRaid').fadeOut();
-        $('#ShiningScalesBarter').fadeOut();
-        $('#GripUpgrades').hide();
+        //$('#ShiningScalesRaid').fadeOut();
+        //$('#LongTalonTribeRaid').fadeOut();
+        //$('#FolkOfTheWindingFlowRaid').fadeOut();
+        //$('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 };
@@ -1177,7 +1179,7 @@ $('#ShiningScalesBarter').hover(function(){
 });
 $('#ShiningScalesBarter').click(function(){P_BarterShiningScales();});
 function P_BarterShiningScales() {
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {
+    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
         CurrentPhase = 4;
         ShiningScalesTension = ShiningScalesTension - 4
         ShiningScalesVictoryLevel++
@@ -1198,11 +1200,11 @@ function P_BarterShiningScales() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        $('#ShiningScalesRaid').fadeOut();
-        $('#LongTalonTribeBarter').fadeOut();
-        $('#FolkOfTheWindingFlowBarter').fadeOut();    
-        $('#ShiningScalesBarter').fadeOut();
-        $('#GripUpgrades').hide();
+        //$('#ShiningScalesRaid').fadeOut();
+        //$('#LongTalonTribeBarter').fadeOut();
+        //$('#FolkOfTheWindingFlowBarter').fadeOut();    
+        //$('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 };
@@ -1221,7 +1223,7 @@ $('#LongTalonTribeRaid').hover(function(){
 });
 $('#LongTalonTribeRaid').click(function(){P_RaidLongTalonTribe();});
 function P_RaidLongTalonTribe() {
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {
+    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0 && Agenda != 2) {
         CurrentPhase = 4;    
         var WarriorsLost = ""
         var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
@@ -1255,11 +1257,11 @@ function P_RaidLongTalonTribe() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
         
-        $('#ShiningScalesRaid').fadeOut();
-        $('#LongTalonTribeRaid').fadeOut();
-        $('#FolkOfTheWindingFlowRaid').fadeOut();
-        $('#LongTalonTribeBarter').fadeOut();
-        $('#GripUpgrades').hide();
+        //$('#ShiningScalesRaid').fadeOut();
+        //$('#LongTalonTribeRaid').fadeOut();
+        //$('#FolkOfTheWindingFlowRaid').fadeOut();
+        //$('#LongTalonTribeBarter').fadeOut();
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 }
@@ -1273,7 +1275,7 @@ $('#LongTalonTribeBarter').hover(function(){
 });
 $('#LongTalonTribeBarter').click(function(){P_BarterLongTalonTribe();});
 function P_BarterLongTalonTribe() {
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {    
+    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {    
         CurrentPhase = 4;
         LongTalonTribeTension = LongTalonTribeTension - 4
         LongTalonTribeVictoryLevel++
@@ -1294,11 +1296,11 @@ function P_BarterLongTalonTribe() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        $('#LongTalonTribeRaid').fadeOut();
-        $('#LongTalonTribeBarter').fadeOut();
-        $('#FolkOfTheWindingFlowBarter').fadeOut();    
-        $('#ShiningScalesBarter').fadeOut();
-        $('#GripUpgrades').hide();
+        //$('#LongTalonTribeRaid').fadeOut();
+        //$('#LongTalonTribeBarter').fadeOut();
+        //$('#FolkOfTheWindingFlowBarter').fadeOut();    
+        //$('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 }
@@ -1307,8 +1309,7 @@ $('#LongTalonTribeAbout').hover(function(){
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>");
     $('#UpgradeInfoBoxDescription').html("The Long Talons favor military prowess. They also excel in it. The more impressive the target, the more likely they are to strike.\
                                          In this way, they assure none grow too large to handle.");
-    $('#PurchaseUpgradeButton').hide();
-})
+});
 
 $('#FolkOfTheWindingFlowRaid').hover(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
@@ -1318,7 +1319,7 @@ $('#FolkOfTheWindingFlowRaid').hover(function(){
 });
 $('#FolkOfTheWindingFlowRaid').click(function(){P_RaidFolkOfTheWindingFlow();});
 function P_RaidFolkOfTheWindingFlow() {
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {
+    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0 && Agenda != 2) {
         CurrentPhase = 4;    
         var WarriorsLost = ""
         var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
@@ -1352,11 +1353,11 @@ function P_RaidFolkOfTheWindingFlow() {
         IncrementDomain(GainedDomain);
         CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
         
-        $('#ShiningScalesRaid').fadeOut();
-        $('#LongTalonTribeRaid').fadeOut();
-        $('#FolkOfTheWindingFlowRaid').fadeOut();
-        $('#FolkOfTheWindingFlowBarter').fadeOut();
-        $('#GripUpgrades').hide();
+        //$('#ShiningScalesRaid').fadeOut();
+        //$('#LongTalonTribeRaid').fadeOut();
+        //$('#FolkOfTheWindingFlowRaid').fadeOut();
+        //$('#FolkOfTheWindingFlowBarter').fadeOut();
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 }
@@ -1368,7 +1369,7 @@ $('#FolkOfTheWindingFlowBarter').hover(function(){
 })
 $('#FolkOfTheWindingFlowBarter').click(function(){P_BarterFolkOfTheWindingFlow();});
 function P_BarterFolkOfTheWindingFlow() {
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {
+    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
         CurrentPhase = 4;
         FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4
         FolkOfTheWindingFlowVictoryLevel++
@@ -1393,7 +1394,7 @@ function P_BarterFolkOfTheWindingFlow() {
         $('#LongTalonTribeBarter').fadeOut();
         $('#FolkOfTheWindingFlowBarter').fadeOut();    
         $('#ShiningScalesBarter').fadeOut();
-        $('#GripUpgrades').hide();
+        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 }
@@ -1402,7 +1403,6 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
     $('#UpgradeInfoBoxCost').html("<br/>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">The Folk of the Winding Flow</span>");
     $('#UpgradeInfoBoxDescription').html("The Folk of the Winding Flow are a cultured and artistic tribe. They are relatively peaceful, more interested in spreading their ideas than their bloodline.");
-    $('#PurchaseUpgradeButton').hide();
 })
 
 // Events Logic --------------------------------------------------------------------------------------
@@ -1680,7 +1680,7 @@ $('#EventOption1Button').click(function(){
     case 1000:
         CurrentPhase = 0;
         CurrentEra++
-        ShowAllCompetition();
+        CheckAllCompetition();
         RefreshPage();
         break;
     default:
@@ -2717,7 +2717,7 @@ function EC_CouncilOfElders_PathOfWar() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').hide();
     Agenda = 1;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2732,7 +2732,7 @@ function EC_CouncilOfElders_PathOfPeace() {
     $('#Path_Of_Peace').show();
     $('#Path_Of_Seclusion').hide();
     Agenda = 2;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2747,7 +2747,7 @@ function EC_CouncilOfElders_PathOfSeclusion() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').show();
     Agenda = 3;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2762,7 +2762,7 @@ function EC_CouncilOfElders_MiddlePath() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').hide();
     Agenda = 0;
-    AgendaDuration = 10;    
+    AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
