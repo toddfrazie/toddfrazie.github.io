@@ -1390,11 +1390,11 @@ function P_BarterFolkOfTheWindingFlow() {
         IncrementDomain(GainedDomain);
         CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
         
-        $('#FolkOfTheWindingFlowRaid').fadeOut();
-        $('#LongTalonTribeBarter').fadeOut();
-        $('#FolkOfTheWindingFlowBarter').fadeOut();    
-        $('#ShiningScalesBarter').fadeOut();
-        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
+        //$('#FolkOfTheWindingFlowRaid').fadeOut();
+        //$('#LongTalonTribeBarter').fadeOut();
+       // $('#FolkOfTheWindingFlowBarter').fadeOut();    
+        //$('#ShiningScalesBarter').fadeOut();
+        //$('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
         RefreshPage();
     }else{CannotBeDone()};
 }
