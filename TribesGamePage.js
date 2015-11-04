@@ -3,8 +3,6 @@ var main = function() {
 //Global Variables
 
 var CurrentPhase = 99;
-var PurchaseUpgradeLoadedUpgrade = 0;
-var LoadedAction = 0;
 var CurrentEra = 1;
 
 var CurrentNumberOfHunters = 1;
@@ -43,7 +41,7 @@ var Pottery = false;
 var ImprovedWarTactics = false;
 
 var Agenda = 0;
-var AgendaDuration = 8;
+var AgendaDuration = 9;
 
 var HunterExpansionBonus = 0;
 var CrafterExpansionBonus = 0;
@@ -107,14 +105,43 @@ window.onload = function() {
                              The great serpent monolith looms in the distance.\
                              You are quickly faced with your first decision. Where will you settle? \
                              <br/><span class=\"OOC\">Select a location from the options below to learn more.</span>")
-    $('#ShiningScalesRaid').hide();
-    $('#ShiningScalesBarter').hide();
-    $('#LongTalonTribeRaid').hide();
-    $('#LongTalonTribeBarter').hide();
-    $('#FolkOfTheWindingFlowRaid').hide();
-    $('#FolkOfTheWindingFlowBarter').hide();
     RefreshPage();
 };
+
+
+//UI Functions---------------------------------------------------
+
+$('#SupplyUpgradesClick').mouseenter(function(){$('#SupplyUpgrades').show();});
+$('#SupplyUpgrades').mouseleave(function(){
+    $('#SupplyUpgrades').hide();
+    ClearUpgradeInfoBox();
+});
+
+$('#DomainUpgradesClick').mouseenter(function(){$('#DomainUpgrades').show();});
+$('#DomainUpgrades').mouseleave(function(){
+    $('#DomainUpgrades').hide();
+    ClearUpgradeInfoBox();
+});
+
+$('#InspirationUpgradesClick').mouseenter(function(){$('#InspirationUpgrades').show();});
+$('#InspirationUpgrades').mouseleave(function(){
+    $('#InspirationUpgrades').hide();
+    ClearUpgradeInfoBox();
+});
+
+$('#GripUpgradesClick').mouseenter(function(){$('#GripUpgrades').show();});
+$('#GripUpgrades').mouseleave(function(){
+    $('#GripUpgrades').hide();
+    ClearUpgradeInfoBox();
+});
+
+function CannotBeDone() {
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("");
+    $('#UpgradeInfoBoxDescription').html("This cannot be done.");    
+}
+
+//---------------------------------------------------------------
 
 function RefreshPage(){
     $("#NumberOfHunter").text(CurrentNumberOfHunters);
@@ -150,10 +177,8 @@ function RefreshPage(){
     $("#StashedSupremacy").text(CurrentSupremacy);
     $("#NumberOfDiscovery").text(CurrentDiscovery);
     $("#StashedInfluence").text(CurrentInfluence);
-    $("#NumberOfCulture").text(CultureLevel);
-    
-    ClearUpgradeInfoBox();
-    
+    $("#NumberOfCulture").text(CultureLevel);    
+
     CalculateTribalCosts();
     
     CalculateVictory();
@@ -162,58 +187,77 @@ function RefreshPage(){
         case 0:
             $('#IntroDiv').hide();
             $('#BeginEra').fadeIn();
-            $('#UpgradeBox').fadeIn();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
+            $('#SupplyUpgradesClick').show();
+            $('#DomainUpgradesClick').show();
+            $('#InspirationUpgradesClick').show();
+            $('#GripUpgradesClick').show();
             break;
         case 1:
             $('#BeginEra').hide();
-            $('#UpgradeBox').hide();
             $('#HarvestResultBox').fadeIn();
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
+            $('#SupplyUpgradesClick').hide();
+            $('#DomainUpgradesClick').hide();
+            $('#InspirationUpgradesClick').hide();
+            $('#GripUpgradesClick').hide();
             break;
         case 2:
             $('#BeginEra').hide();
-            $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').fadeIn();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
+            $('#SupplyUpgradesClick').hide();
+            $('#DomainUpgradesClick').hide();
+            $('#InspirationUpgradesClick').hide();
+            $('#GripUpgradesClick').hide();
             break;
         case 4:
             $('#BeginEra').hide();
-            $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
             $('#CompetitionResultBox').hide();
             $('#ActionResultBox').fadeIn();
             $('#EndOfGameResultBox').hide();
+            $('#SupplyUpgradesClick').hide();
+            $('#DomainUpgradesClick').hide();
+            $('#InspirationUpgradesClick').hide();
+            $('#GripUpgradesClick').hide();
             break;
         case 5:
             $('#BeginEra').hide();
-            $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').fadeIn();
+            $('#SupplyUpgradesClick').hide();
+            $('#DomainUpgradesClick').hide();
+            $('#InspirationUpgradesClick').hide();
+            $('#GripUpgradesClick').hide();
             break;
         case 99:
             $('#IntroDiv').fadeIn();
             $('#BeginEra').hide();
-            $('#UpgradeBox').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
             $('#EndOfGameResultBox').hide();
+            $('#SupplyUpgradesClick').hide();
+            $('#DomainUpgradesClick').hide();
+            $('#InspirationUpgradesClick').hide();
+            $('#GripUpgradesClick').hide();
             break;         
         
     }
         CompetitionDetails();
         DisplayDetails();
+        ClearUpgradeInfoBox();   
         
 }
 
@@ -240,13 +284,13 @@ function DisplayDetails() {
     $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);    
 
     
-    if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
-        $('#DetailImage').attr("src","http://i.imgur.com/N4Uepe3.jpg");
-    }else if (CurrentInfluence > CurrentSupremacy && CurrentInfluence > CurrentDiscovery * 100) {
-        $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
-    }else if (CurrentDiscovery * 100 > CurrentInfluence && CurrentDiscovery * 100 > CurrentSupremacy) {
-        $('#DetailImage').attr("src","http://i.imgur.com/DnKwg6g.jpg");
-    }
+    //if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
+    //    $('#DetailImage').attr("src","http://i.imgur.com/N4Uepe3.jpg");
+    //}else if (CurrentInfluence > CurrentSupremacy && CurrentInfluence > CurrentDiscovery * 100) {
+    //    $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
+    //}else if (CurrentDiscovery * 100 > CurrentInfluence && CurrentDiscovery * 100 > CurrentSupremacy) {
+    //    $('#DetailImage').attr("src","http://i.imgur.com/DnKwg6g.jpg");
+    //}
     
 }
 
@@ -280,100 +324,99 @@ function CalculateTribalCosts(){
 }
 
 function CompetitionDetails() {
-    //each tribe will have a scale of 1-20 tension and 1-100 victory
-   
+    //each tribe will have a scale of 1-30 tension and 1-50 victory   
     switch (true) {
-        case (ShiningScalesTension < (TensionCap / 3)):
-            $('#ShiningScalesRelations').html('<span style=\"color: Green;\">You have an amiable relationship</span>')
+        case (ShiningScalesTension < (TensionCap / 2.8)):
+            $('#D_ShiningScalesTension').css('color','Green')
             break;
-        case (ShiningScalesTension < (TensionCap / 2)):
-            $('#ShiningScalesRelations').html('<span style=\"color: Yellow;\">There seems to be some diplomatic tension</span>')
+        case (ShiningScalesTension < (TensionCap / 1.6)):
+            $('#D_ShiningScalesTension').css('color','Yellow')
             break;
         case (ShiningScalesTension < (TensionCap / 1.2)):
-            $('#ShiningScalesRelations').html('<span style=\"color: Orange;\">Tensions are glaring and apparent</span>')
+            $('#D_ShiningScalesTension').css('color','Orange')
             break;
         default:
-            $('#ShiningScalesRelations').html('<span style=\"color: Red;\">Confrontation seems imminent</span>')
+            $('#D_ShiningScalesTension').css('color','Red')
             $('#ShiningScalesBarter').hide();
             break;
     }
     
     switch (true) {
-        case (LongTalonTribeTension < (TensionCap / 3)):
-            $('#LongTalonTribeRelations').html('<span style=\"color: Green;\">You have an amiable relationship</span>')
+        case (LongTalonTribeTension < (TensionCap / 2.8)):
+            $('#D_LongTalonTribeTension').css('color','Green')
             break;
-        case (LongTalonTribeTension < (TensionCap / 2)):
-            $('#LongTalonTribeRelations').html('<span style=\"color: Yellow;\">There seems to be some diplomatic tension</span>')
+        case (LongTalonTribeTension < (TensionCap / 1.6)):
+            $('#D_LongTalonTribeTension').css('color','Yellow')
             break;
         case (LongTalonTribeTension < (TensionCap / 1.2)):
-            $('#LongTalonTribeRelations').html('<span style=\"color: Orange;\">Tensions are glaring and apparent</span>')
+            $('#D_LongTalonTribeTension').css('color','Orange')
             break;
         default:
-            $('#LongTalonTribeRelations').html('<span style=\"color: Red;\">Confrontation seems imminent</span>')
+            $('#D_LongTalonTribeTension').css('color','Red')
             $('#LongTalonTribeBarter').hide();
             break;
     }
     
     switch (true) {
-        case (FolkOfTheWindingFlowTension < (TensionCap / 3)):
-            $('#FolkOfTheWindingFlowRelations').html('<span style=\"color: Green;\">You have an amiable relationship</span>')
+        case (FolkOfTheWindingFlowTension < (TensionCap / 2.8)):
+            $('#D_FolkOfTheWindingFlowTension').css('color','Green')
             break;
-        case (FolkOfTheWindingFlowTension < (TensionCap / 2)):
-            $('#FolkOfTheWindingFlowRelations').html('<span style=\"color: Yellow;\">There seems to be some diplomatic tension</span>')
+        case (FolkOfTheWindingFlowTension < (TensionCap / 1.6)):
+            $('#D_FolkOfTheWindingFlowTension').css('color','Yellow')
             break;
         case (FolkOfTheWindingFlowTension < (TensionCap / 1.2)):
-            $('#FolkOfTheWindingFlowRelations').html('<span style=\"color: Orange;\">Tensions are glaring and apparent</span>')
+            $('#D_FolkOfTheWindingFlowTension').css('color','Orange')
             break;
         default:
-            $('#FolkOfTheWindingFlowRelations').html('<span style=\"color: Red;\">Confrontation seems imminent</span>')
+            $('#D_FolkOfTheWindingFlowTension').css('color','Red')
             $('#FolkOfTheWindingFlowBarter').hide();
             break;
     }
 
-    switch (true) {
-        case (ShiningScalesVictoryLevel < (VictoryLevelCap / 3)):
-            $('#ShiningScalesProgress').html('<span style=\"color: Green;\">They seem to pose little threat</span>')
-            break;
-        case (ShiningScalesVictoryLevel < (VictoryLevelCap / 2)):
-            $('#ShiningScalesProgress').html('<span style=\"color: Yellow;\">They are becoming an imposing presense</span>')
-            break;
-        case (ShiningScalesVictoryLevel < (VictoryLevelCap / 1.2)):
-            $('#ShiningScalesProgress').html('<span style=\"color: Orange;\">Victory is within their grasp</span>')
-            break;
-        default:
-            $('#ShiningScalesProgress').html('<span style=\"color: Red;\">They will claim victory soon!</span>')
-            break;
-    }
-
-    switch (true) {
-        case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 3)):
-            $('#LongTalonTribeProgress').html('<span style=\"color: Green;\">They seem to pose little threat</span>')
-            break;
-        case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 2)):
-            $('#LongTalonTribeProgress').html('<span style=\"color: Yellow;\">They are becoming an imposing presense</span>')
-            break;
-        case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 1.2)):
-            $('#LongTalonTribeProgress').html('<span style=\"color: Orange;\">Victory is within their grasp</span>')
-            break;
-        default:
-            $('#LongTalonTribeProgress').html('<span style=\"color: Red;\">They will claim victory soon!</span>')
-            break;
-    }
-
-    switch (true) {
-        case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 3)):
-            $('#FolkOfTheWindingFlowProgress').html('<span style=\"color: Green;\">They seem to pose little threat</span>')
-            break;
-        case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 2)):
-            $('#FolkOfTheWindingFlowProgress').html('<span style=\"color: Yellow;\">They are becoming an imposing presense</span>')
-            break;
-        case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 1.2)):
-            $('#FolkOfTheWindingFlowProgress').html('<span style=\"color: Orange;\">Victory is within their grasp</span>')
-            break;
-        default:
-            $('#FolkOfTheWindingFlowProgress').html('<span style=\"color: Red;\">They will claim victory soon!</span>')
-            break;
-    }
+    //switch (true) {
+    //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 2.8)):
+    //        $('#D_ShiningScalesVictory').css('color','Green')
+    //        break;
+    //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 1.6)):
+    //        $('#D_ShiningScalesVictory').css('color','Yellow')
+    //        break;
+    //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 1.2)):
+    //        $('#D_ShiningScalesVictory').css('color','Orange')
+    //        break;
+    //    default:
+    //        $('#D_ShiningScalesVictory').css('color','Red')
+    //        break;
+    //}
+    //
+    //switch (true) {
+    //    case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 2.8)):
+    //        $('#D_LongTalonTribeVictory').css('color','Green')
+    //        break;
+    //    case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 1.6)):
+    //        $('#D_LongTalonTribeVictory').css('color','Yellow')
+    //        break;
+    //    case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 1.2)):
+    //        $('#D_LongTalonTribeVictory').css('color','Orange')
+    //        break;
+    //    default:
+    //        $('#D_LongTalonTribeVictory').css('color','Red')
+    //        break;
+    //}
+    //
+    //switch (true) {
+    //    case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 2.8)):
+    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Green')
+    //        break;
+    //    case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 1.6)):
+    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Yellow')
+    //        break;
+    //    case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 1.2)):
+    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Orange')
+    //        break;
+    //    default:
+    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Red')
+    //        break;
+    //}
  
 }
 
@@ -464,7 +507,6 @@ function ClearUpgradeInfoBox() {
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("");
     $('#UpgradeInfoBoxDescription').html("");
-    $('#PurchaseUpgradeButton').hide();
 }
 
     //Adjust stats for Resources
@@ -504,6 +546,11 @@ function BeginEra() {
     CalculateWarResult();
     CalculateNewTribeMemberResult();
     
+    $('SupplyUpgrades').hide();
+    $('DomainUpgrades').hide();
+    $('InspirationUpgrades').hide();
+    $('GripUpgrades').hide();
+    
     //Clear All Boosters (must remain after returns calculated)
     SupplySurplus = false
     InspirationSurplus = false
@@ -516,13 +563,14 @@ function BeginEra() {
     if (AncientCache > 0) {CalculateAncientCache()}
     if (PinnacleStone > 0) {CalculatePinnacleStone()}
     if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
+
     
-    $('#ShiningScalesRaid').fadeOut();
-    $('#ShiningScalesBarter').fadeOut();
-    $('#LongTalonTribeRaid').fadeOut();
-    $('#LongTalonTribeBarter').fadeOut();
-    $('#FolkOfTheWindingFlowRaid').fadeOut();
-    $('#FolkOfTheWindingFlowBarter').fadeOut();
+    $('#ShiningScalesRaid').hide();
+    $('#ShiningScalesBarter').hide();
+    $('#LongTalonTribeRaid').hide();
+    $('#LongTalonTribeBarter').hide();
+    $('#FolkOfTheWindingFlowRaid').hide();
+    $('#FolkOfTheWindingFlowBarter').hide();
     
     CurrentSupremacy = CurrentSupremacy + ExpansionLevel;
     CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
@@ -531,9 +579,9 @@ function BeginEra() {
     
     if (Agenda != 0) {
         AgendaDuration--
-        if (AgendaDuration <= 1) {
+        if (AgendaDuration < 1) {
             Agenda = 0
-            AgendaDuration = 8
+            AgendaDuration = 9
         }
     }
     switch (Agenda) {
@@ -560,7 +608,6 @@ function BeginEra() {
         default:
             break;            
     }
-
     RefreshPage();
 }
 
@@ -703,7 +750,6 @@ function CalculateAncientCache() {
             if (AncientCache > 30) {AncientCache = 30}
         }
     }
-
 }
 
 function CalculatePinnacleStone() {
@@ -726,112 +772,167 @@ function CalculateSpearOfTheAncients() {
 
 // Supply Upgrade Buttons-------------------------------------------------
 
-$('#Population_Boom').click(function(){
-
+$('#Population_Boom').hover(function(){
+    //toggle visibility
     $('#UpgradeInfoBoxCost').html(TotalPopulationBoomCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Population Boom");
     $('#UpgradeInfoBoxDescription').html("A new tribe member will join your tribe immediately so long as you have the capacity.");
-    
-    PurchasedUpgradeLoadedUpgrade = 101;
-    if (CurrentSupply >= TotalPopulationBoomCost && (CurrentPopulation < (ExpansionLevel*7))) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Population_Boom').click(function(){P_Population_Boom();});
+function P_Population_Boom(){
+    if (CurrentSupply >= TotalPopulationBoomCost && (CurrentPopulation < (ExpansionLevel*7))) {
+        DecrementSupply(TotalPopulationBoomCost);
+        SelectAndAddRandomNeededTribal();
+        $('#SupplyUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Boost_Inspiration').click(function(){
+$('#Boost_Inspiration').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalInspirationSurplusCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Boost Inspiration");
     $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> gain for one epoch. Limited to one surplus per type per epoch.");
-    
-    PurchasedUpgradeLoadedUpgrade = 102;
-    if (CurrentSupply >= TotalInspirationSurplusCost && (InspirationSurplus == false)) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Boost_Inspiration').click(function(){P_Boost_Inspiration();});
+function P_Boost_Inspiration(){
+    if (CurrentSupply >= TotalInspirationSurplusCost && (InspirationSurplus == false)) {
+        DecrementSupply(TotalInspirationSurplusCost);
+        InspirationSurplus = true
+        $('#SupplyUpgrades').hide();
+        RefreshPage();
+    }
+    else{CannotBeDone();}
+}
 
-$('#Boost_Domain').click(function(){
+$('#Boost_Domain').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalDomainSurplusCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Boost Domain");
     $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: rgb(207, 166, 0);\">Domain</span> gain for one epoch. Limited to one surplus per type per epoch.");
-    
-    PurchasedUpgradeLoadedUpgrade = 103;
-    if (CurrentSupply >= TotalDomainSurplusCost && (DomainSurplus == false)) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Boost_Domain').click(function(){P_Boost_Domain();});
+function P_Boost_Domain(){
+    if (CurrentSupply >= TotalDomainSurplusCost && (DomainSurplus == false)) {
+        DecrementSupply(TotalDomainSurplusCost);
+        DomainSurplus = true
+        $('#SupplyUpgrades').hide();
+        RefreshPage();
+    }
+    else{CannotBeDone();}
+}
 
-$('#Boost_Grip').click(function(){
+$('#Boost_Grip').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalGripSurplusCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Boost Grip");
     $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: grey;\">Grip</span> gain for one epoch. Limited to one surplus per type per epoch.");
-    
-    PurchasedUpgradeLoadedUpgrade = 104;
-    if (CurrentSupply >= TotalGripSurplusCost && (GripSurplus == false)) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Boost_Grip').click(function(){P_Boost_Grip();});
+function P_Boost_Grip(){
+    if (CurrentSupply >= TotalGripSurplusCost && (GripSurplus == false)) {
+        DecrementSupply(TotalGripSurplusCost);
+        GripSurplus = true
+        $('#SupplyUpgrades').hide();
+        RefreshPage();
+    }
+    else{CannotBeDone();}
+}
 
 // Inspiration Upgrade Buttons -----------------------------------------------------------------------
 
-$('#Improve_Hunting_Tools').click(function(){
+$('#Improve_Hunting_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(HunterToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Hunting Tools");
     $('#UpgradeInfoBoxDescription').html("With improved hunting tools, your Tribe can hunt more efficiently.\
                                          <br/><span class=\"OOC\">This upgrade will increase the Efficiency of your Hunters by 0.5. \
                                          Your Supply bounty will be the product of your number of Hunters and your Hunting Efficiency.</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 201;
-    if (CurrentInspiration >= HunterToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Improve_Hunting_Tools').click(function(){P_Improve_Hunting_Tools();});
+function P_Improve_Hunting_Tools(){
+    if (CurrentInspiration >= HunterToolInspirationCost) {
+        DecrementInspiration(HunterToolInspirationCost);
+        ImprovedToolsLevel++
+        HunterMultiplier = HunterMultiplier + 0.5
+        CurrentInfluence = CurrentInfluence + Math.floor(HunterMultiplier * 5)
+        $('#InspirationUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Improve_Crafting_Tools').click(function(){
+$('#Improve_Crafting_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(CrafterToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Crafting Tools");
     $('#UpgradeInfoBoxDescription').html("With improved crafting tools, your Tribe can craft more efficiently.\
                                          <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Crafters by 0.5. \
                                          Your Inspiration bounty will be the product of your number of Crafters and your Crafting Efficiency.</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 202;
-    if (CurrentInspiration >= CrafterToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Improve_Crafting_Tools').click(function(){P_Improve_Crafting_Tools();});
+function P_Improve_Crafting_Tools(){
+    if (CurrentInspiration >= CrafterToolInspirationCost) {
+        DecrementInspiration(CrafterToolInspirationCost);
+        ImprovedToolsLevel++
+        CrafterMultiplier = CrafterMultiplier + 0.5
+        CurrentInfluence = CurrentInfluence + Math.floor(CrafterMultiplier * 5)
+        $('#InspirationUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Improve_Exploring_Tools').click(function(){
+$('#Improve_Exploring_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(ExplorerToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Exploring Tools");
     $('#UpgradeInfoBoxDescription').html("With improved exploring tools, your Tribe can explore more efficiently.\
                                          <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Explorers by 0.5. \
                                          Your Domain bounty will be the product of your number of Explorers and your Exploring Efficiency.</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 203;
-    if (CurrentInspiration >= ExplorerToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Improve_Exploring_Tools').click(function(){P_Improve_Exploring_Tools();});
+function P_Improve_Exploring_Tools(){
+    if (CurrentInspiration >= ExplorerToolInspirationCost) {
+        DecrementInspiration(ExplorerToolInspirationCost);
+        ImprovedToolsLevel++
+        ExplorerMultiplier = ExplorerMultiplier + 0.5
+        CurrentInfluence = CurrentInfluence + Math.floor(ExplorerMultiplier * 5)
+        $('#InspirationUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Improve_War_Tools').click(function(){
+$('#Improve_War_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(WarriorToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve War Tools");
     $('#UpgradeInfoBoxDescription').html("With improved war tools, your Tribe can maintain its grip on the its assets more efficiently.\
                                          <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Warriors by 0.5. \
                                          Your Grip bounty will be the product of your number of Warriors and your War Efficiency.</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 204;
-    if (CurrentInspiration >= WarriorToolInspirationCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Improve_War_Tools').click(function(){P_Improve_War_Tools();});
+function P_Improve_War_Tools(){
+    if (CurrentInspiration >= WarriorToolInspirationCost) {
+        DecrementInspiration(WarriorToolInspirationCost);    
+        ImprovedToolsLevel++
+        WarriorMultiplier = WarriorMultiplier + 0.5
+        CurrentInfluence = CurrentInfluence + Math.floor(WarriorMultiplier * 5)
+        $('#InspirationUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Improve_Culture').click(function(){
+$('#Improve_Culture').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalCultureInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Cultural Innovation");
     $('#UpgradeInfoBoxDescription').html("Advancing in art and sophistication, your tribe begins to leave its mark on the surrounding land and peoples.\
                                          <br/><span class=\"OOC\">This upgrade will increase your culture. Each Era, your culture will be added to your Influence. Higher Culture will give larger returns when Bartering</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 211;
-    if (CurrentInspiration >= TotalCultureInspirationCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
-
+});
+$('#Improve_Culture').click(function(){P_Improve_Culture();});
+function P_Improve_Culture(){
+    if (CurrentInspiration >= TotalCultureInspirationCost) {
+        DecrementInspiration(TotalCultureInspirationCost);    
+        CultureLevel++
+        $('#InspirationUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}  
+}
 
 // Domain Expansion Upgrades----------------------------------------
 
-$('#River_Expansion').click(function(){
+$('#River_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("River Expansion");
     $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and are a good portal to new territory.\
@@ -841,13 +942,30 @@ $('#River_Expansion').click(function(){
                                          2 more Explorers <br/> \
                                          1 more Crafter <br/> \
                                          1 more Warrior <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 301;
-    if (CurrentDomain >= TotalExpansionDomainCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#River_Expansion').click(function(){P_River_Expansion();});
+function P_River_Expansion(){
+    if (CurrentPhase == 99) {
+        NumberOfRiverExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 3
+        CrafterExpansionBonus = CrafterExpansionBonus + 1
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 2
+        WarriorExpansionBonus = WarriorExpansionBonus + 1
+        ShowAllCompetition();
+        ContinueToBegin();
+    }else if (CurrentDomain >= TotalExpansionDomainCost || CurrentPhase == 99) {
+        DecrementDomain(TotalExpansionDomainCost);    
+        NumberOfRiverExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 3
+        CrafterExpansionBonus = CrafterExpansionBonus + 1
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 2
+        WarriorExpansionBonus = WarriorExpansionBonus + 1
+        $('#DomainUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Forest_Expansion').click(function(){
+$('#Forest_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("Forest Expansion");
     $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and are difficult to encroach upon.\
@@ -857,13 +975,30 @@ $('#Forest_Expansion').click(function(){
                                          1 more Explorer <br/> \
                                          3 more Crafters <br/> \
                                          2 more Warriors <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 302;
-    if (CurrentDomain >= TotalExpansionDomainCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Forest_Expansion').click(function(){P_Forest_Expansion();});
+function P_Forest_Expansion(){
+    if (CurrentPhase == 99) {
+        NumberOfForestExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 1
+        CrafterExpansionBonus = CrafterExpansionBonus + 3
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 1
+        WarriorExpansionBonus = WarriorExpansionBonus + 2
+        ShowAllCompetition();
+        ContinueToBegin();
+    }else if (CurrentDomain >= TotalExpansionDomainCost) {
+        DecrementDomain(TotalExpansionDomainCost);
+        NumberOfForestExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 1
+        CrafterExpansionBonus = CrafterExpansionBonus + 3
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 1
+        WarriorExpansionBonus = WarriorExpansionBonus + 2
+        $('#DomainUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Savanna_Expansion').click(function(){
+$('#Savanna_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("Savanna Expansion");
     $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons and host a good deal of wildlife.\
@@ -873,13 +1008,30 @@ $('#Savanna_Expansion').click(function(){
                                          3 more Explorers <br/> \
                                          1 more Crafter <br/> \
                                          1 more Warrior <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 303;
-    if (CurrentDomain >= TotalExpansionDomainCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Savanna_Expansion').click(function(){P_Savanna_Expansion();});
+function P_Savanna_Expansion(){
+    if (CurrentPhase == 99) {
+        NumberOfSavannaExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 2
+        CrafterExpansionBonus = CrafterExpansionBonus + 1
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 3
+        WarriorExpansionBonus = WarriorExpansionBonus + 1
+        ShowAllCompetition()
+        ContinueToBegin()
+    }else if (CurrentDomain >= TotalExpansionDomainCost) {
+        DecrementDomain(TotalExpansionDomainCost);    
+        NumberOfSavannaExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 2
+        CrafterExpansionBonus = CrafterExpansionBonus + 1
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 3
+        WarriorExpansionBonus = WarriorExpansionBonus + 1
+        $('#DomainUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
-$('#Hill_Expansion').click(function(){
+$('#Hill_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("Hill Expansion");
     $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and provide great seclusion for craft.\
@@ -889,253 +1041,75 @@ $('#Hill_Expansion').click(function(){
                                          1 more Explorer <br/> \
                                          2 more Crafters <br/> \
                                          3 more Warriors <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 304;
-    if (CurrentDomain >= TotalExpansionDomainCost) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#Hill_Expansion').click(function(){P_Hill_Expansion();});
+
+function P_Hill_Expansion(){
+    if (CurrentPhase == 99) {
+        NumberOfHillExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 1
+        CrafterExpansionBonus = CrafterExpansionBonus + 2
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 1
+        WarriorExpansionBonus = WarriorExpansionBonus + 3
+        ShowAllCompetition()
+        ContinueToBegin()
+    }else if (CurrentDomain >= TotalExpansionDomainCost) {
+        DecrementDomain(TotalExpansionDomainCost);    
+        NumberOfHillExpansions++
+        HunterExpansionBonus = HunterExpansionBonus + 1
+        CrafterExpansionBonus = CrafterExpansionBonus + 2
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 1
+        WarriorExpansionBonus = WarriorExpansionBonus + 3
+        $('#DomainUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone();}
+}
 
 // Beginning of Game Intro Logic -------------------------------------------------------------------
 
-$('#River_Expansion_Intro').click(function(){
-    $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
-    $('#UpgradeInfoBoxHeader').html("River Region");
+$('#River_Expansion_Intro').mouseenter(function(){
     $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and are a good portal to new territory.\
                                          <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
                                          3 Hunters <br/> \
                                          2 Explorers <br/> \
                                          1 Crafter <br/> \
                                          1 Warrior <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 991;
-    $('#PurchaseUpgradeButton').show()
-})
+});
+$('#River_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
+$('#River_Expansion_Intro').click(function(){P_River_Expansion();});
 
-$('#Forest_Expansion_Intro').click(function(){
-    $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
-    $('#UpgradeInfoBoxHeader').html("Forest Region");
+$('#Forest_Expansion_Intro').mouseenter(function(){
     $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and are difficult to encroach upon.\
                                          <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
                                          1 Hunter <br/> \
                                          1 Explorer <br/> \
                                          3 Crafters <br/> \
                                          2 Warriors <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 992;
-    $('#PurchaseUpgradeButton').show()
-})
+});
+$('#Forest_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
+$('#Forest_Expansion_Intro').click(function(){P_Forest_Expansion();});
 
-$('#Savanna_Expansion_Intro').click(function(){
-    $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
-    $('#UpgradeInfoBoxHeader').html("Savanna Region");
+$('#Savanna_Expansion_Intro').mouseenter(function(){
     $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons and host a good deal of wildlife.\
                                          <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
                                          2 Hunters <br/> \
                                          3 Explorers <br/> \
                                          1 Crafter <br/> \
                                          1 Warrior <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 993;
-    $('#PurchaseUpgradeButton').show()
-})
+});
+$('#Savanna_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
+$('#Savanna_Expansion_Intro').click(function(){P_Savanna_Expansion();});
 
-$('#Hill_Expansion_Intro').click(function(){
-    $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
-    $('#UpgradeInfoBoxHeader').html("Hill Region");
+$('#Hill_Expansion_Intro').mouseenter(function(){
     $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and provide great seclusion for craft.\
                                          <br/><span class=\"OOC\">Starting here will give your tribe room to grow to the following limits:<br/> \
                                          1 Hunter <br/> \
                                          1 Explorer <br/> \
                                          2 Crafters <br/> \
                                          3 Warriors <br/> \</span>");
-    
-    PurchasedUpgradeLoadedUpgrade = 994;
-    $('#PurchaseUpgradeButton').show()
-})
-
-// Purchasing Upgrades Logic-------------------------------------------------------------------------
-
-$('#PurchaseUpgradeButton').click(function(){  
-
-    $('#PurchaseUpgradeButton').hide();
-   
-   switch (PurchasedUpgradeLoadedUpgrade) {
-    case 101:
-        P_Population_Boom()
-        break;
-    case 102:
-        P_Boost_Inspiration()
-        break;
-    case 103:
-        P_Boost_Domain()
-        break;
-    case 104:
-        P_Boost_Grip()
-        break;
-    //Innovations
-    case 201:
-        P_Improve_Hunting_Tools()
-        break;
-    case 202:
-        P_Improve_Crafting_Tools()
-        break;
-    case 203:
-        P_Improve_Exploring_Tools()
-        break;
-    case 204:
-        P_Improve_War_Tools()
-        break;
-    case 211:
-        P_Improve_Culture()
-        break;
-    //Expansions
-    case 301:
-        P_River_Expansion()
-        break;
-    case 302:
-        P_Forest_Expansion()
-        break;
-    case 303:
-        P_Savanna_Expansion()
-        break;
-    case 304:
-        P_Hill_Expansion()
-        break;
-    case 401:
-        P_RaidShiningScales()
-        break;
-    case 402:
-        P_BarterShiningScales()
-        break;
-    case 403:
-        P_RaidLongTalonTribe()
-        break;
-    case 404:
-        P_BarterLongTalonTribe()
-        break;
-    case 405:
-        P_RaidFolkOfTheWindingFlow()
-        break;
-    case 406:
-        P_BarterFolkOfTheWindingFlow()
-        break;
-    case 991:
-        P_River_Expansion()
-        ShowAllCompetition()
-        ContinueToBegin()
-        break;
-    case 992:
-        P_Forest_Expansion()
-        ShowAllCompetition()
-        ContinueToBegin()
-        break;
-    case 993:
-        P_Savanna_Expansion()
-        ShowAllCompetition()
-        ContinueToBegin() 
-        break;
-    case 994:
-        P_Hill_Expansion()
-        ShowAllCompetition()
-        ContinueToBegin() 
-        break; 
-    
-    default:
-        alert("Ya done broke it.  PurchaseUpgradeButton")
-   }    
-    RefreshPage();
 });
-
-function P_Population_Boom(){
-    DecrementSupply(TotalPopulationBoomCost);
-    SelectAndAddRandomNeededTribal();
-    
-}
-
-function P_Boost_Inspiration(){
-    DecrementSupply(TotalInspirationSurplusCost);
-    InspirationSurplus = true
-}
-
-function P_Boost_Domain(){
-    DecrementSupply(TotalDomainSurplusCost);
-    DomainSurplus = true
-}
-
-function P_Boost_Grip(){
-    DecrementSupply(TotalGripSurplusCost);
-    GripSurplus = true
-}
-
-//---------------------------------
-function P_Improve_Hunting_Tools(){
-    DecrementInspiration(HunterToolInspirationCost);
-    ImprovedToolsLevel++
-    HunterMultiplier = HunterMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + Math.floor(HunterMultiplier * 5)
-}
-
-function P_Improve_Crafting_Tools(){
-    DecrementInspiration(CrafterToolInspirationCost);
-    ImprovedToolsLevel++
-    CrafterMultiplier = CrafterMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + Math.floor(CrafterMultiplier * 5)
-}
-
-function P_Improve_Exploring_Tools(){
-    DecrementInspiration(ExplorerToolInspirationCost);
-    ImprovedToolsLevel++
-    ExplorerMultiplier = ExplorerMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + Math.floor(ExplorerMultiplier * 5)
-}
-
-function P_Improve_War_Tools(){
-    DecrementInspiration(WarriorToolInspirationCost);    
-    ImprovedToolsLevel++
-    WarriorMultiplier = WarriorMultiplier + 0.5
-    CurrentInfluence = CurrentInfluence + Math.floor(WarriorMultiplier * 5)
-}
-
-function P_Improve_Culture(){
-    DecrementInspiration(TotalCultureInspirationCost);    
-    CultureLevel++
-}
-//----------------------------
-function P_River_Expansion(){
-    DecrementDomain(TotalExpansionDomainCost);    
-    NumberOfRiverExpansions++
-    HunterExpansionBonus = HunterExpansionBonus + 3
-    CrafterExpansionBonus = CrafterExpansionBonus + 1
-    ExplorerExpansionBonus = ExplorerExpansionBonus + 2
-    WarriorExpansionBonus = WarriorExpansionBonus + 1
-}
-
-function P_Forest_Expansion(){
-    DecrementDomain(TotalExpansionDomainCost);    
-    NumberOfForestExpansions++
-    HunterExpansionBonus = HunterExpansionBonus + 1
-    CrafterExpansionBonus = CrafterExpansionBonus + 3
-    ExplorerExpansionBonus = ExplorerExpansionBonus + 1
-    WarriorExpansionBonus = WarriorExpansionBonus + 2
-}
-
-function P_Savanna_Expansion(){
-    DecrementDomain(TotalExpansionDomainCost);    
-    NumberOfSavannaExpansions++
-    HunterExpansionBonus = HunterExpansionBonus + 2
-    CrafterExpansionBonus = CrafterExpansionBonus + 1
-    ExplorerExpansionBonus = ExplorerExpansionBonus + 3
-    WarriorExpansionBonus = WarriorExpansionBonus + 1
-}
-
-function P_Hill_Expansion(){
-    DecrementDomain(TotalExpansionDomainCost);    
-    NumberOfHillExpansions++
-    HunterExpansionBonus = HunterExpansionBonus + 1
-    CrafterExpansionBonus = CrafterExpansionBonus + 2
-    ExplorerExpansionBonus = ExplorerExpansionBonus + 1
-    WarriorExpansionBonus = WarriorExpansionBonus + 3
-}
+$('#Hill_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
+$('#Hill_Expansion_Intro').click(function(){P_Hill_Expansion();});
 
 
 // Competition Logic ------------------------------------------------------------------------------------
@@ -1145,54 +1119,190 @@ function ContinueToBegin() {
     CurrentPhase = 0;
     if (VictoryOrLossAchieved) {CurrentPhase = 5}
     RefreshPage();
-}
+};
 
-$('#ShiningScalesRaid').click(function(){
+$('#ShiningScalesRaid').hover(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Raid the Shining Scales</span>");
     $('#UpgradeInfoBoxDescription').html("Send a raiding party to aquire resources from their territory. This will increase the tension between your tribes, but slow their progress toward victory.");
-    PurchasedUpgradeLoadedUpgrade = 401;
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#ShiningScalesRaid').click(function(){P_RaidShiningScales();});
+function P_RaidShiningScales() {
+    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {
+        CurrentPhase = 4;        
+        var WarriorsLost = ""
+        var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
+        if (NumberOfWarriorsLost > 0) {
+            if (NumberOfWarriorsLost > Math.floor(CurrentNumberOfWarriors/3)) {NumberOfWarriorsLost = Math.floor(CurrentNumberOfWarriors/3)}
+            CurrentNumberOfWarriors = CurrentNumberOfWarriors - NumberOfWarriorsLost;
+            if (NumberOfWarriorsLost > 1) {WarriorsLost = (NumberOfWarriorsLost + " warriors died during the raid")}
+            else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")}        
+        }
+        
+        ShiningScalesTension = ShiningScalesTension + 8
+        ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4
+        if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0};
+        DecrementGrip(RaidingCost);
+        var WarriorEffectiveness = CurrentNumberOfWarriors    
+        if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
+        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
+        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
+        var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
+           
+        $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
+                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
+                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
+        
+        IncrementSupply(GainedSupply);
+        IncrementInspiration(GainedInspiration);
+        IncrementDomain(GainedDomain);
+        CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
+        
+        $('#ShiningScalesRaid').fadeOut();
+        $('#LongTalonTribeRaid').fadeOut();
+        $('#FolkOfTheWindingFlowRaid').fadeOut();
+        $('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone()};
+};
 
-$('#ShiningScalesBarter').click(function(){
+$('#ShiningScalesBarter').hover(function(){
     $('#UpgradeInfoBoxCost').html(BarteringCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Barter with the Shining Scales</span>");
     $('#UpgradeInfoBoxDescription').html("Send an entourage of warriors, traders, and diplomats to barter with them. This will decrease tension between your tribes and put you both closer to victory.");
-    PurchasedUpgradeLoadedUpgrade = 402;
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#ShiningScalesBarter').click(function(){P_BarterShiningScales();});
+function P_BarterShiningScales() {
+    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {
+        CurrentPhase = 4;
+        ShiningScalesTension = ShiningScalesTension - 4
+        ShiningScalesVictoryLevel++
+        ShiningScalesVictoryLevel++
+        if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
+        DecrementGrip(BarteringCost); 
+        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
+        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
+        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
+        $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
+                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
+                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
+        
+        IncrementSupply(GainedSupply);
+        IncrementInspiration(GainedInspiration);
+        IncrementDomain(GainedDomain);
+        CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
+        
+        $('#ShiningScalesRaid').fadeOut();
+        $('#LongTalonTribeBarter').fadeOut();
+        $('#FolkOfTheWindingFlowBarter').fadeOut();    
+        $('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone()};
+};
 
-$('#ShiningScalesAbout').click(function(){
+$('#ShiningScalesAbout').hover(function(){
     $('#UpgradeInfoBoxCost').html("<br/>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>");
     $('#UpgradeInfoBoxDescription').html("A tribe claiming to have descended from the Ancients of this land, they are friendly enough to who they call newcomers,\
                                          but jealously work to find and protect 'their' relics.");
-    $('#PurchaseUpgradeButton').hide();
-})
+});
 
-$('#LongTalonTribeRaid').click(function(){
+$('#LongTalonTribeRaid').hover(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: OrangeRed;\">Raid the Long Talon Tribe</span>");
     $('#UpgradeInfoBoxDescription').html("Send a raiding party to aquire resources from their territory. This will increase the tension between your tribes, but slow their progress toward victory."); 
-    PurchasedUpgradeLoadedUpgrade = 403;
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
+});
+$('#LongTalonTribeRaid').click(function(){P_RaidLongTalonTribe();});
+function P_RaidLongTalonTribe() {
+    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {
+        CurrentPhase = 4;    
+        var WarriorsLost = ""
+        var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
+        if (NumberOfWarriorsLost > 0) {
+            if (NumberOfWarriorsLost > Math.floor(CurrentNumberOfWarriors/3)) {NumberOfWarriorsLost = Math.floor(CurrentNumberOfWarriors/3)}
+            CurrentNumberOfWarriors = CurrentNumberOfWarriors - NumberOfWarriorsLost;
+            if (NumberOfWarriorsLost > 1) {WarriorsLost  = (NumberOfWarriorsLost + " warriors died during the raid")}
+            else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")}        
+        }
+        
+        LongTalonTribeTension = LongTalonTribeTension + 8
+        LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4
+        if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0};
+        DecrementGrip(RaidingCost);
+        
+        var WarriorEffectiveness = CurrentNumberOfWarriors    
+        if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
+        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
+        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
+        var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1)) 
+        
+        $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
+                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
+                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
+        
+        IncrementSupply(GainedSupply);
+        IncrementInspiration(GainedInspiration);
+        IncrementDomain(GainedDomain);
+        CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
+        
+        $('#ShiningScalesRaid').fadeOut();
+        $('#LongTalonTribeRaid').fadeOut();
+        $('#FolkOfTheWindingFlowRaid').fadeOut();
+        $('#LongTalonTribeBarter').fadeOut();
+        $('#GripUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone()};
+}
 
-$('#LongTalonTribeBarter').click(function(){
+
+$('#LongTalonTribeBarter').hover(function(){
     $('#UpgradeInfoBoxCost').html(BarteringCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: OrangeRed;\">Barter with the Long Talon Tribe</span>");
     $('#UpgradeInfoBoxDescription').html("Send an entourage of warriors, traders, and diplomats to barter with them. This will decrease tension between your tribes and put you both closer to victory.");
-    PurchasedUpgradeLoadedUpgrade = 404;    
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
 
-})
-
-$('#LongTalonTribeAbout').click(function(){
+});
+$('#LongTalonTribeBarter').click(function(){P_BarterLongTalonTribe();});
+function P_BarterLongTalonTribe() {
+    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {    
+        CurrentPhase = 4;
+        LongTalonTribeTension = LongTalonTribeTension - 4
+        LongTalonTribeVictoryLevel++
+        LongTalonTribeVictoryLevel++
+        if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
+        DecrementGrip(BarteringCost); 
+        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
+        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
+        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
+        $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
+                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
+                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
+        
+        IncrementSupply(GainedSupply);
+        IncrementInspiration(GainedInspiration);
+        IncrementDomain(GainedDomain);
+        CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
+        
+        $('#LongTalonTribeRaid').fadeOut();
+        $('#LongTalonTribeBarter').fadeOut();
+        $('#FolkOfTheWindingFlowBarter').fadeOut();    
+        $('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone()};
+}
+$('#LongTalonTribeAbout').hover(function(){
     $('#UpgradeInfoBoxCost').html("<br/>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>");
     $('#UpgradeInfoBoxDescription').html("The Long Talons favor military prowess. They also excel in it. The more impressive the target, the more likely they are to strike.\
@@ -1200,237 +1310,100 @@ $('#LongTalonTribeAbout').click(function(){
     $('#PurchaseUpgradeButton').hide();
 })
 
-$('#FolkOfTheWindingFlowRaid').click(function(){
+$('#FolkOfTheWindingFlowRaid').hover(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">Raid the Folk of the Winding Flow</span>");
     $('#UpgradeInfoBoxDescription').html("Send a raiding party to aquire resources from their territory. This will increase the tension between your tribes, but slow their progress toward victory.");
-    PurchasedUpgradeLoadedUpgrade = 405;
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
-})
 
-$('#FolkOfTheWindingFlowBarter').click(function(){
+});
+$('#FolkOfTheWindingFlowRaid').click(function(){P_RaidFolkOfTheWindingFlow();});
+function P_RaidFolkOfTheWindingFlow() {
+    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0) {
+        CurrentPhase = 4;    
+        var WarriorsLost = ""
+        var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
+        if (NumberOfWarriorsLost > 0) {
+            if (NumberOfWarriorsLost > Math.floor(CurrentNumberOfWarriors/3)) {NumberOfWarriorsLost = Math.floor(CurrentNumberOfWarriors/3)}
+            CurrentNumberOfWarriors = CurrentNumberOfWarriors - NumberOfWarriorsLost;
+            if (NumberOfWarriorsLost > 1) {WarriorsLost  = (NumberOfWarriorsLost + " warriors died during the raid")}
+            else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")} 
+        }
+        
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 8
+        FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4
+        if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0};
+        DecrementGrip(RaidingCost);
+        
+        var WarriorEffectiveness = CurrentNumberOfWarriors    
+        if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
+        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
+        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
+        var GainedDomain = Math.floor((WarriorEffectiveness/2)* ((Math.random() * 2) + 1))
+            
+        $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
+                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
+                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
+        
+        IncrementSupply(GainedSupply);
+        IncrementInspiration(GainedInspiration);
+        IncrementDomain(GainedDomain);
+        CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
+        
+        $('#ShiningScalesRaid').fadeOut();
+        $('#LongTalonTribeRaid').fadeOut();
+        $('#FolkOfTheWindingFlowRaid').fadeOut();
+        $('#FolkOfTheWindingFlowBarter').fadeOut();
+        $('#GripUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone()};
+}
+
+$('#FolkOfTheWindingFlowBarter').hover(function(){
     $('#UpgradeInfoBoxCost').html(BarteringCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">Barter with the Folk of the Winding Flow</span>");
     $('#UpgradeInfoBoxDescription').html("Send an entourage of warriors, traders, and diplomats to barter with them. This will decrease tension between your tribes and put you both closer to victory.");
-    PurchasedUpgradeLoadedUpgrade = 406;
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {$('#PurchaseUpgradeButton').show();}
-    else{$('#PurchaseUpgradeButton').hide();}
 })
+$('#FolkOfTheWindingFlowBarter').click(function(){P_BarterFolkOfTheWindingFlow();});
+function P_BarterFolkOfTheWindingFlow() {
+    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0) {
+        CurrentPhase = 4;
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4
+        FolkOfTheWindingFlowVictoryLevel++
+        FolkOfTheWindingFlowVictoryLevel++
+        if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
+        DecrementGrip(BarteringCost); 
+        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
+        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
+        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
+        $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>: \
+                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
+                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
+        
+        IncrementSupply(GainedSupply);
+        IncrementInspiration(GainedInspiration);
+        IncrementDomain(GainedDomain);
+        CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
+        
+        $('#FolkOfTheWindingFlowRaid').fadeOut();
+        $('#LongTalonTribeBarter').fadeOut();
+        $('#FolkOfTheWindingFlowBarter').fadeOut();    
+        $('#ShiningScalesBarter').fadeOut();
+        $('#GripUpgrades').hide();
+        RefreshPage();
+    }else{CannotBeDone()};
+}
 
-$('#FolkOfTheWindingFlowAbout').click(function(){
+$('#FolkOfTheWindingFlowAbout').hover(function(){
     $('#UpgradeInfoBoxCost').html("<br/>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">The Folk of the Winding Flow</span>");
     $('#UpgradeInfoBoxDescription').html("The Folk of the Winding Flow are a cultured and artistic tribe. They are relatively peaceful, more interested in spreading their ideas than their bloodline.");
     $('#PurchaseUpgradeButton').hide();
 })
-
-function P_RaidShiningScales() {
-    CurrentPhase = 4;
-    
-    var WarriorsLost = ""
-    var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
-    if (NumberOfWarriorsLost > 0) {
-        if (NumberOfWarriorsLost > Math.floor(CurrentNumberOfWarriors/3)) {NumberOfWarriorsLost = Math.floor(CurrentNumberOfWarriors/3)}
-        CurrentNumberOfWarriors = CurrentNumberOfWarriors - NumberOfWarriorsLost;
-        if (NumberOfWarriorsLost > 1) {WarriorsLost = (NumberOfWarriorsLost + " warriors died during the raid")}
-        else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")}        
-    }
-    
-    ShiningScalesTension = ShiningScalesTension + 8
-    ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4
-    if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0};
-    DecrementGrip(RaidingCost);
-    var WarriorEffectiveness = CurrentNumberOfWarriors    
-    if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
-    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
-    var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
-       
-    $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
-                                <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
-    
-    IncrementSupply(GainedSupply);
-    IncrementInspiration(GainedInspiration);
-    IncrementDomain(GainedDomain);
-    CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
-    
-    $('#ShiningScalesRaid').fadeOut();
-    $('#LongTalonTribeRaid').fadeOut();
-    $('#FolkOfTheWindingFlowRaid').fadeOut();
-    $('#ShiningScalesBarter').fadeOut();
-}
-
-function P_BarterShiningScales() {
-    CurrentPhase = 4;
-    ShiningScalesTension = ShiningScalesTension - 4
-    ShiningScalesVictoryLevel++
-    ShiningScalesVictoryLevel++
-    if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
-    DecrementGrip(BarteringCost); 
-    var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
-    var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
-    $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
-                                <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
-    
-    IncrementSupply(GainedSupply);
-    IncrementInspiration(GainedInspiration);
-    IncrementDomain(GainedDomain);
-    CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
-    
-    $('#ShiningScalesRaid').fadeOut();
-    $('#LongTalonTribeBarter').fadeOut();
-    $('#FolkOfTheWindingFlowBarter').fadeOut();    
-    $('#ShiningScalesBarter').fadeOut();
-}
-
-
-function P_RaidLongTalonTribe() {
-    CurrentPhase = 4;
-    
-    var WarriorsLost = ""
-    var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
-    if (NumberOfWarriorsLost > 0) {
-        if (NumberOfWarriorsLost > Math.floor(CurrentNumberOfWarriors/3)) {NumberOfWarriorsLost = Math.floor(CurrentNumberOfWarriors/3)}
-        CurrentNumberOfWarriors = CurrentNumberOfWarriors - NumberOfWarriorsLost;
-        if (NumberOfWarriorsLost > 1) {WarriorsLost  = (NumberOfWarriorsLost + " warriors died during the raid")}
-        else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")}        
-    }
-    
-    LongTalonTribeTension = LongTalonTribeTension + 8
-    LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4
-    if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0};
-    DecrementGrip(RaidingCost);
-    
-    var WarriorEffectiveness = CurrentNumberOfWarriors    
-    if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
-    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
-    var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
-    var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
- 
-    
-    $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
-                                <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
-    
-    IncrementSupply(GainedSupply);
-    IncrementInspiration(GainedInspiration);
-    IncrementDomain(GainedDomain);
-    CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
-    
-    $('#ShiningScalesRaid').fadeOut();
-    $('#LongTalonTribeRaid').fadeOut();
-    $('#FolkOfTheWindingFlowRaid').fadeOut();
-    $('#LongTalonTribeBarter').fadeOut();
-}
-
-function P_BarterLongTalonTribe() {
-    CurrentPhase = 4;
-    LongTalonTribeTension = LongTalonTribeTension - 4
-    LongTalonTribeVictoryLevel++
-    LongTalonTribeVictoryLevel++
-    if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
-    DecrementGrip(BarteringCost); 
-    var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
-    var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
-    var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
-    $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
-                                <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
-    
-    IncrementSupply(GainedSupply);
-    IncrementInspiration(GainedInspiration);
-    IncrementDomain(GainedDomain);
-    CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
-    
-    $('#LongTalonTribeRaid').fadeOut();
-    $('#LongTalonTribeBarter').fadeOut();
-    $('#FolkOfTheWindingFlowBarter').fadeOut();    
-    $('#ShiningScalesBarter').fadeOut();
-}
-
-function P_RaidFolkOfTheWindingFlow() {
-    CurrentPhase = 4;
-    
-    var WarriorsLost = ""
-    var NumberOfWarriorsLost = Math.floor(((Math.random() * (CurrentNumberOfWarriors/2))))
-    if (NumberOfWarriorsLost > 0) {
-        if (NumberOfWarriorsLost > Math.floor(CurrentNumberOfWarriors/3)) {NumberOfWarriorsLost = Math.floor(CurrentNumberOfWarriors/3)}
-        CurrentNumberOfWarriors = CurrentNumberOfWarriors - NumberOfWarriorsLost;
-        if (NumberOfWarriorsLost > 1) {WarriorsLost  = (NumberOfWarriorsLost + " warriors died during the raid")}
-        else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")} 
-    }
-    
-    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 8
-    FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4
-    if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0};
-    DecrementGrip(RaidingCost);
-    
-    var WarriorEffectiveness = CurrentNumberOfWarriors    
-    if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
-    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
-    var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
-    var GainedDomain = Math.floor((WarriorEffectiveness/2)* ((Math.random() * 2) + 1))
-        
-    $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
-                                <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
-    
-    IncrementSupply(GainedSupply);
-    IncrementInspiration(GainedInspiration);
-    IncrementDomain(GainedDomain);
-    CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
-    
-    $('#ShiningScalesRaid').fadeOut();
-    $('#LongTalonTribeRaid').fadeOut();
-    $('#FolkOfTheWindingFlowRaid').fadeOut();
-    $('#FolkOfTheWindingFlowBarter').fadeOut();
-
-}
-
-function P_BarterFolkOfTheWindingFlow() {
-    CurrentPhase = 4;
-    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4
-    FolkOfTheWindingFlowVictoryLevel++
-    FolkOfTheWindingFlowVictoryLevel++
-    if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
-    DecrementGrip(BarteringCost); 
-    var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
-    var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
-    var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
-    $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>: \
-                                <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
-    
-    IncrementSupply(GainedSupply);
-    IncrementInspiration(GainedInspiration);
-    IncrementDomain(GainedDomain);
-    CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
-    
-    $('#FolkOfTheWindingFlowRaid').fadeOut();
-    $('#LongTalonTribeBarter').fadeOut();
-    $('#FolkOfTheWindingFlowBarter').fadeOut();    
-    $('#ShiningScalesBarter').fadeOut();
-
-}
 
 // Events Logic --------------------------------------------------------------------------------------
 
@@ -1603,7 +1576,7 @@ function CalculateEvent() {
             var UncategorizedEvent = Math.floor((Math.random() * 4) + 1);
             switch (UncategorizedEvent) {
                 case 1:
-                    if (CurrentDomain > (TotalDiscoveryDomainCost) && !(CurrentDiscovery == 5) && NeedToFindEvent) {
+                    if (CurrentDomain >= (TotalDiscoveryDomainCost) && !(CurrentDiscovery == 5) && NeedToFindEvent) {
                         E_Discover();
                         NeedToFindEvent= false; 
                     }else{E_DiscoverNotEnough(); NeedToFindEvent= false;}
@@ -1618,7 +1591,7 @@ function CalculateEvent() {
                     }
                     break;
                 case 3:
-                    if (NeedToFindEvent && CurrentInspiration > TotalInventionInspirationCost) {
+                    if (NeedToFindEvent && CurrentInspiration >= TotalInventionInspirationCost) {
                        var RandomInvention = Math.floor((Math.random() * 2) + 1);
                        switch (RandomInvention) {
                            case 1:
@@ -2259,14 +2232,15 @@ function EC_Pottery_InventPottery() {
     $('#EventOption1Button').show();
 }
 
-$('#Pottery').click(function() {
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Pottery");
-    $('#UpgradeInfoBoxDescription').html("Pottery, crafted from clay, more easily holds goods for transport and storage.\
-                                         <br/><span class=\"OOC\">Increases the effectiveness of Surplus by 0.5.</span>");
-    $('#PurchaseUpgradeButton').hide();
-    
-})
+$('#Pottery').mouseenter(function() {
+    if (CurrentPhase == 0) {
+        $('#UpgradeInfoBoxCost').html("");
+        $('#UpgradeInfoBoxHeader').html("Pottery");
+        $('#UpgradeInfoBoxDescription').html("Pottery, crafted from clay, more easily holds goods for transport and storage.\
+                                             <br/><span class=\"OOC\">Increases the effectiveness of Surplus by 0.5.</span>");
+    }    
+});
+$('#Pottery').mouseleave(function() {ClearUpgradeBox()});
 
 // Improved War Tactics ----------------------------------------
 
@@ -2300,14 +2274,15 @@ function EC_ImprovedWarTactics_InventImprovedWarTactics() {
     $('#EventOption1Button').show();
 }
 
-$('#War_Tactics').click(function() {
+$('#War_Tactics').mouseenter(function() {
+    if (CurrentPhase == 0) {    
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("War Tactics");
     $('#UpgradeInfoBoxDescription').html("Innovative minds have devised methods of war that grant an edge during raids.\
                                          <br/><span class=\"OOC\">Increases the effectiveness of your Warriors during raids by 0.5.</span>");
-    $('#PurchaseUpgradeButton').hide();
-    
-})
+    }
+});
+$('#War_Tactics').mouseleave(function() {ClearUpgradeBox()});
 
 // Demand Tribute----------------------------------------
 
@@ -2569,12 +2544,12 @@ function EC_WaywardAndDesperate_Aid() {
         case 1:
             LongTalonTribeTension--;
             LongTalonTribeTension--;
-            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
+            if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
             break;
         case 2:
             ShiningScalesTension--;
             ShiningScalesTension--;
-            if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
+            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 3:
             FolkOfTheWindingFlowTension--;
@@ -2671,8 +2646,6 @@ function EC_Alliance_Assist() {
             break;
     }
     
-    CurrentSupremacy = CurrentSupremacy + CurrentNumberOfWarriors;
-    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2688,15 +2661,12 @@ function EC_Alliance_TurnAway() {
  
     switch (SelectedRandomRivalValue) {
         case 1:
-            LongTalonTribeTension++;
-            LongTalonTribeTension++;
+            ShiningScalesTension++;
             break;
         case 2:
-            ShiningScalesTension++;
-            ShiningScalesTension++;
+            LongTalonTribeTension++;
             break;
         case 3:
-            FolkOfTheWindingFlowTension++;
             FolkOfTheWindingFlowTension++;
             break;
     }
@@ -2718,26 +2688,26 @@ function E_CouncilOfElders() {
     $('#EventResultBoxHeader').html("Council Of Elders")
 
     $('#EventNar').html("A council of Elders is called in your Tribe to discuss your agenda for the coming age. Which will you adapt? \
-                        This agenda will remain for 8 Eras or until a new Council is called.");
+                        This agenda will remain for 10 Eras or until a new Council is called.");
     
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Path of War:<br/>\
-                                    <br/>This will increase Tension growth each Era while improving the effectiveness of your raids.");
+    $('#EventOption1Description').html("<span class=\"LargerText\">Path of War</span><br/>\
+                                    This will increase Tension growth each Era while improving the effectiveness of your raids.");
     $('#EventOption1Button').show();
     
     $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Path of Peace:<br/>\
-                                       <br/>This will slow the Increase of Tension over time.  You will not be allowed to Raid.");
+    $('#EventOption2Description').html("<span class=\"LargerText\">Path of Peace</span><br/>\
+                                       This will slow the Increase of Tension over time.  You will not be allowed to Raid.");
     $('#EventOption2Button').show();
     
     $('#EventOption3Description').show();
-    $('#EventOption3Description').html("Path of Seclusion:<br/>\
-                                       <br/>This will forbid your Tribe from Bartering or Raiding as they focus inward. Your bounty will increase for each resource.");
+    $('#EventOption3Description').html("<span class=\"LargerText\">Path of Seclusion</span><br/>\
+                                       This will forbid your Tribe from Bartering or Raiding as they focus inward. Your bounty will increase for each resource.");
     $('#EventOption3Button').show();
     
     $('#EventOption4Description').show();
-    $('#EventOption4Description').html("The Middle Path:<br/>\
-                                       <br/>This will have no effect on your Tribe, keeping your options open.");
+    $('#EventOption4Description').html("<span class=\"LargerText\">The Middle Path</span><br/>\
+                                       This will have no effect on your Tribe, keeping your options open.");
     $('#EventOption4Button').show();
     EventLoadedValue = 306;    
 }
@@ -2762,7 +2732,7 @@ function EC_CouncilOfElders_PathOfPeace() {
     $('#Path_Of_Peace').show();
     $('#Path_Of_Seclusion').hide();
     Agenda = 2;
-    AgendaDuration = 8;    
+    AgendaDuration = 10;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2777,7 +2747,7 @@ function EC_CouncilOfElders_PathOfSeclusion() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').show();
     Agenda = 3;
-    AgendaDuration = 8;    
+    AgendaDuration = 10;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2792,7 +2762,7 @@ function EC_CouncilOfElders_MiddlePath() {
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').hide();
     Agenda = 0;
-    AgendaDuration = 8;    
+    AgendaDuration = 10;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2802,29 +2772,34 @@ function EC_CouncilOfElders_MiddlePath() {
     $('#EventOption1Button').show();
 }
 
-$('#Path_Of_War').click(function(){
+$('#Path_Of_War').mouseenter(function(){
+    if (CurrentPhase == 0) {
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("Path of War");
     $('#UpgradeInfoBoxDescription').html("You have chosen the Path of War. May your enemies feel your wrath!\
                                          <br/><span class=\"OOC\"> Your Warriors contribute twice as much during raids. But your tension increases twice as fast each era.<br/>"+AgendaDuration+" turns remaining.</span>");
-    $('#PurchaseUpgradeButton').hide();
+    }
 })
+$('#Path_Of_War').mouseleave(function(){ClearUpgradeInfoBox();})
 
-$('#Path_Of_Peace').click(function(){
-    $('#UpgradeInfoBoxCost').html("");
+$('#Path_Of_Peace').mouseenter(function(){
+    if (CurrentPhase == 0) {
     $('#UpgradeInfoBoxHeader').html("Path of Peace");
     $('#UpgradeInfoBoxDescription').html("You have chosen the Path of Peace. May you live long and prosper.\
                                          <br/><span class=\"OOC\"> You cannot Raid, but your tension increases half as fast each era.<br/>"+AgendaDuration+" turns remaining.</span>");
-    $('#PurchaseUpgradeButton').hide();
+    }
 })
+$('#Path_Of_Peace').mouseleave(function(){ClearUpgradeInfoBox();})
 
-$('#Path_Of_Seclusion').click(function(){
+$('#Path_Of_Seclusion').mouseenter(function(){
+    if (CurrentPhase == 0) {
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("Path of Seclusion");
     $('#UpgradeInfoBoxDescription').html("You have chosen the Path of Seclusion. Security, Solidarity, and inner growth will be your bounty.\
                                          <br/><span class=\"OOC\"> You cannot Raid or Barter. But, your Bounty will be multiplied by 1.5. <br/>"+AgendaDuration+" turns remaining.</span>");
-    $('#PurchaseUpgradeButton').hide();
+    }
 })
+$('#Path_Of_Seclusion').mouseleave(function(){ClearUpgradeInfoBox();})
 
 // Discovery Logic ---------------------------------------------------------------
 
@@ -2921,38 +2896,45 @@ function EC_ClaimDiscovery(){
     $('#EventOption1Button').show();  
 }
 
-$('#Map_Of_The_Ancients').click(function(){
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Map of the Ancients");
-    $('#UpgradeInfoBoxDescription').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
-                                         From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
-                                         some known but much unknown to your tribe.\
-                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era. \
-                                         <br/>Current gain: </span>" + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
-    $('#PurchaseUpgradeButton').hide();
-})
+$('#Map_Of_The_Ancients').mouseenter(function(){
+    if (CurrentPhase == 0) {
+        $('#UpgradeInfoBoxCost').html("");
+        $('#UpgradeInfoBoxHeader').html("Map of the Ancients");
+        $('#UpgradeInfoBoxDescription').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
+                                             From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
+                                             some known but much unknown to your tribe.\
+                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era.The amount gained increases each Era. \
+                                             <br/>Current gain: </span>" + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
+    }
+});
+$('#Map_Of_The_Ancients').mouseleave(function(){ClearUpgradeInfoBox();})
 
-$('#Ancient_Garden').click(function(){
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Ancient Garden");
-    $('#UpgradeInfoBoxDescription').html("Your explorers have discovered a deeply hidden grove marked with the serpent symbol of those that came before. \
-                                         Within the grove, fruits and berries grow in abundant quantity and to great size. So too do the beasts.\
-                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Supply. The amount gained increases each Era. \
-                                         <br/>Current gain: </span>" + (AncientGarden) + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
-    $('#PurchaseUpgradeButton').hide();
-})
+$('#Ancient_Garden').mouseenter(function(){
+    if (CurrentPhase == 0) {
+        $('#UpgradeInfoBoxCost').html("");
+        $('#UpgradeInfoBoxHeader').html("Ancient Garden");
+        $('#UpgradeInfoBoxDescription').html("Your explorers have discovered a deeply hidden grove marked with the serpent symbol of those that came before. \
+                                             Within the grove, fruits and berries grow in abundant quantity and to great size. So too do the beasts.\
+                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Supply. The amount gained increases each Era. \
+                                             <br/>Current gain: </span>" + (AncientGarden) + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
+    }
+});
+$('#Ancient_Garden').mouseleave(function(){ClearUpgradeInfoBox();})
 
-$('#Ancient_Cache').click(function(){
-    var CalculatedBounty = Math.floor((AncientCache + 3)/ 3);
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Ancient Cache");
-    $('#UpgradeInfoBoxDescription').html("A cave lined with stone carved serpent motif contains a cache of tools made with strange but effective designs and materials.\
-                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Overall. The amount gained increases each Era. \
-                                         <br/>Current gain: </span>" + CalculatedBounty + " to each.");
-    $('#PurchaseUpgradeButton').hide();
-})
+$('#Ancient_Cache').mouseenter(function(){
+    if (CurrentPhase == 0) {
+        var CalculatedBounty = Math.floor((AncientCache + 3)/ 3);
+        $('#UpgradeInfoBoxCost').html("");
+        $('#UpgradeInfoBoxHeader').html("Ancient Cache");
+        $('#UpgradeInfoBoxDescription').html("A cave lined with stone carved serpent motif contains a cache of tools made with strange but effective designs and materials.\
+                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Overall. The amount gained increases each Era. \
+                                             <br/>Current gain: </span>" + CalculatedBounty + " to each.");
+    }
+});
+$('#Ancient_Cache').mouseleave(function(){ClearUpgradeInfoBox();})
 
-$('#Pinnacle_Stone').click(function(){
+$('#Pinnacle_Stone').mouseenter(function(){
+    if (CurrentPhase == 0) {
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("Pinnacle Stone");
     $('#UpgradeInfoBoxDescription').html("The giant stone monolith at the pinnacle of this great expanse is, at a distance, a towering coiled serpent. \
@@ -2960,18 +2942,21 @@ $('#Pinnacle_Stone').click(function(){
                                          highlighting the life and ways of those who came before.\
                                          <br/><span class=\"OOC\"> At the start of each Era, gain some Inspiration. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (PinnacleStone) + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
-    $('#PurchaseUpgradeButton').hide();
-})
+    }
+});
+$('#Pinnacle_Stone').mouseleave(function(){ClearUpgradeInfoBox();})
 
-$('#Spear_Of_The_Ancients').click(function(){
+$('#Spear_Of_The_Ancients').mouseenter(function(){
+    if (CurrentPhase == 0) {
     $('#UpgradeInfoBoxCost').html("");
     $('#UpgradeInfoBoxHeader').html("Spear Of The Ancients");
     $('#UpgradeInfoBoxDescription').html("An alien spear is found lodged in the roots of an ancient tree. The shaft of the spear is appears wrapped \
                                          in serpents and the head shines like the sun. The weapon is found to best any match when tested.\
                                          <br/><span class=\"OOC\"> At the start of each Era, gain some Grip. The amount gained increases each Era. \
                                          <br/>Current gain: </span>" + (SpearOfTheAncients) + " <span style=\"color: grey;\">Grip</span>");
-    $('#PurchaseUpgradeButton').hide();
-})
+    }
+});
+$('#Spear_Of_The_Ancients').mouseleave(function(){ClearUpgradeInfoBox();})
 
 
 //Competition-----------
