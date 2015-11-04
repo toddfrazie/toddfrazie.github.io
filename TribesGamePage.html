@@ -170,17 +170,18 @@
 							  </tr>
 							</table>
 							<h4><span style="color: rgb(178, 0, 0);">Supply</span> <span id="StashedSupply"></span></h4>
-							<h4 id="SupplyUpgradesClick" title='click to select upgrades'>&#711;</h4>
+							<div id="SupplyUpgrades" class="HiddenSupplyUpgradeBox">
+							  <h4>&#711;</h4>
+							  <button id="Population_Boom" class="Upgrade">Population Boom</button>
+							  <button id="Boost_Domain" class="Upgrade">Boost Domain</button>
+							  <button id="Boost_Inspiration" class="Upgrade">Boost Inspiration</button>
+							  <button id="Boost_Grip" class="Upgrade">Boost Grip</button>
+							</div>
 						  </div>
 						</div>
 					  </div>
 					  
-					  <div id="SupplyUpgrades" class="HiddenUpgradeBox">
-							<button id="Population_Boom" class="Upgrade">Population Boom</button>
-							<button id="Boost_Domain" class="Upgrade">Boost Domain</button>
-							<button id="Boost_Inspiration" class="Upgrade">Boost Inspiration</button>
-							<button id="Boost_Grip" class="Upgrade">Boost Grip</button>
-					  </div>
+
 					  
 					  <div class="row">
 						<div class="SquarePanel">
@@ -199,17 +200,18 @@
 							  </tr>
 							</table>
 							<h4><span style="color: rgb(207, 166, 0);">Domain</span> <span id="StashedDomain"></span></h4>
-							<h4 id="DomainUpgradesClick" title='click to select upgrades'>&#711;</h4>
+							<div id="DomainUpgrades" class="HiddenDomainUpgradeBox">
+							  <h4>&#711;</h4>
+							  <button id="River_Expansion" class="Upgrade">River Expansion</button>
+							  <button id="Savanna_Expansion" class="Upgrade">Savanna Expansion</button>
+							  <button id="Forest_Expansion" class="Upgrade">Forest Expansion</button>
+							  <button id="Hill_Expansion" class="Upgrade">Hill Expansion</button>
+							</div>
 						  </div>
 						</div>
 					  </div>
 					  
-					  <div id="DomainUpgrades" class="HiddenUpgradeBox">
-							<button id="River_Expansion" class="Upgrade">River Expansion</button>
-							<button id="Savanna_Expansion" class="Upgrade">Savanna Expansion</button>
-							<button id="Forest_Expansion" class="Upgrade">Forest Expansion</button>
-							<button id="Hill_Expansion" class="Upgrade">Hill Expansion</button>
-					  </div>
+
 					  
 					  <div class="row">
 						<div class="SquarePanel">
@@ -228,18 +230,20 @@
 							  </tr>
 							</table>
 							<h4><span style="color: rgb(36, 71, 178);">Inspiration</span> <span id="StashedInspiration"></span></h4>
-							<h4 id="InspirationUpgradesClick" title='click to select upgrades'>&#711;</h4>
+							<div id="InspirationUpgrades" class="HiddenInspirationUpgradeBox">
+							  <h4>&#711;</h4>
+							  <button id="Improve_Hunting_Tools" class="Upgrade">Improve Hunting Tools</button>
+							  <button id="Improve_Exploring_Tools" class="Upgrade">Improve Exploring Tools</button>
+							  <button id="Improve_Crafting_Tools" class="Upgrade">Improve Crafting Tools</button>
+							  <button id="Improve_War_Tools" class="Upgrade">Improve War Tools</button>
+							  <button id="Improve_Culture" class="Upgrade">Cultural Innovation</button>	
+							</div>
+							
 						  </div>
 						</div>
 					  </div>
 					  
-					  <div id="InspirationUpgrades" class="HiddenUpgradeBox">
-							<button id="Improve_Hunting_Tools" class="Upgrade">Improve Hunting Tools</button>
-							<button id="Improve_Exploring_Tools" class="Upgrade">Improve Exploring Tools</button>
-							<button id="Improve_Crafting_Tools" class="Upgrade">Improve Crafting Tools</button>
-							<button id="Improve_War_Tools" class="Upgrade">Improve War Tools</button>
-							<button id="Improve_Culture" class="Upgrade">Cultural Innovation</button>	
-					  </div>
+
 					  
 					  <div class="row">
 						<div class="SquarePanel">
@@ -258,22 +262,22 @@
 							  </tr>
 							</table>		
 							<h4><span style="color: grey;">Grip</span> <span id="StashedGrip"></span></h4>
-							<h4 id="GripUpgradesClick" title='click to select upgrades'>&#711;</h4>
+							<div id="GripUpgrades" class="HiddenGripUpgradeBox">
+							  <h4>&#711;</h4>
+							  <h5 style="color: OrangeRed; font-weight: bold;" id="LongTalonTribeAbout">Long Talon Tribe</h5>
+							  <button id="LongTalonTribeRaid">Raid</button>
+							  <button id="LongTalonTribeBarter">Barter</button>
+							  <h5 style="color: DarkGoldenRod; font-weight: bold;" id="ShiningScalesAbout">Shining Scales</h5>
+							  <button id="ShiningScalesRaid">Raid</button>
+							  <button id="ShiningScalesBarter">Barter</button>
+							  <h5 style="color: Aqua; font-weight: bold;" id="FolkOfTheWindingFlowAbout">Folk Of The Winding Flow</h5>
+							  <button id="FolkOfTheWindingFlowRaid">Raid</button>
+							  <button id="FolkOfTheWindingFlowBarter">Barter</button>
+							</div>							
 						  </div>
 						</div>
-					  </div>
-					  
-					  <div id="GripUpgrades" class="HiddenUpgradeBox">
-						<h5 style="color: OrangeRed; font-weight: bold;" id="LongTalonTribeAbout">Long Talon Tribe</h5>
-						<button id="LongTalonTribeRaid">Raid</button>
-						<button id="LongTalonTribeBarter">Barter</button>
-						<h5 style="color: DarkGoldenRod; font-weight: bold;" id="ShiningScalesAbout">Shining Scales</h5>
-						<button id="ShiningScalesRaid">Raid</button>
-						<button id="ShiningScalesBarter">Barter</button>
-						<h5 style="color: Aqua; font-weight: bold;" id="FolkOfTheWindingFlowAbout">Folk Of The Winding Flow</h5>
-						<button id="FolkOfTheWindingFlowRaid">Raid</button>
-						<button id="FolkOfTheWindingFlowBarter">Barter</button>
-					  </div>
+					  </div>	  
+
 					  					
 			
 
