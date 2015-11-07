@@ -75,8 +75,8 @@ var SpearOfTheAncients = 0;
 var RaidingCost = 0;
 var BarteringCost = 0;
 
-var ShiningScalesVictoryLevel = 1;
 var LongTalonTribeVictoryLevel = 1;
+var ShiningScalesVictoryLevel = 1;
 var FolkOfTheWindingFlowVictoryLevel = 1;
 var VictoryLevelCap = 50;
 var VictoryOrLossAchieved = false;
@@ -104,9 +104,8 @@ window.onload = function() {
     $("#IntroDivHeader").html("New World")
     $("#IntroDivStory").html("You arrive in this new world with your kin and a handful of resources, not least of which is hope. \
                              The great serpent monolith looms in the distance.\
-                             You are quickly faced with your first decision. Where will you settle? \
-                             <br/><span class=\"OOC\">Select a location from the options below to learn more.</span>")
-    RefreshPage();
+                             You are quickly faced with your first decision. Where will you settle?")
+    RefreshPage();    
 };
 
 
@@ -250,7 +249,7 @@ function RefreshPage(){
             $('#GripUpgrades').hide();
             break;
         case 99:
-            $('#IntroDiv').fadeIn();
+            $('#IntroDiv').fadeIn(1500);
             $('#BeginEra').hide();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -540,7 +539,12 @@ function ChangeWarriorStats(NoW){
 }
 
 //Caculate Era Results.----------------------------------------------------------------------------
-
+$('#BeginEra').mouseenter(function(){
+    $('#UpgradeInfoBoxCost').html("");
+    $('#UpgradeInfoBoxHeader').html("<span class=\"LargerText;\">Begin Fruition</span>");
+    $('#UpgradeInfoBoxDescription').html("Leave the Provision Phase and begin the Fruition Phase.");
+})
+$('#BeginEra').mouseleave(function(){ClearUpgradeInfoBox();})
 $('#BeginEra').click(BeginEra);
 function BeginEra() {
     CurrentPhase = 1;
@@ -1342,7 +1346,7 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-
+    
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
         case 1:
@@ -1603,6 +1607,15 @@ $('#EventOption1Button').click(function(){
     case 306:
         EC_CouncilOfElders_PathOfWar();
         break;
+    case 401:
+        CalculateLongTalonTribeRaided_DefendResources();
+        break;
+    case 402:
+        CalculateShiningScalesRaided_DefendResources();
+        break;
+    case 403:
+        CalculateFolkOfTheWindingFlowRaided_DefendResources();
+        break;
     case 998:
         CalculateEvent();
         break;
@@ -1667,6 +1680,15 @@ $('#EventOption2Button').click(function(){
     case 306:
         EC_CouncilOfElders_PathOfPeace();
         break;
+    case 401:
+        CalculateLongTalonTribeRaided_DefendInterests();
+        break;
+    case 402:
+        CalculateShiningScalesRaided_DefendInterests();
+        break;
+    case 403:
+        CalculateFolkOfTheWindingFlowRaided_DefendInterests();
+        break;
     default:
         alert("Ya done broke it.  EventOption2")
    }
@@ -1688,6 +1710,15 @@ $('#EventOption3Button').click(function(){
         EC_CouncilOfElders_PathOfSeclusion();
         break;
     default:
+    case 401:
+        CalculateLongTalonTribeRaided_FullDefense();
+        break;
+    case 402:
+        CalculateShiningScalesRaided_FullDefense();
+        break;
+    case 403:
+        CalculateFolkOfTheWindingFlowRaided_FullDefense();
+        break;
         alert("Ya done broke it.  EventOption3")
    }
 });
@@ -1697,6 +1728,15 @@ $('#EventOption4Button').click(function(){
    switch (EventLoadedValue) {
     case 306:
         EC_CouncilOfElders_MiddlePath()
+        break;
+    case 401:
+        CalculateLongTalonTribeRaided_Undefended()
+        break;
+    case 402:
+        CalculateShiningScalesRaided_Undefended()
+        break;
+    case 403:
+        CalculateFolkOfTheWindingFlowRaided_Undefended();
         break;
     default:
         alert("Ya done broke it.  EventOption4")
@@ -2889,206 +2929,472 @@ $('#Spear_Of_The_Ancients').mouseenter(function(){
 });
 $('#Spear_Of_The_Ancients').mouseleave(function(){ClearUpgradeInfoBox();})
 
-
 //Competition-----------
-
 
 function ShowEventEnd() {
     RefreshEvent();
     EventLoadedValue = 1000;
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Calm")    
-    $('#EventNar').html("Your relationships with the neighboring tribes is calm for now. <br/>A new Era Begins.");        
+    $('#EventNar').html("A new Era Begins.");        
     $('#EventOption1Button').show();
     RefreshPage();
 }
 
-function CalculateShiningScalesRaided() {
-    ShiningScalesVictoryLevel++
-    var LostSupply = Math.floor((1 * ShiningScalesVictoryLevel)/2);
-    var LostInspiration = Math.floor((2 * ShiningScalesVictoryLevel)/2);
-    var LostDomain = Math.floor((3 * ShiningScalesVictoryLevel)/2);
-    var LostGrip = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+function CalculateLongTalonTribeRaided() {    
+    var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
+    var DoubleGripCost = Math.floor(GripCost*2.5)
     
-    if (CurrentGrip > LostGrip) {LostSupply,LostInspiration,LostDomain = 0;
-    }else{
-        LostSupply = LostSupply - (LostGrip);
-        LostInspiration = LostInspiration - (LostGrip);
-        LostDomain = LostDomain - (LostGrip);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
+    $('#EventNar').html("The <span style=\"color: OrangeRed;\">Long Talon Tribe</span> is Raiding you! They are pillaging your territory for <span style=\"color: rgb(178, 0, 0);\">Supply</span> and belittling your supremacy with shows of power.<br/> \
+                        How will you protect what is yours?");
+    
+    if (CurrentSupply > 0) {
+        $('#EventOption1Description').show();
+        $('#EventOption1Description').html("Defend Resources\
+                                        <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
+        $('#EventOption1Button').show();
+    }    
+    if (CurrentSupremacy > 0) {
+        $('#EventOption2Description').show();
+        $('#EventOption2Description').html("Defend Interests\
+                                           <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Supremacy.");
+        $('#EventOption2Button').show();
     }
-    if (LostSupply < 0) {LostSupply = 0}
-    if (LostInspiration < 0) {LostInspiration = 0}
-    if (LostDomain < 0) {LostDomain = 0}
-    
-    if (LostSupply > CurrentSupply) {LostSupply = CurrentSupply}
-    if (LostInspiration > CurrentInspiration) {LostInspiration = CurrentInspiration}
-    if (LostDomain > CurrentDomain) {LostDomain = CurrentDomain}
-    
-    DecrementGrip(LostGrip);
-    
-    DecrementSupply(LostSupply);
-    DecrementInspiration(LostInspiration);
-    DecrementDomain(LostDomain);
-    
-    var TribalsLost = "";
-    if (ShiningScalesVictoryLevel < (VictoryLevelCap/4)) {
-                //No Tribals Lost
-    }else if (ShiningScalesVictoryLevel < (VictoryLevelCap/3)) {
-        SelectAndRemoveSelectedRandomTribal();
-        TribalsLost = "One of your tribe members was killed in the raid in addition to other losses.";
-    }else if (ShiningScalesVictoryLevel < (VictoryLevelCap/2)) {
-        SelectAndRemoveSelectedRandomTribal();        
-        SelectAndRemoveSelectedRandomTribal();        
-        TribalsLost = "<br/> Two of your Tribe members were killed in the Raid as well.";
-    }else if (ShiningScalesVictoryLevel < (VictoryLevelCap/1.2)) {
-        SelectAndRemoveSelectedRandomTribal();        
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        TribalsLost = "<br/> Several of your Tribe members were killed in the Raid as well.";
+    if (CurrentGrip >= DoubleGripCost && CurrentSupremacy > 0 && CurrentSupply > 0) {
+        $('#EventOption3Description').show();
+        $('#EventOption3Description').html("Full Defense\
+                                           <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
+        $('#EventOption3Button').show();
     }
     
-    $('#EventNar').html("The <span style=\"color: DarkGoldenRod;\">Shining Scales</span> have Raided you! They managed to take or destroy the following: \
-                            <br/>" + LostSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                            <br/>" + LostDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span> \
-                            <br/>" + LostInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                            <br/>" + LostGrip + " <span style=\"color: grey;\">Grip</span>\
-                            <br/>" + TribalsLost);
-    
-    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
-    RefreshPage();   
-    EventLoadedValue = 999;
-    $('#EventOption1Button').show(); 
-    
-}
-
-function CalculateLongTalonTribeRaided() {
-    LongTalonTribeVictoryLevel++
-    var LostSupply = Math.floor((3 * LongTalonTribeVictoryLevel)/2);
-    var LostInspiration = Math.floor((1 * LongTalonTribeVictoryLevel)/2);
-    var LostDomain = Math.floor((2 * LongTalonTribeVictoryLevel)/2);
-    var LostGrip = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
-    
-    if (CurrentGrip > LostGrip) {LostSupply,LostInspiration,LostDomain = 0;
-    }else{
-        LostSupply = LostSupply - (LostGrip);
-        LostInspiration = LostInspiration - (LostGrip);
-        LostDomain = LostDomain - (LostGrip);
-    }
-    if (LostSupply < 0) {LostSupply = 0}
-    if (LostInspiration < 0) {LostInspiration = 0}
-    if (LostDomain < 0) {LostDomain = 0}
-    
-    if (LostSupply > CurrentSupply) {LostSupply = CurrentSupply}
-    if (LostInspiration > CurrentInspiration) {LostInspiration = CurrentInspiration}
-    if (LostDomain > CurrentDomain) {LostDomain = CurrentDomain}
-    
-    DecrementGrip(LostGrip);
-    
-    DecrementSupply(LostSupply);
-    DecrementInspiration(LostInspiration);
-    DecrementDomain(LostDomain);
-    
-    var TribalsLost = "";
-    if (LongTalonTribeVictoryLevel < (VictoryLevelCap/4)) {
-                //No Tribals Lost
-    }else if (LongTalonTribeVictoryLevel < (VictoryLevelCap/3)) {
-        SelectAndRemoveSelectedRandomTribal();
-        TribalsLost = "One of your tribe members was killed in the raid in addition to other losses.";
-    }else if (LongTalonTribeVictoryLevel < (VictoryLevelCap/2)) {
-        SelectAndRemoveSelectedRandomTribal();
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}      
-        TribalsLost = "<br/> Two of your Tribe members were killed in the Raid as well.";
-    }else if (LongTalonTribeVictoryLevel < (VictoryLevelCap/1.2)) {
-        SelectAndRemoveSelectedRandomTribal();        
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        TribalsLost = "<br/> Several of your Tribe members were killed in the Raid as well.";
-    }
-    
-    $('#EventNar').html("The <span style=\"color: OrangeRed;\">Long Talon Tribe</span> has Raided you! They managed to take or destroy the following: \
-                            <br/>" + LostSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                            <br/>" + LostDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span> \
-                            <br/>" + LostInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                            <br/>" + LostGrip + " <span style=\"color: grey;\">Grip</span>\
-                            <br/>" + TribalsLost);
-    
+    $('#EventOption4Description').show();
+    $('#EventOption4Description').html("Undefended\
+                                       <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
+    $('#EventOption4Button').show();
     LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
-    RefreshPage();   
-    EventLoadedValue = 999;
-    $('#EventOption1Button').show(); 
+    EventLoadedValue = 401;    
 }
 
-function CalculateFolkOfTheWindingFlowRaided() {
-    FolkOfTheWindingFlowVictoryLevel++
-    var LostSupply = 2 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
-    var LostInspiration = 3 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
-    var LostDomain = 1 * Math.floor((FolkOfTheWindingFlowVictoryLevel)/2);
-    var LostGrip = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
+function CalculateLongTalonTribeRaided_DefendResources(){
+    RefreshEvent();
+    var Damage = LongTalonTribeVictoryLevel;
+    var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
+    var SupremacyDamage = LongTalonTribeVictoryLevel;
+    var ProtectedText = ""
+    var UnprotectedText = ""
     
-    if (CurrentGrip > LostGrip) {LostSupply,LostInspiration,LostDomain = 0;
-    }else{
-        LostSupply = LostSupply - (LostGrip);
-        LostInspiration = LostInspiration - (LostGrip);
-        LostDomain = LostDomain - (LostGrip);
+    if (GripCost == Damage) {
+        Damage = 0;
+        ProtectedText = ("You were able to protect all of your <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
+    }else {
+        Damage = Damage - CurrentGrip;
+        if (Damage > CurrentSupply) {Damage = CurrentSupply}
+        ProtectedText = ("In the raid, only "+Damage+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> was lost.");
+        DecrementSupply(Damage);
+        LongTalonTribeVictoryLevel++
+    }    
+    DecrementGrip(GripCost);
+    if (CurrentSupremacy != 0) {
+        SupremacyDamage = SupremacyDamage*3
+        if (SupremacyDamage > CurrentSupremacy) {SupremacyDamage = CurrentSupremacy}
+        DecrementSupremacy(SupremacyDamage);
+        UnprotectedText = ("<br/>Encrouching on your territory as they have, and leaving decimation in their wake, your Supremacy has been reduced by "+SupremacyDamage)
+        LongTalonTribeVictoryLevel++
+    }else{UnprotectedText = ("<br/>You had no Supremacy to lose.")}
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
+    $('#EventNar').html(ProtectedText + UnprotectedText);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateLongTalonTribeRaided_DefendInterests(){
+    RefreshEvent();
+    var Damage = LongTalonTribeVictoryLevel;
+    var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
+    var SupremacyDamage = LongTalonTribeVictoryLevel;
+    var ProtectedText = ""
+    var UnprotectedText = ""
+    
+    if (GripCost < SupremacyDamage) {
+        SupremacyDamage = 0;
+        ProtectedText = ("You were able to maintain all of your Supremacy.");
+    }else {
+        SupremacyDamage = SupremacyDamage - CurrentGrip;
+        if (SupremacyDamage > CurrentSupremacy) {SupremacyDamage = CurrentSupremacy}
+        ProtectedText = ("In the raid, only "+SupremacyDamage+" Supremacy was lost.");
+        DecrementSupremacy(SupremacyDamage);
+        LongTalonTribeVictoryLevel++
+    }
+    
+    DecrementGrip(GripCost);
+    if (CurrentSupply != 0) {
+        Damage = Damage*3
+        if (Damage > CurrentSupply) {Damage = CurrentSupply}
+        DecrementSupply(Damage);
+        UnprotectedText = ("<br/>" + Damage + " <span style=\"color: rgb(178, 0, 0);\">Supply</span> was lost.")
+        LongTalonTribeVictoryLevel++
+    }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(178, 0, 0);\">Supply</span> to lose.")}
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
+    $('#EventNar').html(ProtectedText + UnprotectedText);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateLongTalonTribeRaided_FullDefense(){
+    RefreshEvent();
+    var DoubleGripCost = Math.floor(LongTalonTribeVictoryLevel*2.5);
+    DecrementGrip(DoubleGripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
+    $('#EventNar').html("The <span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span> was unnable to shake your grip.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateLongTalonTribeRaided_Undefended() {
+    RefreshEvent();
+    var Damage = LongTalonTribeVictoryLevel*3;
+    var SupremacyDamage = LongTalonTribeVictoryLevel*3;
+    var UnProtectedText = ""
+    var UnProtectedText2 = ""
+    
+    if (CurrentSupremacy == 0) {
+        SupremacyDamage = 0;
+        UnProtectedText = ("You had no Sepremacy to lose.");
+    }else {
+        if (SupremacyDamage > CurrentSupremacy) {SupremacyDamage = CurrentSupremacy}
+        UnProtectedText = ("In the raid "+SupremacyDamage+" Supremacy was lost.");
+        DecrementSupremacy(SupremacyDamage);
+        LongTalonTribeVictoryLevel++
+    }
+    if (CurrentSupply == 0) {
+        Damage = 0;
+        UnProtectedText2 = ("You had no <span style=\"color: rgb(178, 0, 0);\">Supply</span> to lose.");
+    }else {
+        if (Damage > CurrentSupply) {Damage = CurrentSupply}
+        UnProtectedText2 = ("<br/>"  +Damage+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> was lost.");
+        DecrementSupply(Damage);
+        LongTalonTribeVictoryLevel++
     }
 
-    
-    if (LostSupply < 0) {LostSupply = 0}
-    if (LostInspiration < 0) {LostInspiration = 0}
-    if (LostDomain < 0) {LostDomain = 0}
-    
-    if (LostSupply > CurrentSupply) {LostSupply = CurrentSupply}
-    if (LostInspiration > CurrentInspiration) {LostInspiration = CurrentInspiration}
-    if (LostDomain > CurrentDomain) {LostDomain = CurrentDomain}
-    
-    DecrementGrip(LostGrip);
-    
-    DecrementSupply(LostSupply);
-    DecrementInspiration(LostInspiration);
-    DecrementDomain(LostDomain);
-    
-    var TribalsLost = "";
-    if (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap/4)) {
-        //No Tribals Lost
-    }else if (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap/3)) {
-        SelectAndRemoveSelectedRandomTribal();
-        TribalsLost = "One of your tribe members was killed in the raid in addition to other losses.";
-    }else if (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap/2)) {
-        SelectAndRemoveSelectedRandomTribal();
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        TribalsLost = "Two of your Tribe members were killed in the Raid as well.";
-    }else if (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap/1.2)) {
-        SelectAndRemoveSelectedRandomTribal();     
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        if (CurrentNumberOfHunters+CurrentNumberOfExplorers+CurrentNumberOfCrafters+CurrentNumberOfWarriors > 0) {            
-        SelectAndRemoveSelectedRandomTribal();}
-        TribalsLost = "Several of your Tribe members were killed in the Raid as well.";
-    }
-        
-    $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow</span> Raided you! They managed to take or destroy the following: \
-                            <br/>" + LostSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                            <br/>" + LostDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span> \
-                            <br/>" + LostInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                            <br/>" + LostGrip + " <span style=\"color: grey;\">Grip</span> \
-                            <br/>" + TribalsLost);
-    
-    FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
-    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
+    $('#EventNar').html(UnProtectedText + UnProtectedText2);
     EventLoadedValue = 999;
-    $('#EventOption1Button').show(); 
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateShiningScalesRaided() {    
+    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var DoubleGripCost = Math.floor(GripCost*2.5)
+    
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
+    $('#EventNar').html("The <span style=\"color: DarkGoldenRod;\">Shining Scales</span> is Raiding you! They are cutting off your <span style=\"color: rgb(207, 166, 0);\">Domain</span> and hunting down your Discoveries to claim them as their own.<br/> \
+                        How will you protect what is yours?");
+    
+    if (CurrentDomain > 0) {
+        $('#EventOption1Description').show();
+        $('#EventOption1Description').html("Defend Resources\
+                                        <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
+        $('#EventOption1Button').show();
+    }    
+    if (CurrentDiscovery > 0) {
+        $('#EventOption2Description').show();
+        $('#EventOption2Description').html("Defend Interests\
+                                           <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Discoveries.");
+        $('#EventOption2Button').show();
+    }
+    if (CurrentGrip >= DoubleGripCost && CurrentDiscovery > 0 && CurrentDomain > 0) {
+        $('#EventOption3Description').show();
+        $('#EventOption3Description').html("Full Defense\
+                                           <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
+        $('#EventOption3Button').show();
+    }
+    
+    $('#EventOption4Description').show();
+    $('#EventOption4Description').html("Undefended\
+                                       <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
+    $('#EventOption4Button').show();
+    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
+    EventLoadedValue = 402;    
+}
+
+function CalculateShiningScalesRaided_DefendResources(){
+    RefreshEvent();
+    var Damage = ShiningScalesVictoryLevel;
+    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var LostDiscovery = ""
+    var ProtectedText = ""
+    var UnprotectedText = ""
+    
+    if (GripCost == Damage) {
+        Damage = 0;
+        ProtectedText = ("You were able to protect all of your <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
+    }else {
+        Damage = Damage - CurrentGrip;
+        if (Damage > CurrentDomain) {Damage = CurrentDomain}
+        ProtectedText = ("In the raid, only "+Damage+" <span style=\"color: rgb(207, 166, 0);\">Domain</span> was lost.");
+        DecrementDomain(Damage);
+        ShiningScalesVictoryLevel++
+    }    
+    DecrementGrip(GripCost);
+    if (CurrentDiscovery != 0) {
+        var DiscoveryLostChance =  Math.floor((Math.random()*50)+1)
+        if (DiscoveryLostChance < ShiningScalesVictoryLevel) {
+            LostDiscovery = SelectRandomFoundDiscovery();
+            UnprotectedText = ("<br/>While your focus was elsewhere, they were able to claim the "+LostDiscovery+"!")
+            ShiningScalesVictoryLevel++            
+        }else{UnprotectedText = ("<br/>Despite their best efforts, they were unnable to claim one of your discoveries.")}
+    }else{UnprotectedText = ("<br/>You had no Discoveries to lose.")}    
+    
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
+    $('#EventNar').html(ProtectedText + UnprotectedText);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateShiningScalesRaided_DefendInterests(){
+    RefreshEvent();
+    var Damage = ShiningScalesVictoryLevel;
+    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var LostDiscovery = ""
+    var ProtectedText = ""
+    var UnprotectedText = ""
+ 
+    if (GripCost < Damage) {
+        var DiscoveryLostChance =  ((Math.floor((Math.random()*50)+1)) + (CurrentGrip))
+        if (DiscoveryLostChance < ShiningScalesVictoryLevel) {
+            LostDiscovery = SelectRandomFoundDiscovery();
+            ProtectedText = ("<br/>Dispite your best efforts, they were able to claim the "+LostDiscovery+"!")
+            ShiningScalesVictoryLevel++            
+        }else{ProtectedText = ("<br/>Your efforts paid off! They were unnable to claim any of your discoveries.")}
+    }else{ProtectedText = ("<br/>Your efforts paid off! They were unnable to claim any of your discoveries.")}    
+
+    if (CurrentDomain != 0) {
+        Damage = Damage*3
+        if (Damage > CurrentDomain) {Damage = CurrentDomain}
+        DecrementDomain(Damage);
+        UnprotectedText = ("<br/>" + Damage + " <span style=\"color: rgb(207, 166, 0);\">Domain</span> was lost.")
+        ShiningScalesVictoryLevel++
+    }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(207, 166, 0);\">Domain</span> to lose.")}
+    
+    DecrementGrip(GripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
+    $('#EventNar').html(ProtectedText + UnprotectedText);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateShiningScalesRaided_FullDefense(){
+    RefreshEvent();
+    var DoubleGripCost = Math.floor(ShiningScalesVictoryLevel*2.5);
+    DecrementGrip(DoubleGripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
+    $('#EventNar').html("The <span style=\"color: DarkGoldenRod;\">Shining Scales raid</span> was unnable to shake your grip.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateShiningScalesRaided_Undefended() {
+    RefreshEvent();
+    var Damage = ShiningScalesVictoryLevel;
+    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var LostDiscovery = ""
+    var UnProtectedText = ""
+    var UnprotectedText2 = ""
+ 
+    if (CurrentDiscovery > 0) {
+        var DiscoveryLostChance =  Math.floor((Math.random()*50)+1)
+        if (DiscoveryLostChance < ShiningScalesVictoryLevel) {
+            LostDiscovery = SelectRandomFoundDiscovery();
+            UnProtectedText = ("<br/>They were able to claim the "+LostDiscovery+"!")
+            ShiningScalesVictoryLevel++            
+        }else{UnProtectedText = ("<br/>They were unnable to claim any of your discoveries.")}
+    }else{UnProtectedText = ("<br/>You had no Discoveries to claim.")}    
+
+    if (CurrentDomain != 0) {
+        Damage = Damage*3
+        if (Damage > CurrentDomain) {Damage = CurrentDomain}
+        DecrementDomain(Damage);
+        UnprotectedText2 = ("<br/>" + Damage + " <span style=\"color: rgb(207, 166, 0);\">Domain</span> was lost.")
+        ShiningScalesVictoryLevel++
+    }else{UnprotectedText2 = ("<br/>You had no <span style=\"color: rgb(207, 166, 0);\">Domain</span> to lose.")}
+
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
+    $('#EventNar').html(UnProtectedText + UnprotectedText2);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateFolkOfTheWindingFlowRaided() {    
+    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
+    var DoubleGripCost = Math.floor(GripCost*2.5)
+    
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
+    $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow</span> are Raiding you! They aim to deface or steal your relics and tools, affecting your Influence and <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.<br/> \
+                        How will you protect what is yours?");
+    
+    if (CurrentInspiration > 0) {
+        $('#EventOption1Description').show();
+        $('#EventOption1Description').html("Defend Resources\
+                                        <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
+        $('#EventOption1Button').show();
+    }    
+    if (CurrentInfluence > 0) {
+        $('#EventOption2Description').show();
+        $('#EventOption2Description').html("Defend Interests\
+                                           <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Influence.");
+        $('#EventOption2Button').show();
+    }
+    if (CurrentGrip >= DoubleGripCost && CurrentInspiration > 0 && CurrentInfluence > 0) {
+        $('#EventOption3Description').show();
+        $('#EventOption3Description').html("Full Defense\
+                                           <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
+        $('#EventOption3Button').show();
+    }
+    
+    $('#EventOption4Description').show();
+    $('#EventOption4Description').html("Undefended\
+                                       <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
+    $('#EventOption4Button').show();
+    FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
+    EventLoadedValue = 403;    
+}
+
+function CalculateFolkOfTheWindingFlowRaided_DefendResources(){
+    RefreshEvent();
+    var Damage = FolkOfTheWindingFlowVictoryLevel;
+    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
+    var InfluenceDamage = FolkOfTheWindingFlowVictoryLevel;
+    var ProtectedText = ""
+    var UnprotectedText = ""
+    
+    if (GripCost == Damage) {
+        Damage = 0;
+        ProtectedText = ("You were able to protect all of your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
+    }else {
+        Damage = Damage - CurrentGrip;
+        if (Damage > CurrentInspiration) {Damage = CurrentInspiration}
+        ProtectedText = ("In the raid, only "+Damage+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> was lost.");
+        DecrementInspiration(Damage);
+        FolkOfTheWindingFlowVictoryLevel++
+    }    
+
+    if (CurrentInfluence != 0) {
+        InfluenceDamage = InfluenceDamage*3
+        if (InfluenceDamage > CurrentInfluence) {InfluenceDamage = CurrentInfluence}
+        DecrementInfluence(InfluenceDamage);
+        UnprotectedText = ("<br/>Encrouching on your territory as they have, defacing and stealing your relics, your Influence has been reduced by "+InfluenceDamage)
+        FolkOfTheWindingFlowVictoryLevel++
+    }else{UnprotectedText = ("<br/>You had no Influence to lose.")}
+  
+    DecrementGrip(GripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
+    $('#EventNar').html(ProtectedText + UnprotectedText);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateFolkOfTheWindingFlowRaided_DefendInterests(){
+    RefreshEvent();
+    var Damage = FolkOfTheWindingFlowVictoryLevel;
+    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
+    var InspirationDamage = FolkOfTheWindingFlowVictoryLevel;
+    var LostDiscovery = ""
+    var ProtectedText = ""
+    var UnprotectedText = ""
+    
+    if (GripCost == Damage) {
+        InfluenceDamage = 0;
+        ProtectedText = ("You were able to maintain all of your Influence.");
+    }else {
+        Damage = Damage - CurrentGrip;
+        if (Damage > CurrentInspiration) {Damage = CurrentInspiration}
+        ProtectedText = ("In the raid, only "+Damage+" Influence was lost.");
+        DecrementInspiration(Damage);
+        FolkOfTheWindingFlowVictoryLevel++
+    }    
+
+    if (CurrentInspiration != 0) {
+        InspirationDamage = InspirationDamage*3
+        if (InspirationDamage > CurrentInspiration) {InspirationDamage = CurrentInspiration}
+        DecrementInspiration(InspirationDamage);
+        UnprotectedText = ("<br/>By destroying your crafter's works and resources, your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> has been reduced by "+InspirationDamage)
+        FolkOfTheWindingFlowVictoryLevel++
+    }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to lose.")}
+  
+    DecrementGrip(GripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
+    $('#EventNar').html(ProtectedText + UnprotectedText);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateFolkOfTheWindingFlowRaided_FullDefense(){
+    RefreshEvent();
+    var DoubleGripCost = Math.floor(FolkOfTheWindingFlowVictoryLevel*2.5);
+    DecrementGrip(DoubleGripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
+    $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow raid</span> was unnable to shake your grip.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
+function CalculateFolkOfTheWindingFlowRaided_Undefended(){
+    RefreshEvent();
+    var InspirationDamage = FolkOfTheWindingFlowVictoryLevel;
+    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
+    var InfluenceDamage = FolkOfTheWindingFlowVictoryLevel;
+    var UnProtectedText = ""
+    var UnprotectedText2 = ""
+    
+    if (CurrentInspiration != 0) {
+        InspirationDamage = InspirationDamage*3
+        if (InspirationDamage > CurrentInspiration) {InspirationDamage = CurrentInspiration}
+        DecrementInspiration(InspirationDamage);
+        UnprotectedText = ("<br/>By destroying your crafter's works and resources, your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> has been reduced by "+InspirationDamage)
+        FolkOfTheWindingFlowVictoryLevel++
+    }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to lose.")}
+
+    if (CurrentInfluence != 0) {
+        InfluenceDamage = InfluenceDamage*3
+        if (InfluenceDamage > CurrentInfluence) {InfluenceDamage = CurrentInfluence}
+        DecrementInfluence(InfluenceDamage);
+        UnprotectedText2 = ("<br/>Encrouching on your territory as they have, defacing and stealing your relics, your Influence has been reduced by "+InfluenceDamage)
+        FolkOfTheWindingFlowVictoryLevel++
+    }else{UnprotectedText2 = ("<br/>You had no Influence to lose.")}
+  
+    DecrementGrip(GripCost);
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
+    $('#EventNar').html(UnprotectedText + UnprotectedText2);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    RefreshPage();
 }
 
 // Common Code----------------------------------------
@@ -3302,6 +3608,64 @@ function SelectSecondRandomResource(){
     }
 }
 
+function SelectRandomFoundDiscovery(){
+    if (CurrentDiscovery > 0) {
+        CurrentDiscovery--
+        var TryAgain = true;
+        while (TryAgain) {
+            switch (Math.floor((Math.random()*5)+1)) {
+                case 1:
+                    if (MapOfTheAncients > 0)
+                    {
+                        MapOfTheAncients = 0;
+                        $("#Map_Of_The_Ancients").hide();
+                        TryAgain = false;
+                        DiscoveryString = "Map of the Ancients";
+                    }                
+                    break;
+                case 2:
+                    if (AncientGarden > 0)
+                    {
+                        AncientGarden = 0;
+                        $("#Ancient_Garden").hide();
+                        TryAgain = false;
+                        DiscoveryString = "Ancient Garden";
+                    } 
+                    break;
+                case 3:
+                    if (AncientCache > 0)
+                    {
+                        AncientCache = 0;
+                        $("#Ancient_Cache").hide();
+                        TryAgain = false;
+                        DiscoveryString = "Ancient Cache";
+                    } 
+                    break;
+                case 4:
+                    if (PinnacleStone > 0)
+                    {
+                        PinnacleStone = 0;
+                        $("#Pinnacle_Stone").hide();
+                        TryAgain = false;
+                        DiscoveryString = "Pinnacle Stone";
+                    } 
+                    break;
+                case 5:
+                    if (SpearOfTheAncients > 0)
+                    {
+                        SpearOfTheAncients = 0;
+                        $("#Spear_Of_The_Ancients").hide();
+                        TryAgain = false;
+                        DiscoveryString = "Spear of the Ancients";
+                    } 
+                    break;
+            }            
+            
+        }
+        return DiscoveryString
+    }
+}
+
 function PassXEras(NumberOfEras) {
     var Iterations = 0;
     while (NumberOfEras > Iterations) { 
@@ -3341,6 +3705,16 @@ function DecrementGrip(Dec) {
     if ((CurrentGrip - Dec) < 0) {CurrentGrip = 0;}    
     else {CurrentGrip = CurrentGrip - Dec;}
 }
+function DecrementSupremacy(Dec) {
+    if ((CurrentSupremacy - Dec) < 0) {CurrentSupremacy = 0;}    
+    else {CurrentSupremacy = CurrentSupremacy - Dec;}
+}
+
+function DecrementInfluence(Dec) {
+    if ((CurrentInfluence - Dec) < 0) {CurrentInfluence = 0;}    
+    else {CurrentInfluence = CurrentInfluence - Dec;}
+}
 
 }
 $(document).ready(main);
+
