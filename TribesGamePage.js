@@ -2209,9 +2209,9 @@ function EC_Festival_ThrowFestival() {
     DecrementSupply(FestivalCost);
     IncrementInfluence(CurrentPopulation);
     IncrementSupremacy(CurrentPopulation);
-    LongTalonTribeTension = LongTalonTribeTension - CurrentPopulation;
-    ShiningScalesTension = ShiningScalesTension - CurrentPopulation;
-    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - CurrentPopulation;
+    LongTalonTribeTension = LongTalonTribeTension - Math.floor(CurrentPopulation/2);
+    ShiningScalesTension = ShiningScalesTension - Math.floor(CurrentPopulation/2);
+    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - Math.floor(CurrentPopulation/2);
     if (LongTalonTribeTension < 0 ) {LongTalonTribeTension = 0};
     if (ShiningScalesTension < 0 ) {ShiningScalesTension = 0};
     if (FolkOfTheWindingFlowTension < 0 ) {FolkOfTheWindingFlowTension = 0};
@@ -2695,12 +2695,15 @@ function EC_Alliance_TurnAway() {
  
     switch (SelectedRandomRivalValue) {
         case 1:
-            ShiningScalesTension++;
-            break;
-        case 2:
+            LongTalonTribeTension++;
             LongTalonTribeTension++;
             break;
+        case 2:
+            ShiningScalesTension++;
+            ShiningScalesTension++;
+            break;
         case 3:
+            FolkOfTheWindingFlowTension++;
             FolkOfTheWindingFlowTension++;
             break;
     }
