@@ -1349,15 +1349,7 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-    
-                        if (NeedToFindEvent) {
-                        if (CurrentSupply >= FestivalCost) {
-                            E_Festival();
-                            NeedToFindEvent= false;
-                        }else{E_FestivalNotEnough();}
-                    }
-    
-    
+        
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
         case 1:
