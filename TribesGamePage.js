@@ -29,6 +29,7 @@ var TotalPopulationBoomCost = 0;
 var TotalInspirationSurplusCost = 0;
 var TotalDomainSurplusCost = 0;
 var TotalGripSurplusCost = 0;
+var FestivalCost = 0;
 
 var SupplySurplus = false;
 var InspirationSurplus = false;
@@ -38,7 +39,7 @@ var GripSurplus = false;
 var TotalInventionInspirationCost = 0;
 var InventionLevel = 1;
 var Pottery = false;
-var ImprovedWarTactics = false;
+var ImprovedRaidTactics = false;
 
 var Agenda = 0;
 var AgendaDuration = 8;
@@ -323,11 +324,13 @@ function CalculateTribalCosts(){
 
     TotalDiscoveryDomainCost = Math.floor((25 * (CurrentDiscovery+1)) * Math.pow(1.07,(CurrentDiscovery)));
     
-    TotalInventionInspirationCost = Math.floor(30 * Math.pow(1.15,InventionLevel));
+    TotalInventionInspirationCost = Math.floor(20 * Math.pow(1.15,InventionLevel));
     
     RaidingCost = Math.floor((5 * CurrentRaidBarterThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
     
     BarteringCost = Math.floor((2 * CurrentRaidBarterThisTurn) * Math.pow(1.15,CultureLevel));
+    
+    FestivalCost = Math.floor(CurrentPopulation * Math.pow(1.15,CurrentPopulation));
 }
 
 function CompetitionDetails() {
@@ -1100,11 +1103,11 @@ function P_RaidShiningScales() {
         if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0};
         DecrementGrip(RaidingCost);
         var WarriorEffectiveness = CurrentNumberOfWarriors    
-        if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
+        if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
         if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
-        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
-        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
-        var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
+        var GainedSupply = Math.floor(WarriorEffectiveness/2);
+        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
+        var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
            
         $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1132,14 +1135,14 @@ $('#ShiningScalesBarter').click(function(){P_BarterShiningScales();});
 function P_BarterShiningScales() {
     if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
         CurrentPhase = 4;
-        ShiningScalesTension = ShiningScalesTension - 4
+        ShiningScalesTension = ShiningScalesTension - 4;
         ShiningScalesVictoryLevel++
         ShiningScalesVictoryLevel++
         if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
         DecrementGrip(BarteringCost); 
-        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
-        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
-        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
+        var GainedSupply = Math.floor(CultureLevel/2);
+        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1));
+        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
         $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1187,12 +1190,12 @@ function P_RaidLongTalonTribe() {
         if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0};
         DecrementGrip(RaidingCost);
         
-        var WarriorEffectiveness = CurrentNumberOfWarriors    
-        if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
-        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
-        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 1) + 1))
-        var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1)) 
+        var WarriorEffectiveness = CurrentNumberOfWarriors;
+        if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)};
+        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)};
+        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
+        var GainedInspiration = Math.floor(WarriorEffectiveness/2);
+        var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
         
         $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1222,14 +1225,14 @@ $('#LongTalonTribeBarter').click(function(){P_BarterLongTalonTribe();});
 function P_BarterLongTalonTribe() {
     if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {    
         CurrentPhase = 4;
-        LongTalonTribeTension = LongTalonTribeTension - 4
+        LongTalonTribeTension = LongTalonTribeTension - 4;
         LongTalonTribeVictoryLevel++
         LongTalonTribeVictoryLevel++
         if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
         DecrementGrip(BarteringCost); 
-        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
-        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
-        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
+        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
+        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1));
+        var GainedDomain = Math.floor(CultureLevel/2);
         $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1272,17 +1275,17 @@ function P_RaidFolkOfTheWindingFlow() {
             else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")} 
         }
         
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 8
-        FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 8;
+        FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4;
         if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0};
         DecrementGrip(RaidingCost);
         
-        var WarriorEffectiveness = CurrentNumberOfWarriors    
-        if (ImprovedWarTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
-        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)}
-        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1))
-        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1))
-        var GainedDomain = Math.floor((WarriorEffectiveness/2)* ((Math.random() * 2) + 1))
+        var WarriorEffectiveness = CurrentNumberOfWarriors    ;
+        if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)};
+        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 2)};
+        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
+        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
+        var GainedDomain = Math.floor(WarriorEffectiveness/2);
             
         $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
@@ -1310,14 +1313,14 @@ $('#FolkOfTheWindingFlowBarter').click(function(){P_BarterFolkOfTheWindingFlow()
 function P_BarterFolkOfTheWindingFlow() {
     if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
         CurrentPhase = 4;
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4;
         FolkOfTheWindingFlowVictoryLevel++
         FolkOfTheWindingFlowVictoryLevel++
         if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
         DecrementGrip(BarteringCost); 
-        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1))
-        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1))
-        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1))
+        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1));
+        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
+        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1));
         $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1346,6 +1349,14 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
+    
+                        if (NeedToFindEvent) {
+                        if (CurrentSupply >= FestivalCost) {
+                            E_Festival();
+                            NeedToFindEvent= false;
+                        }else{E_FestivalNotEnough();}
+                    }
+    
     
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
@@ -1509,7 +1520,7 @@ function CalculateEvent() {
             }
         }else if (CategoryRandom == 3) // Uncategorized Event
         {
-            var UncategorizedEvent = Math.floor((Math.random() * 4) + 1);
+            var UncategorizedEvent = Math.floor((Math.random() * 5) + 1);
             switch (UncategorizedEvent) {
                 case 1:
                     if (CurrentDomain >= (TotalDiscoveryDomainCost) && !(CurrentDiscovery == 5) && NeedToFindEvent) {
@@ -1537,8 +1548,8 @@ function CalculateEvent() {
                                 }
                             break;
                            case 2:
-                                if (!(ImprovedWarTactics)) {
-                                    E_ImprovedWarTactics();
+                                if (!(ImprovedRaidTactics)) {
+                                    E_ImprovedRaidTactics();
                                     NeedToFindEvent= false;
                                 }
                             break;
@@ -1550,6 +1561,15 @@ function CalculateEvent() {
                         E_CouncilOfElders();
                         NeedToFindEvent= false;
                     }
+                    break;
+                case 5:
+                    if (NeedToFindEvent) {
+                        if (CurrentSupply >= FestivalCost) {
+                            E_Festival();
+                            NeedToFindEvent= false;
+                        }else{E_FestivalNotEnough(); NeedToFindEvent= false;}
+                    }
+                    
                     break;
             }
         }
@@ -1569,7 +1589,10 @@ $('#EventOption1Button').click(function(){
         EC_Pottery_InventPottery();
         break;
     case 103:
-        EC_ImprovedWarTactics_InventImprovedWarTactics();
+        EC_ImprovedRaidTactics_InventImprovedRaidTactics();
+        break;
+    case 111:
+        EC_Festival_ThrowFestival();
         break;
     case 201:
         EC_Illness_Quarantine();
@@ -1642,6 +1665,9 @@ $('#EventOption2Button').click(function(){
         ShowEventEnd();
         break;
     case 103:
+        ShowEventEnd();
+        break;
+    case 111:
         ShowEventEnd();
         break;
     case 201:
@@ -2163,6 +2189,51 @@ function E_FavorableConditions() {
     EventLoadedValue = 999;
 }
 
+function E_Festival() {
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Festival")
+    $('#EventNar').html("You have enough Supply Surplus to host a festival.");
+    $('#EventOption1Description').show();
+    $('#EventOption1Description').html("Throw Festival<br/>Spend "+FestivalCost+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> \
+                                       to host a Feast. This will decrease Tension between you and your rivals as well increase your Influence and your Supremacy.");
+    $('#EventOption1Button').show();
+    $('#EventOption2Description').show();
+    $('#EventOption2Description').html("Ignore<br/>Do not spare resources for such frivolous undertakings.");
+    $('#EventOption2Button').show();
+    
+    EventLoadedValue = 111;
+}
+
+function E_FestivalNotEnough() {
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Festival");
+    $('#EventNar').html("With "+FestivalCost+" stashed <span style=\"color: rgb(178, 0, 0);\">Supply</span>, you could host a festival.  Festivals provide many boons. The cost and effectiveness of a festival increases with your population.");
+    
+    $('#EventOption1Button').show();
+    EventLoadedValue = 999;
+}
+
+function EC_Festival_ThrowFestival() {
+    DecrementSupply(FestivalCost);
+    IncrementInfluence(CurrentPopulation);
+    IncrementSupremacy(CurrentPopulation);
+    LongTalonTribeTension = LongTalonTribeTension - CurrentPopulation;
+    ShiningScalesTension = ShiningScalesTension - CurrentPopulation;
+    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - CurrentPopulation;
+    if (LongTalonTribeTension < 0 ) {LongTalonTribeTension = 0};
+    if (ShiningScalesTension < 0 ) {ShiningScalesTension = 0};
+    if (FolkOfTheWindingFlowTension < 0 ) {FolkOfTheWindingFlowTension = 0};
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Festival")    
+    $('#EventNar').html("You threw a Festival! \
+                        <br/>Tensions have decreased and your Supremacy and Influence has increased by " + CurrentPopulation);
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();   
+}
+
+
 // Pottery----------------------------------------
 
 function E_InventionNotEnough(){
@@ -2178,7 +2249,7 @@ function E_Pottery() {
     $('#EventResultBoxHeader').html("Invention: Pottery")
     $('#EventNar').html("Your crafters claim they have found a way to work clay that will benefit the Tribe. Would you like them to pursue this innovation?");
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Invent Pottery:<br/> spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Pottery. This will improve the effectiveness on your Surplus.");
+    $('#EventOption1Description').html("Invent Pottery<br/> spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Pottery. This will improve the effectiveness on your Surplus.");
     $('#EventOption1Button').show();
     $('#EventOption2Description').show();
     $('#EventOption2Description').html("Ignore this creative pursuit.");
@@ -2189,7 +2260,7 @@ function E_Pottery() {
 
 function EC_Pottery_InventPottery() {
     DecrementInspiration(TotalInventionInspirationCost);
-    CurrentInfluence = CurrentInfluence + TotalInventionInspirationCost;
+    IncrementInfluence(TotalInventionInspirationCost);
     Pottery = true;
     InventionLevel++;
     $('#Pottery').show();
@@ -2215,12 +2286,12 @@ $('#Pottery').mouseleave(function() {ClearUpgradeBox()});
 
 // Improved War Tactics ----------------------------------------
 
-function E_ImprovedWarTactics() {
+function E_ImprovedRaidTactics() {
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Training: Improved War Tactics")
+    $('#EventResultBoxHeader').html("Invention: Improved Raiding Tactics")
     $('#EventNar').html("New strategies have come about that might grow into a powerful tool for war. Would you like to pursue this innovation?");
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Train in Improved War Tactics:<br/> spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent War Tactics. This will improve your effectiveness while raiding.");
+    $('#EventOption1Description').html("Train in Improved Raiding Tactics<br/>Spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Improved Raiding Tactics. This will improve your effectiveness while raiding.");
     $('#EventOption1Button').show();
     $('#EventOption2Description').show();
     $('#EventOption2Description').html("Ignore this creative pursuit.");
@@ -2229,17 +2300,17 @@ function E_ImprovedWarTactics() {
     EventLoadedValue = 103;
 }
 
-function EC_ImprovedWarTactics_InventImprovedWarTactics() {
+function EC_ImprovedRaidTactics_InventImprovedRaidTactics() {
     DecrementInspiration(TotalInventionInspirationCost);
-    CurrentInfluence = CurrentInfluence + TotalInventionInspirationCost;
-    ImprovedWarTactics = true;
+    IncrementInfluence(TotalInventionInspirationCost);
+    ImprovedRaidTactics = true;
     $('#War_Tactics').show();
     InventionLevel++;
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Train: Improved War Tactics")    
-    $('#EventNar').html("Your have Invented Improved War Tactics! \
+    $('#EventResultBoxHeader').html("Invention: Improved Raiding Tactics")    
+    $('#EventNar').html("Your have Invented Improved Raiding Tactics! \
                         <br/>This will improve your effectiveness while raiding. It has also increased your Influence significantly!");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
@@ -2554,13 +2625,13 @@ function E_Alliance() {
     
     $('#EventOption1Description').show();
     $('#EventOption1Description').html("Assist:<br/>\
-                                    <br/>Aid "+SelectedRandomRival+" in this endeavor. This will significantly reduce Tension between your tribes and move you both closer to victory\
+                                    Aid "+SelectedRandomRival+" in this endeavor. This will significantly reduce Tension between your tribes and move you both closer to victory\
                                     while increasing tension between you and " + SelectedSecondRandomRival + " and setting them back significantly.");
     $('#EventOption1Button').show();
     
     $('#EventOption2Description').show();
     $('#EventOption2Description').html("Turn Away:<br/>\
-                                       <br/>This will increase Tension slightly between you and "+SelectedRandomRival+". Otherwise, you will remain unaffected.");
+                                       This will increase Tension slightly between you and "+SelectedRandomRival+". Otherwise, you will remain unaffected.");
     $('#EventOption2Button').show();
     
     EventLoadedValue = 305;
@@ -3687,6 +3758,8 @@ function IncrementSupply(Inc) {CurrentSupply = CurrentSupply +Inc}
 function IncrementInspiration(Inc) {CurrentInspiration = CurrentInspiration +Inc}
 function IncrementDomain(Inc) {CurrentDomain = CurrentDomain +Inc}
 function IncrementGrip(Inc) {CurrentGrip = CurrentGrip +Inc}
+function IncrementInfluence(Inc) {CurrentInfluence = CurrentInfluence +Inc}
+function IncrementSupremacy(Inc){CurrentSupremacy = CurrentSupremacy +Inc}
 
 //Following Functions Decrement Stashes--------------------------------------------------------
 function DecrementSupply(Dec) {
