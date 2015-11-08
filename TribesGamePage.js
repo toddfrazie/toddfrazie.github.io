@@ -1382,7 +1382,7 @@ function CalculateEvent() {
     var attempts = 0;
     while (attempts < ExpansionLevel && NeedToFindEvent) {
         attempts++
-        var CategoryRandom = Math.floor((Math.random() * 3) + 1);
+        var CategoryRandom = Math.floor((Math.random() * 4) + 1);
         if (CategoryRandom == 1) // Expansion Event
         {
             var EnvironmentEvent = Math.floor((Math.random() * 4) + 1);
@@ -1510,7 +1510,7 @@ function CalculateEvent() {
                     }
                     break;
             }
-        }else if (CategoryRandom == 3) // Uncategorized Event
+        }else if (CategoryRandom == 3 || CategoryRandom == 4) // Uncategorized Event
         {
             var UncategorizedEvent = Math.floor((Math.random() * 5) + 1);
             switch (UncategorizedEvent) {
