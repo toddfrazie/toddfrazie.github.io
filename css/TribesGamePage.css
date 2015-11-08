@@ -21,9 +21,8 @@ body {
     margin-bottom: 13px;
 }
 
-p a {
-    color: grey;
-}
+p a {color: grey;}
+p a:hover {color: darkgrey;}
 
 .Tribal {
   Height: 120px;
@@ -32,13 +31,9 @@ p a {
   float: left;
 }
 
-button:hover {
-  border-color: white;
-}
+button:hover {border-color: white;}
 
-#IntroDiv {
-    display: none;
-}
+#IntroDiv {display: none;}
 
 #TextBox {
   font-family: "Comic Sans MS", cursive, sans-serif;
@@ -291,5 +286,9 @@ opacity: 1;
   border-width: medium;
   border-color: #4D4D4D;
   border-radius: 5px;
+}
+
+.VictoryImage {
+  width: 90%;
 }
 
