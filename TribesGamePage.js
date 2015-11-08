@@ -330,7 +330,7 @@ function CalculateTribalCosts(){
     
     BarteringCost = Math.floor((2 * CurrentRaidBarterThisTurn) * Math.pow(1.15,CultureLevel));
     
-    FestivalCost = Math.floor(CurrentPopulation * Math.pow(1.15,CurrentPopulation));
+    FestivalCost = Math.floor(2 * Math.pow(1.15,CurrentPopulation));
 }
 
 function CompetitionDetails() {
@@ -2945,7 +2945,7 @@ $('#Map_Of_The_Ancients').mouseenter(function(){
         $('#UpgradeInfoBoxDescription').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
                                              From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
                                              some known but much unknown to your tribe.\
-                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era.The amount gained increases each Era. \
+                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era. \
                                              <br/>Current gain: </span>" + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     }
 });
