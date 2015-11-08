@@ -581,9 +581,8 @@ function BeginEra() {
     
     if (Agenda != 0) {
         AgendaDuration--
-        if (AgendaDuration <= 1) {
+        if (AgendaDuration < 1) {
             Agenda = 0
-            AgendaDuration = 8
         }
     }
     switch (Agenda) {
@@ -604,6 +603,11 @@ function BeginEra() {
             break;
         case 3:
             $('#Path_Of_Seclusion').show();
+            $('#Path_Of_War').hide();
+            $('#Path_Of_Peace').hide();
+            break;
+        case 4:
+            $('#Path_Of_Seclusion').hide();
             $('#Path_Of_War').hide();
             $('#Path_Of_Peace').hide();
             break;
@@ -1349,34 +1353,44 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-        
+      
     var RandomRaid = Math.floor((Math.random() * 3) + 1);
     switch (RandomRaid) {
         case 1:
-            var D20 = Math.floor((Math.random() * 20) + 1);
-            D20 = D20 + LongTalonTribeTension
-            if (D20 > TensionCap) {
+            var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
+            D_HalfTensionCap = D_HalfTensionCap + LongTalonTribeTension
+            if (D_HalfTensionCap > TensionCap) {
                CalculateLongTalonTribeRaided();
                NeedToFindEvent= false;
             }                          
             break;
         case 2:
-            var D20 = Math.floor((Math.random() * 20) + 1);
-            D20 = D20 + ShiningScalesTension
-            if (D20 > TensionCap) {
+            var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
+            D_HalfTensionCap = D_HalfTensionCap + ShiningScalesTension
+            if (D_HalfTensionCap > TensionCap) {
                 CalculateShiningScalesRaided();
                 NeedToFindEvent= false;
             }                          
             break;
         case 3:
-            var D20 = Math.floor((Math.random() * 20) + 1);
-            D20 = D20 + FolkOfTheWindingFlowTension
-            if (D20 > TensionCap) {
+            var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
+            D_HalfTensionCap = D_HalfTensionCap + FolkOfTheWindingFlowTension
+            if (D_HalfTensionCap > TensionCap) {
                 CalculateFolkOfTheWindingFlowRaided();
                 NeedToFindEvent= false;
             }                          
             break; 
     }
+    
+    
+    if (NeedToFindEvent && Agenda == 0) {
+        var CouncilRandom = Math.floor((Math.random() * 10) + 1);
+        if (CouncilRandom > 5) {
+            E_CouncilOfElders();
+            NeedToFindEvent= false;
+        }
+    }
+    
     
     
     var attempts = 0;
@@ -1512,7 +1526,7 @@ function CalculateEvent() {
             }
         }else if (CategoryRandom == 3 || CategoryRandom == 4) // Uncategorized Event
         {
-            var UncategorizedEvent = Math.floor((Math.random() * 5) + 1);
+            var UncategorizedEvent = Math.floor((Math.random() * 4) + 1);
             switch (UncategorizedEvent) {
                 case 1:
                     if (CurrentDomain >= (TotalDiscoveryDomainCost) && !(CurrentDiscovery == 5) && NeedToFindEvent) {
@@ -1550,18 +1564,11 @@ function CalculateEvent() {
                    break;
                 case 4:
                     if (NeedToFindEvent) {
-                        E_CouncilOfElders();
-                        NeedToFindEvent= false;
-                    }
-                    break;
-                case 5:
-                    if (NeedToFindEvent) {
                         if (CurrentSupply >= FestivalCost) {
                             E_Festival();
                             NeedToFindEvent= false;
                         }else{E_FestivalNotEnough(); NeedToFindEvent= false;}
-                    }
-                    
+                    }                    
                     break;
             }
         }
@@ -2725,7 +2732,7 @@ function E_CouncilOfElders() {
     $('#EventResultBoxHeader').html("Council Of Elders")
 
     $('#EventNar').html("A council of Elders is called in your Tribe to discuss your agenda for the coming age. Which will you adapt? \
-                        This agenda will remain for 8 Eras or until a new Council is called.");
+                        This agenda will remain for 8 Eras.");
     
     $('#EventOption1Description').show();
     $('#EventOption1Description').html("<span class=\"LargerText\">Path of War</span><br/>\
@@ -2760,7 +2767,7 @@ function EC_CouncilOfElders_PathOfWar() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Council of Elders")   
     $('#EventNar').html("You have chosen the Path of War. May your enemies feel your wrath!");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
 }
 
@@ -2775,7 +2782,7 @@ function EC_CouncilOfElders_PathOfPeace() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Council of Elders")   
     $('#EventNar').html("You have chosen the Path of Peace. May you live long and prosper.");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
 }
 
@@ -2790,7 +2797,7 @@ function EC_CouncilOfElders_PathOfSeclusion() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Council of Elders")   
     $('#EventNar').html("You have chosen the Path of Seclusion. Security, Solidarity, and inner growth will be your bounty.");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
 }
 
@@ -2798,14 +2805,14 @@ function EC_CouncilOfElders_MiddlePath() {
     $('#Path_Of_War').hide();
     $('#Path_Of_Peace').hide();
     $('#Path_Of_Seclusion').hide();
-    Agenda = 0;
+    Agenda = 4;
     AgendaDuration = 8;    
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Council of Elders")   
     $('#EventNar').html("You have chosen the Middle Path. May you find prosperity in the balance.");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
 }
 
@@ -3072,7 +3079,7 @@ function CalculateLongTalonTribeRaided_DefendResources(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3107,7 +3114,7 @@ function CalculateLongTalonTribeRaided_DefendInterests(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3119,7 +3126,7 @@ function CalculateLongTalonTribeRaided_FullDefense(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html("The <span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span> was unnable to shake your grip.");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3153,7 +3160,7 @@ function CalculateLongTalonTribeRaided_Undefended() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html(UnProtectedText + UnProtectedText2);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3225,7 +3232,7 @@ function CalculateShiningScalesRaided_DefendResources(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3259,7 +3266,7 @@ function CalculateShiningScalesRaided_DefendInterests(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3271,7 +3278,7 @@ function CalculateShiningScalesRaided_FullDefense(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html("The <span style=\"color: DarkGoldenRod;\">Shining Scales raid</span> was unnable to shake your grip.");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3304,7 +3311,7 @@ function CalculateShiningScalesRaided_Undefended() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html(UnProtectedText + UnprotectedText2);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3376,7 +3383,7 @@ function CalculateFolkOfTheWindingFlowRaided_DefendResources(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3413,7 +3420,7 @@ function CalculateFolkOfTheWindingFlowRaided_DefendInterests(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3425,7 +3432,7 @@ function CalculateFolkOfTheWindingFlowRaided_FullDefense(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
     $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow raid</span> was unnable to shake your grip.");
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
@@ -3458,7 +3465,7 @@ function CalculateFolkOfTheWindingFlowRaided_Undefended(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
     $('#EventNar').html(UnprotectedText + UnprotectedText2);
-    EventLoadedValue = 999;
+    EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
