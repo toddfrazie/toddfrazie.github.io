@@ -1945,6 +1945,7 @@ function E_RisingWaters() {
 
 function EC_RisingWaters_Evacuate() {
     DecrementDomain(NumberOfRiverExpansions*10);
+    RefreshPage();
     RefreshEvent();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Rising Waters")    
@@ -1955,6 +1956,7 @@ function EC_RisingWaters_Evacuate() {
 
 function EC_RisingWaters_Fortify() {
     PassXEras(NumberOfRiverExpansions);
+    RefreshPage();
     RefreshEvent();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Rising Waters")    
@@ -2230,7 +2232,7 @@ function E_FavorableConditions() {
 function E_Festival() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Festival")
-    $('#EventNar').html("You have enough Supply Surplus to host a festival.");
+    $('#EventNar').html("You have enough <span style=\"color: rgb(178, 0, 0);\">Supply</span> Surplus to host a festival.");
     $('#EventOption1Description').show();
     $('#EventOption1Description').html("Throw Festival<br/>Spend "+FestivalCost+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> \
                                        to host a Feast. This will decrease Tension between you and your rivals as well increase your Influence and your Supremacy.");
@@ -2320,7 +2322,7 @@ $('#Pottery').mouseenter(function() {
                                              <br/><span class=\"OOC\">Increases the effectiveness of Surplus by 0.5.</span>");
     }    
 });
-$('#Pottery').mouseleave(function() {ClearUpgradeBox()});
+$('#Pottery').mouseleave(function() {ClearUpgradeInfoBox()});
 
 // Improved War Tactics ----------------------------------------
 
@@ -2362,7 +2364,7 @@ $('#War_Tactics').mouseenter(function() {
                                          <br/><span class=\"OOC\">Increases the effectiveness of your Warriors during raids by 0.5.</span>");
     }
 });
-$('#War_Tactics').mouseleave(function() {ClearUpgradeBox()});
+$('#War_Tactics').mouseleave(function() {ClearUpgradeInfoBox()});
 
 
 //Totems ------------------------------------------------
@@ -2405,7 +2407,7 @@ $('#Totems').mouseenter(function() {
                                              <br/><span class=\"OOC\">Increases your Influence and Supremacy gains each era as if you had twice as many regions.</span>");
     }    
 });
-$('#Totems').mouseleave(function() {ClearUpgradeBox()});
+$('#Totems').mouseleave(function() {ClearUpgradeInfoBox()});
 
 // Demand Tribute----------------------------------------
 
@@ -3105,19 +3107,19 @@ function CalculateLongTalonTribeRaided() {
     $('#EventNar').html("The <span style=\"color: OrangeRed;\">Long Talon Tribe</span> is Raiding you! They are pillaging your territory for <span style=\"color: rgb(178, 0, 0);\">Supply</span> and belittling your supremacy with shows of power.<br/> \
                         How will you protect what is yours?");
     
-    if (CurrentSupply > 0) {
+    if (CurrentSupply > 0 && CurrentGrip > 0) {
         $('#EventOption1Description').show();
         $('#EventOption1Description').html("Defend Resources\
                                         <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
         $('#EventOption1Button').show();
     }    
-    if (CurrentSupremacy > 0) {
+    if (CurrentSupremacy > 0 && CurrentGrip > 0) {
         $('#EventOption2Description').show();
         $('#EventOption2Description').html("Defend Interests\
                                            <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Supremacy.");
         $('#EventOption2Button').show();
     }
-    if (CurrentGrip >= DoubleGripCost && CurrentSupremacy > 0 && CurrentSupply > 0) {
+    if (CurrentGrip >= DoubleGripCost && CurrentSupremacy > 0 && CurrentSupply > 0 && CurrentGrip > 0) {
         $('#EventOption3Description').show();
         $('#EventOption3Description').html("Full Defense\
                                            <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
@@ -3256,19 +3258,19 @@ function CalculateShiningScalesRaided() {
     $('#EventNar').html("The <span style=\"color: DarkGoldenRod;\">Shining Scales</span> is Raiding you! They are cutting off your <span style=\"color: rgb(207, 166, 0);\">Domain</span> and hunting down your Discoveries to claim them as their own.<br/> \
                         How will you protect what is yours?");
     
-    if (CurrentDomain > 0) {
+    if (CurrentDomain > 0 && CurrentGrip > 0) {
         $('#EventOption1Description').show();
         $('#EventOption1Description').html("Defend Resources\
                                         <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
         $('#EventOption1Button').show();
     }    
-    if (CurrentDiscovery > 0) {
+    if (CurrentDiscovery > 0 && CurrentGrip > 0) {
         $('#EventOption2Description').show();
         $('#EventOption2Description').html("Defend Interests\
                                            <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Discoveries.");
         $('#EventOption2Button').show();
     }
-    if (CurrentGrip >= DoubleGripCost && CurrentDiscovery > 0 && CurrentDomain > 0) {
+    if (CurrentGrip >= DoubleGripCost && CurrentDiscovery > 0 && CurrentDomain > 0 && CurrentGrip > 0) {
         $('#EventOption3Description').show();
         $('#EventOption3Description').html("Full Defense\
                                            <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
@@ -3407,19 +3409,19 @@ function CalculateFolkOfTheWindingFlowRaided() {
     $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow</span> are Raiding you! They aim to deface or steal your relics and tools, affecting your Influence and <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.<br/> \
                         How will you protect what is yours?");
     
-    if (CurrentInspiration > 0) {
+    if (CurrentInspiration > 0 && CurrentGrip > 0) {
         $('#EventOption1Description').show();
         $('#EventOption1Description').html("Defend Resources\
                                         <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
         $('#EventOption1Button').show();
     }    
-    if (CurrentInfluence > 0) {
+    if (CurrentInfluence > 0 && CurrentGrip > 0) {
         $('#EventOption2Description').show();
         $('#EventOption2Description').html("Defend Interests\
                                            <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Influence.");
         $('#EventOption2Button').show();
     }
-    if (CurrentGrip >= DoubleGripCost && CurrentInspiration > 0 && CurrentInfluence > 0) {
+    if (CurrentGrip >= DoubleGripCost && CurrentInspiration > 0 && CurrentInfluence > 0 && CurrentGrip > 0) {
         $('#EventOption3Description').show();
         $('#EventOption3Description').html("Full Defense\
                                            <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
