@@ -795,7 +795,7 @@ function P_Population_Boom(){
 $('#Boost_Inspiration').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalInspirationSurplusCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Boost Inspiration");
-    $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> gain for one epoch. Limited to one surplus per type per epoch.");
+    $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> gain for one era. Limited to one surplus per type per era.");
 });
 $('#Boost_Inspiration').click(function(){P_Boost_Inspiration();});
 function P_Boost_Inspiration(){
@@ -811,7 +811,7 @@ function P_Boost_Inspiration(){
 $('#Boost_Domain').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalDomainSurplusCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Boost Domain");
-    $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: rgb(207, 166, 0);\">Domain</span> gain for one epoch. Limited to one surplus per type per epoch.");
+    $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: rgb(207, 166, 0);\">Domain</span> gain for one era. Limited to one surplus per type per era.");
 });
 $('#Boost_Domain').click(function(){P_Boost_Domain();});
 function P_Boost_Domain(){
@@ -827,7 +827,7 @@ function P_Boost_Domain(){
 $('#Boost_Grip').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalGripSurplusCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Boost Grip");
-    $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: grey;\">Grip</span> gain for one epoch. Limited to one surplus per type per epoch.");
+    $('#UpgradeInfoBoxDescription').html("Gain a Surplus bonus that will increase your <span style=\"color: grey;\">Grip</span> gain for one era. Limited to one surplus per type per era.");
 });
 $('#Boost_Grip').click(function(){P_Boost_Grip();});
 function P_Boost_Grip(){
