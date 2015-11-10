@@ -2932,7 +2932,7 @@ $('#Path_Of_Seclusion').mouseleave(function(){ClearUpgradeInfoBox();})
 function E_Discover() {
     if (MapOfTheAncients > 0 && AncientGarden > 0 && AncientCache > 0 && PinnacleStone > 0 && SpearOfTheAncients > 0) {return} 
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Dicovery")
+    $('#EventResultBoxHeader').html("Discovery")
     $('#EventNar').html("Your explorers claim they have found clues that might lead to a discovery. Would you like them to search for this discovery?");
     $('#EventOption1Description').show();
     $('#EventOption1Description').html("Follow the clues: " + TotalDiscoveryDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
@@ -2946,7 +2946,7 @@ function E_Discover() {
 
 function E_DiscoverNotEnough(){
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Dicovery")
+    $('#EventResultBoxHeader').html("Discovery")
     $('#EventNar').html("Your explorers claim they have found clues that might lead to a discovery. With "+TotalDiscoveryDomainCost+" stashed <span style=\"color: rgb(207, 166, 0);\">Domain</span> \
                          they might uncover something important.");
     EventLoadedValue = 999;
