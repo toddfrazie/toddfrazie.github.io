@@ -103,9 +103,11 @@ var SelectedSecondRandomResourceValue = 0;
 
 window.onload = function() {
     $("#IntroDivHeader").html("New World")
-    $("#IntroDivStory").html("You arrive in this new world with your kin and a handful of resources, not least of which is hope. \
-                             The great serpent monolith looms in the distance.\
-                             You are quickly faced with your first decision. Where will you settle?")
+    $("#IntroDivStory").html("At the summit of a vast landscape stands a stone in the likeness of a giant Serpent.\
+                             You have just led your tribe from their original home, drawn to the wonder and prosperity of this new and mysterious place. \
+                             But, your own is not the only kin here. <br/>You arrive in this new world with a handful of resources, not least of which is hope. \
+                             The great serpent monolith looms in the distance. With a red stone gaze, it seems to be asking you this first question: \
+                             Where will you settle?")
     RefreshPage();    
 };
 
@@ -193,7 +195,6 @@ function RefreshPage(){
     if (VictoryOrLossAchieved) {CurrentPhase = 5}
     switch (CurrentPhase) {
         case 0:
-            $('#IntroDiv').hide();
             $('#BeginEra').fadeIn();
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -938,7 +939,7 @@ function P_River_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 2
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        ContinueToBegin();
+        ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost || CurrentPhase == 99) {
         DecrementDomain(TotalExpansionDomainCost);    
         NumberOfRiverExpansions++
@@ -970,7 +971,7 @@ function P_Forest_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 3
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 2
-        ContinueToBegin();
+        ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);
         NumberOfForestExpansions++
@@ -1002,7 +1003,7 @@ function P_Savanna_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 3
         WarriorExpansionBonus = WarriorExpansionBonus + 1
-        ContinueToBegin()
+        ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
         NumberOfSavannaExpansions++
@@ -1035,7 +1036,7 @@ function P_Hill_Expansion(){
         CrafterExpansionBonus = CrafterExpansionBonus + 2
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 3
-        ContinueToBegin()
+        ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
         NumberOfHillExpansions++
@@ -1047,6 +1048,21 @@ function P_Hill_Expansion(){
         RefreshPage();
     }else{CannotBeDone();}
 }
+
+//----------------------------
+
+function ContinueToIntro2() {
+    $('#IntroDiv').hide();
+    CurrentPhase = 2;
+    RefreshPage();
+    RefreshEvent();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("New World")    
+    $('#EventNar').html("With your new settlement, you can begin to establish your presence here. Spend your resources wisely and make this place your own.");
+    EventLoadedValue = 997;
+    $('#EventOption1Button').show();
+}
+
 
 // Beginning of Game Intro Logic -------------------------------------------------------------------
 
@@ -1637,6 +1653,9 @@ $('#EventOption1Button').click(function(){
         break;
     case 403:
         CalculateFolkOfTheWindingFlowRaided_DefendResources();
+        break;
+    case 997:
+        ContinueToBegin();
         break;
     case 998:
         CalculateEvent();
