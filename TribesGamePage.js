@@ -41,7 +41,7 @@ var InventionLevel = 1;
 var Pottery = false;
 var ImprovedRaidTactics = false;
 
-var Agenda = 0;
+var Agenda = 4;
 var AgendaDuration = 8;
 
 var HunterExpansionBonus = 0;
