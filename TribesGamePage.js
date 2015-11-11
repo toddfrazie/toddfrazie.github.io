@@ -111,6 +111,7 @@ window.onload = function() {
                              But, your own is not the only kin here. <br/>You arrive in this new world with a handful of resources, not least of which is hope. \
                              The great serpent monolith looms in the distance. With a red stone gaze, it seems to be asking you this first question: \
                              Where will you settle?")
+    PopulateToolTips();
     RefreshPage();    
 };
 
@@ -147,6 +148,27 @@ $('#GripUpgrades').mouseleave(function(){
     $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
     ClearUpgradeInfoBox();
 });
+
+$('.ToolTip').parent(this).mouseenter(function(){
+    $(this).find('.ToolTip').slideDown();
+    $(this).css("cursor", "help");
+    $(this).css("position", "relative");
+});
+$('.ToolTip').parent(this).mouseleave(function(){$('.ToolTip').hide();});
+
+
+function PopulateToolTips() {
+    var SupremacyString = "Supremacy measures your dominance over the region. <br/><br/>\
+                          You will gain twice your number of Expansions in Supremacy each Era. <br/><br/>\
+                          You will gain your number of Expansions multiplied by your number of Warriors in Supremacy each time you Raid."
+    $('#SupremacyTip').html(SupremacyString);    
+    var InfluenceString = "Influence measures your cultural presence in the region.  <br/><br/>\
+                          You will gain your number of Expansions multiplied by your Culture Level in Influence each Era and each time you Barter."
+    $('#InfluenceTip').html(InfluenceString);
+    var DiscoveriesString = "Discoveries are relics from those that came before. Possess and utilize as many of these as you can.  <br/><br/>\
+                          You will find Discoveries during the Fruition phase by having an adequate surplus of Domain available."
+    $('#DiscoveriesTip').html(DiscoveriesString);
+}
 
 function CannotBeDone() {
     $('#UpgradeInfoBoxCost').html("");
@@ -266,7 +288,8 @@ function RefreshPage(){
             $('#GripUpgrades').hide();
             break;         
         
-    }
+    }   
+
         CompetitionDetails();
         DisplayDetails();
         ClearUpgradeInfoBox();   
@@ -276,6 +299,7 @@ function RefreshPage(){
 function DisplayDetails() {
     $('#D_Population').html(CurrentPopulation);
     $('#D_Era').html(CurrentEra);
+    $('#D_ExpansionLevel').html(ExpansionLevel);
     $('#D_Culture').html(CultureLevel);
     $('#D_Upkeep').html(Math.floor(CurrentPopulation/3));
     
@@ -1159,7 +1183,7 @@ $('#ShiningScalesBarter').click(function(){P_BarterShiningScales();});
 function P_BarterShiningScales() {
     if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
         CurrentPhase = 4;
-        ShiningScalesTension = ShiningScalesTension - 4;
+        ShiningScalesTension = ShiningScalesTension - CultureLevel;
         ShiningScalesVictoryLevel++
         ShiningScalesVictoryLevel++
         if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
@@ -1249,7 +1273,7 @@ $('#LongTalonTribeBarter').click(function(){P_BarterLongTalonTribe();});
 function P_BarterLongTalonTribe() {
     if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {    
         CurrentPhase = 4;
-        LongTalonTribeTension = LongTalonTribeTension - 4;
+        LongTalonTribeTension = LongTalonTribeTension - CultureLevel;
         LongTalonTribeVictoryLevel++
         LongTalonTribeVictoryLevel++
         if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
@@ -1337,7 +1361,7 @@ $('#FolkOfTheWindingFlowBarter').click(function(){P_BarterFolkOfTheWindingFlow()
 function P_BarterFolkOfTheWindingFlow() {
     if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
         CurrentPhase = 4;
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 4;
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - CultureLevel;
         FolkOfTheWindingFlowVictoryLevel++
         FolkOfTheWindingFlowVictoryLevel++
         if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
