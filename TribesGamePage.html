@@ -33,12 +33,12 @@
 							  <tr>
 								<td>Hunters</td>
 								<td style="text-align: right;"><span id="NumberOfHunter"></span></td>
-								<td style="text-align: left;">/<span id="HunterPopulationSoftCap"></span></td>								
+								<td>/<span id="HunterPopulationSoftCap"></span></td>								
 							  </tr>
 							  <tr>
 								<td>Efficiency</td>
 								<td style="text-align: right;"><span id="HunterMultiplier"></span></td>
-								<td style="text-align: left;"><span id="SupplySurplusDenotion"></span></td>
+								<td><span id="SupplySurplusDenotion"></span></td>
 							  </tr>
 							</table>
 							<h4><span style="color: rgb(178, 0, 0);">Supply</span> <span id="StashedSupply"></span></h4>
@@ -63,12 +63,12 @@
 							  <tr>
 								<td>Explorers</td>
 								<td style="text-align: right;"><span id="NumberOfExplorer"></span></td>
-								<td style="text-align: left;">/<span id="ExplorerPopulationSoftCap"></span></td>								
+								<td>/<span id="ExplorerPopulationSoftCap"></span></td>								
 							  </tr>
 							  <tr>
 								<td>Efficiency</td>
 								<td style="text-align: right;"><span id="ExplorerMultiplier"></span></td>
-								<td style="text-align: left;"><span id="DomainSurplusDenotion"></span></td>
+								<td><span id="DomainSurplusDenotion"></span></td>
 							  </tr>
 							</table>
 							<h4><span style="color: rgb(207, 166, 0);">Domain</span> <span id="StashedDomain"></span></h4>
@@ -93,12 +93,12 @@
 							  <tr>
 								<td>Crafters</td>
 								<td style="text-align: right;"><span id="NumberOfCrafter"></span></td>
-								<td style="text-align: left;">/<span id="CrafterPopulationSoftCap"></span></td>								
+								<td>/<span id="CrafterPopulationSoftCap"></span></td>								
 							  </tr>
 							  <tr>
 								<td>Efficiency</td>
 								<td style="text-align: right;"><span id="CrafterMultiplier"></span></td>
-								<td style="text-align: left;"><span id="InspirationSurplusDenotion"></span></td>
+								<td><span id="InspirationSurplusDenotion"></span></td>
 							  </tr>
 							</table>
 							<h4><span style="color: rgb(36, 71, 178);">Inspiration</span> <span id="StashedInspiration"></span></h4>
@@ -125,12 +125,12 @@
 							  <tr>
 								<td>Warriors</td>
 								<td style="text-align: right;"><span id="NumberOfWarrior"></span></td>
-								<td style="text-align: left;">/<span id="WarriorPopulationSoftCap"></span></td>								
+								<td>/<span id="WarriorPopulationSoftCap"></span></td>								
 							  </tr>
 							  <tr>
 								<td>Efficiency</td>
 								<td style="text-align: right;"><span id="WarriorMultiplier"></span></td>
-								<td style="text-align: left;"><span id="GripSurplusDenotion"></span></td>
+								<td><span id="GripSurplusDenotion"></span></td>
 							  </tr>
 							</table>		
 							<h4><span style="color: grey;">Grip</span> <span id="StashedGrip"></span></h4>
@@ -231,17 +231,17 @@
 							<table style="width: 98%">
 							  <th colspan="3">Victory Conditions</th>
 							  <tr>
-								<td>Supremacy</td>
+								<td id="SupremacyArea">Supremacy <span id="SupremacyTip" class="ToolTip">Test Tooltip</span></td>
 								<td style="text-align: right;"><span id="D_Supremacy"></span></td>
 								<td><span>/500</span></td>
 							  </tr>
 							  <tr>
-								<td>Influence</td>
+								<td id="InfluenceArea">Influence <span id="InfluenceTip" class="ToolTip">Test Tooltip</span></td>
 								<td style="text-align: right;"><span id="D_Influence"></span></td>
 								<td><span>/500</span></td>
 							  </tr>
 							  <tr>
-								<td>Discoveries</td>
+								<td id="DiscoveriesArea">Discoveries <span id="DiscoveriesTip" class="ToolTip">Test Tooltip</span></td>
 								<td style="text-align: right;"><span id="D_Discoveries"></span></td>
 								<td><span>/5</span></td>
 							  </tr>
@@ -300,6 +300,10 @@
 								<td><span id="D_Culture"></span></td>
 							  </tr>
 							  <tr>
+								<td>ExpansionLevel</td>
+								<td><span id="D_ExpansionLevel"></span></td>
+							  </tr>
+							  <tr>
 								<td>Upkeep</td>
 								<td><span id="D_Upkeep"></span></td>
 							  </tr>
@@ -307,9 +311,9 @@
 							<br/>
 							
 							<table style="width: 98%">
-							  <th>Settlement</th>
+							  <th colspan="2" style="text-align: center;">Settlement</th>
 							  <tr>
-								<td><span id="SettlementText"></span></td>
+								<td colspan="2" style="text-align: center;"><span id="SettlementText"></span></td>
 							  </tr>
 							</table>
 							
