@@ -106,11 +106,10 @@ var SelectedSecondRandomResourceValue = 0;
 
 window.onload = function() {
     $("#IntroDivHeader").html("New World")
-    $("#IntroDivStory").html("At the summit of a vast landscape stands a stone in the likeness of a giant Serpent.\
+    $("#IntroDivStory").html("At the summit of a vast landscape looms a stone in the likeness of a giant Serpent.\
                              You have just led your tribe from their original home, drawn to the wonder and prosperity of this new and mysterious place. \
-                             But, your own is not the only kin here. <br/>You arrive in this new world with a handful of resources, not least of which is hope. \
-                             The great serpent monolith looms in the distance. With a red stone gaze, it seems to be asking you this first question: \
-                             Where will you settle?")
+                             But, you quickly realize your own is not the only kin here.<br/>With a handful of resources and your kin you set out to mark your place. \
+                             They look to you to make the decision; Where will you settle?")
     PopulateToolTips();
     RefreshPage();    
 };
@@ -156,16 +155,15 @@ $('.ToolTip').parent(this).mouseenter(function(){
 });
 $('.ToolTip').parent(this).mouseleave(function(){$('.ToolTip').hide();});
 
-
 function PopulateToolTips() {
-    var SupremacyString = "Supremacy measures your dominance over the region. <br/><br/>\
+    var SupremacyString = "Supremacy measures your dominance over the region.<br/><br/>\
                           You will gain twice your number of Expansions in Supremacy each Era. <br/><br/>\
                           You will gain your number of Expansions (including your Settlement) multiplied by your number of Warriors in Supremacy each time you Raid."
     $('#SupremacyTip').html(SupremacyString);    
-    var InfluenceString = "Influence measures your cultural presence in the region.  <br/><br/>\
+    var InfluenceString = "Influence measures your cultural presence in the region.<br/><br/>\
                           You will gain your number of Expansions (including your Settlement) multiplied by your Culture Level in Influence each Era and each time you Barter."
     $('#InfluenceTip').html(InfluenceString);
-    var DiscoveriesString = "Discoveries are relics from those that came before. Possess and utilize as many of these as you can.  <br/><br/>\
+    var DiscoveriesString = "Discoveries are relics from those that came before. Possess and utilize as many of these as you can.<br/><br/>\
                           You will find Discoveries during the Fruition phase by having an adequate surplus of Domain available."
     $('#DiscoveriesTip').html(DiscoveriesString);
 }
@@ -317,7 +315,7 @@ function DisplayDetails() {
     $('#D_ShiningScalesTension').html(ShiningScalesTension);
     $('#D_ShiningScalesVictory').html(ShiningScalesVictoryLevel);
     $('#D_FolkOfTheWindingFlowTension').html(FolkOfTheWindingFlowTension);
-    $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);    
+    $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);
 
     
     //if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
@@ -348,7 +346,7 @@ function CalculateTribalCosts(){
     
     TotalExpansionDomainCost = Math.floor((10 * ExpansionLevel) * Math.pow(1.07,ExpansionLevel));
     
-    TotalCultureInspirationCost = Math.floor((5 * CultureLevel) * Math.pow(1.15,CultureLevel));
+    TotalCultureInspirationCost = Math.floor((5 * CultureLevel) * Math.pow(1.07,CultureLevel));
 
     TotalDiscoveryDomainCost = Math.floor((25 * (CurrentDiscovery+1)) * Math.pow(1.07,(CurrentDiscovery)));
     
@@ -651,7 +649,7 @@ function CalculateNewTribeMemberResult() {
         $("#UpkeepResult").html(UpkeepCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span> was consumed for Upkeep.")
         DecrementSupply(UpkeepCost)
         
-        if (CurrentPopulation < (4+(ExpansionLevel*3))) {
+        if (CurrentPopulation < (5+(ExpansionLevel*3))) {
             SelectAndAddRandomNeededTribal();
             $('#NewTribeMemberResult').html("A new "+ SelectedRandomTribal +" is raised.")
         }else{$('#NewTribeMemberResult').html("")}  
@@ -808,7 +806,7 @@ $('#Population_Boom').hover(function(){
 });
 $('#Population_Boom').click(function(){P_Population_Boom();});
 function P_Population_Boom(){
-    if (CurrentSupply >= TotalPopulationBoomCost && (CurrentPopulation < (4+(ExpansionLevel*3)))) {
+    if (CurrentSupply >= TotalPopulationBoomCost && (CurrentPopulation < (5+(ExpansionLevel*3)))) {
         DecrementSupply(TotalPopulationBoomCost);
         SelectAndAddRandomNeededTribal();
         $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
@@ -963,18 +961,16 @@ function P_Improve_Culture(){
 $('#River_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("River Expansion");
-    $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and are a good portal to new territory.\
-                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition. \
-                                         But, it will increase your population over time.<br/> \
-                                         2 more Hunters <br/> \
-                                         1 more Explorers</span>");
+    $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and the wildlife here is exceptionally suitable to raise skilled hunters.\
+                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition over time. \
+                                         But, it grants capacity for 3 more Hunters</span>");
 });
 $('#River_Expansion').click(function(){P_River_Expansion();});
 function P_River_Expansion(){
     if (CurrentPhase == 99) {
         $('#SettlementText').text("River");
         Settlement = "River";
-        HunterExpansionBonus = HunterExpansionBonus + 3
+        HunterExpansionBonus = HunterExpansionBonus + 4
         CrafterExpansionBonus = CrafterExpansionBonus + 1
         ExplorerExpansionBonus = ExplorerExpansionBonus + 2
         WarriorExpansionBonus = WarriorExpansionBonus + 1
@@ -982,8 +978,7 @@ function P_River_Expansion(){
     }else if (CurrentDomain >= TotalExpansionDomainCost || CurrentPhase == 99) {
         DecrementDomain(TotalExpansionDomainCost);    
         NumberOfRiverExpansions++
-        HunterExpansionBonus = HunterExpansionBonus + 2
-        ExplorerExpansionBonus = ExplorerExpansionBonus + 1
+        HunterExpansionBonus = HunterExpansionBonus + 3
         $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
@@ -992,11 +987,9 @@ function P_River_Expansion(){
 $('#Forest_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("Forest Expansion");
-    $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and are difficult to encroach upon.\
-                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition. \
-                                         But, it will increase your population over time.<br/> \
-                                         2 more Crafters <br/> \
-                                         1 more Warriors\</span>");
+    $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and materials for craft. Forests feed the creative mind.\
+                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition over time. \
+                                         But, it grants capacity for 3 more Crafters</span>");
 });
 $('#Forest_Expansion').click(function(){P_Forest_Expansion();});
 function P_Forest_Expansion(){
@@ -1004,15 +997,14 @@ function P_Forest_Expansion(){
         $('#SettlementText').text("Forest");
         Settlement = "Forest";
         HunterExpansionBonus = HunterExpansionBonus + 1
-        CrafterExpansionBonus = CrafterExpansionBonus + 3
+        CrafterExpansionBonus = CrafterExpansionBonus + 4
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
         WarriorExpansionBonus = WarriorExpansionBonus + 2
         ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);
         NumberOfForestExpansions++
-        CrafterExpansionBonus = CrafterExpansionBonus + 2
-        WarriorExpansionBonus = WarriorExpansionBonus + 1
+        CrafterExpansionBonus = CrafterExpansionBonus + 3
         $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
@@ -1021,11 +1013,9 @@ function P_Forest_Expansion(){
 $('#Savanna_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("Savanna Expansion");
-    $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons and host a good deal of wildlife.\
-                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition. \
-                                         But, it will increase your population over time.<br/> \
-                                         1 more Hunters <br/> \
-                                         2 more Explorers</span>");
+    $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons that encourage skilled exploration.\
+                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition over time. \
+                                         But, it grants capacity for 3 more Explorers</span>");
 });
 $('#Savanna_Expansion').click(function(){P_Savanna_Expansion();});
 function P_Savanna_Expansion(){
@@ -1034,14 +1024,13 @@ function P_Savanna_Expansion(){
         Settlement = "Savanna";
         HunterExpansionBonus = HunterExpansionBonus + 2
         CrafterExpansionBonus = CrafterExpansionBonus + 1
-        ExplorerExpansionBonus = ExplorerExpansionBonus + 3
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 4
         WarriorExpansionBonus = WarriorExpansionBonus + 1
         ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
         NumberOfSavannaExpansions++
-        HunterExpansionBonus = HunterExpansionBonus + 1
-        ExplorerExpansionBonus = ExplorerExpansionBonus + 2
+        ExplorerExpansionBonus = ExplorerExpansionBonus + 3
         $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
@@ -1050,11 +1039,9 @@ function P_Savanna_Expansion(){
 $('#Hill_Expansion').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalExpansionDomainCost + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
     $('#UpgradeInfoBoxHeader').html("Hill Expansion");
-    $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and provide great seclusion for craft.\
-                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition. \
-                                         But, it will increase your population over time.<br/> \
-                                         1 more Crafters <br/> \
-                                         2 more Warriors <br/> \</span>");
+    $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and encourage the growth of sturdy warriors.\
+                                         <br/><span class=\"OOC\">This expansion will increase the Tension between you and your competition over time. \
+                                         But, it grants capacity for 3 more Warriors</span>");
 });
 $('#Hill_Expansion').click(function(){P_Hill_Expansion();});
 
@@ -1065,13 +1052,12 @@ function P_Hill_Expansion(){
         HunterExpansionBonus = HunterExpansionBonus + 1
         CrafterExpansionBonus = CrafterExpansionBonus + 2
         ExplorerExpansionBonus = ExplorerExpansionBonus + 1
-        WarriorExpansionBonus = WarriorExpansionBonus + 3
+        WarriorExpansionBonus = WarriorExpansionBonus + 4
         ContinueToIntro2();
     }else if (CurrentDomain >= TotalExpansionDomainCost) {
         DecrementDomain(TotalExpansionDomainCost);    
         NumberOfHillExpansions++
-        CrafterExpansionBonus = CrafterExpansionBonus + 1
-        WarriorExpansionBonus = WarriorExpansionBonus + 2
+        WarriorExpansionBonus = WarriorExpansionBonus + 3
         $('#DomainUpgrades').attr('class','HiddenDomainUpgradeBox');
         RefreshPage();
     }else{CannotBeDone();}
@@ -1095,25 +1081,25 @@ function ContinueToIntro2() {
 // Beginning of Game Intro Logic -------------------------------------------------------------------
 
 $('#River_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("River regions provide a great source of food and are a good portal to new territory.");
+    $('#UpgradeInfoBoxDescription').html("This river provides a great source of food and will serve as a good portal to new territory.");
 });
 $('#River_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#River_Expansion_Intro').click(function(){P_River_Expansion();});
 
 $('#Forest_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("Forest regions provide a great source of wonder and are difficult to encroach upon.");
+    $('#UpgradeInfoBoxDescription').html("This patch of forest provides a great source of wonder and is difficult to encroach upon.");
 });
 $('#Forest_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#Forest_Expansion_Intro').click(function(){P_Forest_Expansion();});
 
 $('#Savanna_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("Savannas are a great portal to new horizons and host a good deal of wildlife.");
+    $('#UpgradeInfoBoxDescription').html("This savanna is a great portal to new horizons and hosts a good deal of wildlife.");
 });
 $('#Savanna_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#Savanna_Expansion_Intro').click(function(){P_Savanna_Expansion();});
 
 $('#Hill_Expansion_Intro').mouseenter(function(){
-    $('#UpgradeInfoBoxDescription').html("Hill regions are the most easily defensable and provide great seclusion for craft.");
+    $('#UpgradeInfoBoxDescription').html("This hill is the most easily defensible territory and will provide great resources for craft.");
 });
 $('#Hill_Expansion_Intro').mouseleave(function(){ClearUpgradeInfoBox();});
 $('#Hill_Expansion_Intro').click(function(){P_Hill_Expansion();});
@@ -1146,8 +1132,8 @@ function P_RaidShiningScales() {
             else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")}        
         }
         
-        ShiningScalesTension = ShiningScalesTension + 8
-        ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4
+        ShiningScalesTension = ShiningScalesTension + 10
+        ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - Math.floor(CurrentNumberOfWarriors/2);
         if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0};
         DecrementGrip(RaidingCost);
         var WarriorEffectiveness = CurrentNumberOfWarriors    
@@ -1159,8 +1145,8 @@ function P_RaidShiningScales() {
            
         $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
         
         IncrementSupply(GainedSupply);
@@ -1193,8 +1179,8 @@ function P_BarterShiningScales() {
         var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
         $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
         
         IncrementSupply(GainedSupply);
@@ -1233,8 +1219,8 @@ function P_RaidLongTalonTribe() {
             else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")}        
         }
         
-        LongTalonTribeTension = LongTalonTribeTension + 8
-        LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4
+        LongTalonTribeTension = LongTalonTribeTension + 10
+        LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - Math.floor(CurrentNumberOfWarriors/2);
         if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0};
         DecrementGrip(RaidingCost);
         
@@ -1247,8 +1233,8 @@ function P_RaidLongTalonTribe() {
         
         $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
         
         IncrementSupply(GainedSupply);
@@ -1283,8 +1269,8 @@ function P_BarterLongTalonTribe() {
         var GainedDomain = Math.floor(CultureLevel/2);
         $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
         
         IncrementSupply(GainedSupply);
@@ -1323,8 +1309,8 @@ function P_RaidFolkOfTheWindingFlow() {
             else if (NumberOfWarriorsLost == 1) {WarriorsLost  = ("1 of your warriors died during the raid")} 
         }
         
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 8;
-        FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4;
+        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 10;
+        FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - Math.floor(CurrentNumberOfWarriors/2);
         if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0};
         DecrementGrip(RaidingCost);
         
@@ -1337,8 +1323,8 @@ function P_RaidFolkOfTheWindingFlow() {
             
         $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
         
         IncrementSupply(GainedSupply);
@@ -1371,8 +1357,8 @@ function P_BarterFolkOfTheWindingFlow() {
         var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1));
         $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
+                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
                                     <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
         
         IncrementSupply(GainedSupply);
@@ -1397,7 +1383,7 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-
+    
     var HostilityCounter = 0;
     while (HostilityCounter < CurrentRaidBarterThisTurn && NeedToFindEvent) {
         HostilityCounter++
@@ -1524,7 +1510,7 @@ function CalculateEvent() {
                 }
                 break;
             case 4:
-                if (NumberOfHillExpansions > 0 || Settlement == "Hill" && NeedToFindEvent) {
+                if (NumberOfHillExpansions > 0 || Settlement == "Hill" && CurrentNumberOfExplorers > 0 && NeedToFindEvent) {
                     var D10 = Math.floor((Math.random() * 10) + 1);
                     D10 = D10 + Math.floor(NumberOfHillExpansions / 2)
                     if (Settlement == "Hill") {D10 = D10+2};
@@ -2235,33 +2221,40 @@ function EC_BrushFire_StandYourGround() {
 
 // Caverns ----------------------------------------
 
-function E_Caverns() {    
+function E_Caverns() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Caverns")
     $('#EventNar').html("Your explorers have discovered the entrance to a cave network.");
-    if (CurrentDomain > 9) {
+    
+    if (CurrentNumberOfExplorers>0) {
         $('#EventOption1Description').show();
-        $('#EventOption1Description').html("Explore:<br/>Spend 10 <span style=\"color: rgb(207, 166, 0);\">Domain</span> to settle the cave. This will reward you with some grip.");
+        $('#EventOption1Description').html("Explore<br/>Risk an explorer to settle the cave. This could reward you with some <span style=\"color: grey;\">Grip</span>. Improved exploring tools will increase your chance and payout.");
         $('#EventOption1Button').show();
     }
     $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Ignore:<br/>Carry on. You don't have the resources to investigate further.");
-    $('#EventOption2Button').show();
-    
+    $('#EventOption2Description').html("Ignore<br/>Carry on. It is not worth the risk to investigate further.");
+    $('#EventOption2Button').show();    
     EventLoadedValue = 205;
 }
 
 function EC_Caverns_Explore() {
-    DecrementDomain(10);
-    GripEarned = (Math.floor((Math.random()*CurrentPopulation)+1)) * (NumberOfHillExpansions);
-    IncrementGrip(GripEarned);
     RefreshEvent();
-    RefreshPage();  
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Caverns")    
-    $('#EventNar').html("Your explorers have settled and fortified the caverns. You've earned "+ GripEarned +  " <span style=\"color: grey;\">Grip</span>");
+    var RiskRandom = Math.floor((Math.random()*(2*ExplorerMultiplier))+1)
+    if (RiskRandom< 2) {
+        CurrentNumberOfExplorers = CurrentNumberOfExplorers - 1;
+        RefreshPage(); 
+        $('#EventNar').html("Your explorer does not return.");
+        $('#EventOption1Button').show();
+    }else{
+        var GripEarned = Math.floor(5*ExplorerMultiplier)
+        IncrementGrip(GripEarned);
+        RefreshPage();  
+        $('#EventNar').html("Your explorer has settled and fortified the cave. You've earned "+ GripEarned +  " <span style=\"color: grey;\">Grip</span>");
+        $('#EventOption1Button').show();
+    }    
     EventLoadedValue = 999;
-    $('#EventOption1Button').show();
 }
 
 // WIld Storms ----------------------------------------
@@ -3160,7 +3153,7 @@ function ShowEventEnd() {
     RefreshPage();
 }
 
-function CalculateLongTalonTribeRaided() {    
+function CalculateLongTalonTribeRaided() {
     var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
     var DoubleGripCost = Math.floor(GripCost*2.5)
     
@@ -3686,7 +3679,7 @@ var TribalNotFound = true
 }
 
 function SelectAndAddRandomNeededTribal() {
-    if (CurrentPopulation < (4+(ExpansionLevel*3))) {
+    if (CurrentPopulation < (5+(ExpansionLevel*3))) {
             SelectedRandomTribal = "";
             SelectedRandomTribalValue = 0;
             
