@@ -160,10 +160,10 @@ $('.ToolTip').parent(this).mouseleave(function(){$('.ToolTip').hide();});
 function PopulateToolTips() {
     var SupremacyString = "Supremacy measures your dominance over the region. <br/><br/>\
                           You will gain twice your number of Expansions in Supremacy each Era. <br/><br/>\
-                          You will gain your number of Expansions multiplied by your number of Warriors in Supremacy each time you Raid."
+                          You will gain your number of Expansions (including your Settlement) multiplied by your number of Warriors in Supremacy each time you Raid."
     $('#SupremacyTip').html(SupremacyString);    
     var InfluenceString = "Influence measures your cultural presence in the region.  <br/><br/>\
-                          You will gain your number of Expansions multiplied by your Culture Level in Influence each Era and each time you Barter."
+                          You will gain your number of Expansions (including your Settlement) multiplied by your Culture Level in Influence each Era and each time you Barter."
     $('#InfluenceTip').html(InfluenceString);
     var DiscoveriesString = "Discoveries are relics from those that came before. Possess and utilize as many of these as you can.  <br/><br/>\
                           You will find Discoveries during the Fruition phase by having an adequate surplus of Domain available."
@@ -1397,33 +1397,37 @@ $('#FolkOfTheWindingFlowAbout').hover(function(){
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
-      
-    var RandomRaid = Math.floor((Math.random() * 3) + 1);
-    switch (RandomRaid) {
-        case 1:
-            var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
-            D_HalfTensionCap = D_HalfTensionCap + LongTalonTribeTension
-            if (D_HalfTensionCap > TensionCap) {
-               CalculateLongTalonTribeRaided();
-               NeedToFindEvent= false;
-            }                          
-            break;
-        case 2:
-            var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
-            D_HalfTensionCap = D_HalfTensionCap + ShiningScalesTension
-            if (D_HalfTensionCap > TensionCap) {
-                CalculateShiningScalesRaided();
-                NeedToFindEvent= false;
-            }                          
-            break;
-        case 3:
-            var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
-            D_HalfTensionCap = D_HalfTensionCap + FolkOfTheWindingFlowTension
-            if (D_HalfTensionCap > TensionCap) {
-                CalculateFolkOfTheWindingFlowRaided();
-                NeedToFindEvent= false;
-            }                          
-            break; 
+
+    var HostilityCounter = 0;
+    while (HostilityCounter < CurrentRaidBarterThisTurn && NeedToFindEvent) {
+        HostilityCounter++
+        var RandomRaid = Math.floor((Math.random() * 3) + 1);
+        switch (RandomRaid) {
+            case 1:
+                var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
+                D_HalfTensionCap = D_HalfTensionCap + LongTalonTribeTension
+                if (D_HalfTensionCap > TensionCap) {
+                   CalculateLongTalonTribeRaided();
+                   NeedToFindEvent= false;
+                }                          
+                break;
+            case 2:
+                var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
+                D_HalfTensionCap = D_HalfTensionCap + ShiningScalesTension
+                if (D_HalfTensionCap > TensionCap) {
+                    CalculateShiningScalesRaided();
+                    NeedToFindEvent= false;
+                }                          
+                break;
+            case 3:
+                var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
+                D_HalfTensionCap = D_HalfTensionCap + FolkOfTheWindingFlowTension
+                if (D_HalfTensionCap > TensionCap) {
+                    CalculateFolkOfTheWindingFlowRaided();
+                    NeedToFindEvent= false;
+                }                          
+                break; 
+        }
     }
         
     if (NeedToFindEvent && Agenda == 0) {
@@ -1814,6 +1818,9 @@ $('#EventOption3Button').click(function(){
 $('#EventOption4Button').click(function(){  
    
    switch (EventLoadedValue) {
+    case 203:
+        EC_HostileWildlife_StandYourGround();
+        break;
     case 306:
         EC_CouncilOfElders_MiddlePath()
         break;
@@ -1997,20 +2004,23 @@ function E_HostileWildlife() {
     $('#EventNar').html("Terrifying clawed beasts are roving around the river near your tribe, hoping to make an easy meal of the fauna that gather there.");
     if (CurrentNumberOfHunters > 0) {
         $('#EventOption1Description').show();
-        $('#EventOption1Description').html("Hunting Party:<br/>Risk losing hunters to gain extra <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
+        $('#EventOption1Description').html("Hunting Party<br/>Risk losing hunters to gain extra <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
         $('#EventOption1Button').show();
     }
     if (CurrentInspiration > 9) {
         $('#EventOption2Description').show();
-        $('#EventOption2Description').html("Outwit:<br/>Spend 10 <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to end the threat.");
+        $('#EventOption2Description').html("Outwit<br/>Spend 10 <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to end the threat.");
         $('#EventOption2Button').show();
     }
     if (CurrentDomain > 9) {
         $('#EventOption3Description').show();
-        $('#EventOption3Description').html("Migrate:<br/>Lose 10 <span style=\"color: rgb(207, 166, 0);\">Domain</span> to end the threat.");
+        $('#EventOption3Description').html("Migrate<br/>Lose 10 <span style=\"color: rgb(207, 166, 0);\">Domain</span> to end the threat.");
         $('#EventOption3Button').show();
     }
-
+        $('#EventOption4Description').show();
+        $('#EventOption4Description').html("Stand your ground<br/>Risk the loss of tribe members to stay your ground.");
+        $('#EventOption4Button').show();
+        
     EventLoadedValue = 203;
 }
 
@@ -2054,6 +2064,35 @@ function EC_HostileWildlife_Migrate() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Hostile Wildlife")    
     $('#EventNar').html("Your tribe has vacated the territory for now. Perhaps you will return once the beasts decide to move on.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+}
+
+function EC_HostileWildlife_StandYourGround() {
+    var HostileRandom = (Math.floor((Math.random() * CurrentPopulation) + 1))
+    var losses = "Luckily, no tribe members were";
+    HostileRandom = Math.floor(CurrentPopulation/2)
+    if (HostileRandom<3) {
+        //no losses
+    }else if (HostileRandom<5) {
+        SelectAndRemoveSelectedRandomTribal();
+        losses = ("One of our " +SelectedRandomTribal+"s were");
+    }else if (HostileRandom<7) {
+        SelectAndRemoveSelectedRandomTribal();
+        SelectAndRemoveSelectedRandomTribal();
+        losses = ("Two of our Tribe Members were");
+    }else{
+        SelectAndRemoveSelectedRandomTribal();
+        SelectAndRemoveSelectedRandomTribal();
+        SelectAndRemoveSelectedRandomTribal();
+        losses = ("Sadly, several Tribe Members were");
+    }   
+    
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Hostile Wildlife")    
+    $('#EventNar').html(losses+" lost before the beasts decided to move on.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
@@ -2548,32 +2587,33 @@ function E_ProposedTrade() {
     
     var CombinationNotYetFound = true;
     var Attempts = 0;
-    var Quantity = 0;
-    
+    var Quantity = Math.max(CurrentEra,5);   
     while (CombinationNotYetFound && Attempts < 10) {
         Attempts++
         SelectRandomResource();
         SelectSecondRandomResource();
         switch (SelectedRandomResourceValue) {
         case 1:
-            Quantity = CurrentSupply;
+            if (Quantity <= CurrentSupply) {CombinationNotYetFound = false}
             break;
         case 2:
-            Quantity = CurrentDomain;
+            if (Quantity <= CurrentDomain) {CombinationNotYetFound = false}
             break;
         case 3:
-            Quantity = CurrentInspiration;
+            if (Quantity <= CurrentInspiration) {CombinationNotYetFound = false}
+            break;
         }
         
-        if (Quantity > CurrentEra) {
-            CombinationNotYetFound = false
+        if ((CombinationNotYetFound) && Attempts == 10) {
+            ShowEventEnd();
+            return;
         }
     }    
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Trade Proposal")
-    $('#EventNar').html(SelectedRandomRival + "  proposes a trade. How do you respond?");
+    $('#EventNar').html(SelectedRandomRival + " proposes a trade. How do you respond?");
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Accept Trade:<br/>Give " + SelectedRandomRival + " "+CurrentEra+" " + SelectedRandomResource + " and receive "+CurrentEra+" " + SelectedSecondRandomResource + " in return. \
+    $('#EventOption1Description').html("Accept Trade:<br/>Give " + SelectedRandomRival + " "+Quantity+" " + SelectedRandomResource + " and receive "+Quantity+" " + SelectedSecondRandomResource + " in return. \
                                     This will improve your relations");
     $('#EventOption1Button').show();
 
@@ -2585,45 +2625,43 @@ function E_ProposedTrade() {
 }
 
 function EC_ProposedTrade_Accept() {
+    var Quantity = Math.max(CurrentEra,5);   
     switch (SelectedRandomResourceValue) {
         case 1:
-            DecrementSupply(CurrentEra);
+            DecrementSupply(Quantity);
             break;
         case 2:
-            DecrementDomain(CurrentEra);
+            DecrementDomain(Quantity);
             break;
         case 3:
-            DecrementInspiration(CurrentEra);
+            DecrementInspiration(Quantity);
             break;
     }
     switch (SelectedSecondRandomResourceValue) {
         case 1:
-            IncrementSupply(CurrentEra);
+            IncrementSupply(Quantity);
             break;
         case 2:
-            IncrementDomain(CurrentEra);
+            IncrementDomain(Quantity);
             break;
         case 3:
-            IncrementInspiration(CurrentEra);
+            IncrementInspiration(Quantity);
             break;
     }
     
     switch (SelectedRandomRivalValue) {
         case 1:
-            LongTalonTribeTension--;
-            LongTalonTribeTension--;
+            LongTalonTribeTension = LongTalonTribeTension - CultureLevel;
             LongTalonTribeVictoryLevel++;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
             break;
         case 2:
-            ShiningScalesTension--;
-            ShiningScalesTension--;
+            ShiningScalesTension = ShiningScalesTension - CultureLevel;
             ShiningScalesVictoryLevel++;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 3:
-            FolkOfTheWindingFlowTension--;
-            FolkOfTheWindingFlowTension--;
+            FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - CultureLevel;
             FolkOfTheWindingFlowVictoryLevel++;
             if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
             break;
@@ -2874,7 +2912,7 @@ function EC_CouncilOfElders_PathOfWar() {
     RefreshPage();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Council of Elders")   
-    $('#EventNar').html("You have chosen the Path of War. May your enemies feel your wrath!");
+    $('#EventNar').html("You have chosen the Path of War. May your enemies feel your strength!");
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
 }
