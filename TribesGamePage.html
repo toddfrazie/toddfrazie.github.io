@@ -8,8 +8,8 @@
 	<script src="http://toddfrazie.github.io/TribesGamePage.js"></script>
 	<link rel="stylesheet" href="http://toddfrazie.github.io/css/TribesGamePage.css">
   </head>
-  
-  <body>
+
+ <body>
 	  
 	  <div class="Title">
 		<div class="container">
@@ -26,7 +26,7 @@
 							
                 <div id="LeftSide" class="col-sm-3">
 					  <div class="row">
-						<div class="SquarePanel">
+						<div class="SquarePanel" id="HunterPanel">
 						  <img title="Hunter" id="HunterTribal" class="Tribal" src="http://i.imgur.com/x0Alvme.jpg">
 						  <div class="StatsPanel">
 							<table style="width: 120px">
@@ -56,7 +56,7 @@
 
 					  
 					  <div class="row">
-						<div class="SquarePanel">
+						<div class="SquarePanel" id="ExplorerPanel">
 						  <img title="Explorer" id="ExplorerTribal" class="Tribal" src="http://i.imgur.com/BuwVh8z.jpg">
 						  <div class="StatsPanel">
 							<table style="width: 120px">
@@ -86,7 +86,7 @@
 
 					  
 					  <div class="row">
-						<div class="SquarePanel">
+						<div class="SquarePanel" id="CrafterPanel">
 						  <img title="Crafter" id="CrafterTribal" class="Tribal" src="http://i.imgur.com/JwbS0fc.jpg">
 						  <div class="StatsPanel">
 							<table style="width: 120px">
@@ -118,7 +118,7 @@
 
 					  
 					  <div class="row">
-						<div class="SquarePanel">
+						<div class="SquarePanel" id="WarriorPanel">
 						  <img title="Warrior" id="WarriorTribal" class="Tribal" src="http://i.imgur.com/p7eQNKb.jpg">
 						  <div class="StatsPanel">
 							<table style="width: 120px">
@@ -159,15 +159,12 @@
 						<div  id="TextBox">
 						  <div id="IntroDiv">
 							<h4 id="IntroDivHeader"></h4>
-							<p id="IntroDivStory"></p>
+							<p id="IntroDivStory"></p>							
+							<button id="Intro_Continue">Continue</button>
 							<button id="River_Expansion_Intro" class="Upgrade">River Region</button>
-
 							<button id="Savanna_Expansion_Intro" class="Upgrade">Savanna Region</button>
-
 							<button id="Forest_Expansion_Intro" class="Upgrade">Forest Region</button>
-
 							<button id="Hill_Expansion_Intro" class="Upgrade">Hill Region</button>
-
 						  </div>
 						  <div id="UpgradeInfoBox">
 							<h4 class="Centered" id="UpgradeInfoBoxHeader"></h4>
@@ -176,7 +173,7 @@
 						  </div>	
 						  <div id="EventResultBox">							
 							<h4 class="Centered" id="EventResultBoxHeader"></h4>
-							<p id="EventNar"></p>
+							<p id="EventNar"></p>		  
 							<p id="EventOption1Description"></p>
 							<button id="EventOption1Button" style="background-color: black; margin-bottom: 20px;">Commit</button>
 							<p id="EventOption2Description"></p>
@@ -364,3 +361,4 @@
 
   </body>
 </html>
+
