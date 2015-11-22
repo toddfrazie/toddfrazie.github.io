@@ -4,6 +4,7 @@ var main = function() {
 
 var CurrentPhase = 99;
 var CurrentEra = 1;
+var IntroPhase = 0;
 
 var CurrentNumberOfHunters = 1;
 var CurrentNumberOfCrafters = 1;
@@ -16,10 +17,10 @@ var CrafterMultiplier = 1;
 var ExplorerMultiplier = 1;
 var WarriorMultiplier = 1;
 
-var CurrentSupply = 10;
-var CurrentInspiration = 10;
-var CurrentDomain = 10;
-var CurrentGrip = 10;
+var CurrentSupply = 0;
+var CurrentDomain = 0;
+var CurrentInspiration = 0;
+var CurrentGrip = 0;
 
 var CurrentSupremacy = 0;
 var CurrentDiscovery = 0;
@@ -105,14 +106,10 @@ var SelectedSecondRandomResource = "";
 var SelectedSecondRandomResourceValue = 0;
 
 window.onload = function() {
-    $("#IntroDivHeader").html("New World")
-    $("#IntroDivStory").html("At the summit of a vast landscape looms a stone in the likeness of a giant Serpent.\
-                             You have just led your tribe from their original home, drawn to the wonder and prosperity of this new and mysterious place. \
-                             But, you quickly realize your own is not the only kin here.<br/>With a handful of resources and your kin you set out to mark your place. \
-                             They look to you to make the decision; Where will you settle?")
     PopulateToolTips();
     RefreshPage();
     $('.GameZone').fadeIn();
+    IntroContinue();
 };
 
 
@@ -150,10 +147,13 @@ $('#GripUpgrades').mouseleave(function(){
 });
 
 $('.ToolTip').parent(this).mouseenter(function(){
-    $(this).find('.ToolTip').slideDown();
     $(this).css("cursor", "help");
+});
+$('.ToolTip').parent(this).click(function(){
+    $(this).find('.ToolTip').slideDown();
     $(this).css("position", "relative");
 });
+
 $('.ToolTip').parent(this).mouseleave(function(){$('.ToolTip').hide();});
 
 function PopulateToolTips() {
@@ -281,7 +281,8 @@ function RefreshPage(){
             break;
         case 99:
             $('#IntroDiv').fadeIn(1500);
-            $('#BeginEra').hide();
+            if (IntroPhase > 5) {$('#BeginEra').fadeIn();}
+            else{$('#BeginEra').hide();}
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
             $('#ActionResultBox').hide();
@@ -576,78 +577,206 @@ function ChangeWarriorStats(NoW){
 //Caculate Era Results.----------------------------------------------------------------------------
 $('#BeginEra').mouseenter(function(){
     $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("<span class=\"LargerText;\">Begin Fruition</span>");
-    $('#UpgradeInfoBoxDescription').html("Leave the Provision Phase and begin the Fruition Phase.");
+    if (CurrentPhase != 99) {
+        $('#UpgradeInfoBoxHeader').html("<span class=\"LargerText;\">Begin Fruition</span>");
+        $('#UpgradeInfoBoxDescription').html("Leave the Provision Phase and begin the Fruition Phase.");
+    }
 })
 $('#BeginEra').mouseleave(function(){ClearUpgradeInfoBox();})
 $('#BeginEra').click(BeginEra);
-function BeginEra() {
-    CurrentPhase = 1;
-    // Calculate returns from Hunting/Crafting/Exploring
-    CalculateHuntingResult();
-    CalculateCraftingResult();
-    CalculateExploringResult();
-    CalculateWarResult();
-    CalculateNewTribeMemberResult();
+function BeginEra() {    
+    if (CurrentPhase == 99) {
+        $('#HarvestResultBox').fadeIn();
+        CalculateHuntingResult();
+        $('#IntroDiv').hide();
+        $('#BeginEra').hide();
+        $("#StashedSupply").text(CurrentSupply);
+    }else{
+        CurrentPhase = 1;
+        // Calculate returns from Hunting/Crafting/Exploring
+        CalculateHuntingResult();
+        CalculateCraftingResult();
+        CalculateExploringResult();
+        CalculateWarResult();
+        CalculateNewTribeMemberResult();
+        
+        //Clear All Boosters (must remain after returns calculated)
+        SupplySurplus = false
+        InspirationSurplus = false
+        DomainSurplus = false
+        GripSurplus = false
+        
+        //Increase Discovery Level
+        if (MapOfTheAncients > 0) {CalculateMapOfTheAncients()}
+        if (AncientGarden > 0) {CalculateAncientGarden()}
+        if (AncientCache > 0) {CalculateAncientCache()}
+        if (PinnacleStone > 0) {CalculatePinnacleStone()}
+        if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
     
-    //Clear All Boosters (must remain after returns calculated)
-    SupplySurplus = false
-    InspirationSurplus = false
-    DomainSurplus = false
-    GripSurplus = false
+        CurrentRaidBarterThisTurn--;
+        if (CurrentRaidBarterThisTurn < 1) {CurrentRaidBarterThisTurn = 1}
+        
     
-    //Increase Discovery Level
-    if (MapOfTheAncients > 0) {CalculateMapOfTheAncients()}
-    if (AncientGarden > 0) {CalculateAncientGarden()}
-    if (AncientCache > 0) {CalculateAncientCache()}
-    if (PinnacleStone > 0) {CalculatePinnacleStone()}
-    if (SpearOfTheAncients > 0) {CalculateSpearOfTheAncients()}
-
-    CurrentRaidBarterThisTurn--;
-    if (CurrentRaidBarterThisTurn < 1) {CurrentRaidBarterThisTurn = 1}
-    
-
-    CalculateVictoryConditionGains();
-    CalculateEraTensionIncrease();
-    CalculateEraVictoryIncrease();
-    
-    if (Agenda != 0) {
-        AgendaDuration--
-        if (AgendaDuration < 1) {
-            Agenda = 0
+        CalculateVictoryConditionGains();
+        CalculateEraTensionIncrease();
+        CalculateEraVictoryIncrease();
+        
+        if (Agenda != 0) {
+            AgendaDuration--
+            if (AgendaDuration < 1) {
+                Agenda = 0
+            }
         }
+        switch (Agenda) {
+            case 0:
+                $('#Path_Of_War').hide();
+                $('#Path_Of_Peace').hide();
+                $('#Path_Of_Seclusion').hide();
+                break;
+            case 1:
+                $('#Path_Of_War').show();
+                $('#Path_Of_Peace').hide();
+                $('#Path_Of_Seclusion').hide();
+                break;
+            case 2:
+                $('#Path_Of_Peace').show();
+                $('#Path_Of_War').hide();
+                $('#Path_Of_Seclusion').hide();
+                break;
+            case 3:
+                $('#Path_Of_Seclusion').show();
+                $('#Path_Of_War').hide();
+                $('#Path_Of_Peace').hide();
+                break;
+            case 4:
+                $('#Path_Of_Seclusion').hide();
+                $('#Path_Of_War').hide();
+                $('#Path_Of_Peace').hide();
+                break;
+            default:
+                break;            
+        }
+        RefreshPage();
     }
-    switch (Agenda) {
-        case 0:
-            $('#Path_Of_War').hide();
-            $('#Path_Of_Peace').hide();
-            $('#Path_Of_Seclusion').hide();
-            break;
+}
+
+$('#Intro_Continue').click(IntroContinue);
+function IntroContinue() {
+    IntroPhase++
+    $("#IntroDivStory").hide();
+    $("#Intro_Continue").hide();
+    switch (IntroPhase) {
         case 1:
-            $('#Path_Of_War').show();
-            $('#Path_Of_Peace').hide();
-            $('#Path_Of_Seclusion').hide();
+            $("#IntroDivHeader").html("The Hunt")
+            $("#IntroDivStory").html("After falling wayward from your kin on a hunting venture, you find yourself far from your settlement, following an alluring mysterious game.\
+                                     In hopes of finding its pack and their food supply, your quest carries you for many days.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
             break;
         case 2:
-            $('#Path_Of_Peace').show();
-            $('#Path_Of_War').hide();
-            $('#Path_Of_Seclusion').hide();
+            $("#IntroDivStory").html("The game is lost! In a desperate to save your journey, you seek higher ground.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
             break;
         case 3:
-            $('#Path_Of_Seclusion').show();
-            $('#Path_Of_War').hide();
-            $('#Path_Of_Peace').hide();
+            $("#IntroDivStory").html("At the cusp of a plateau, you are confronted by the gaze of a Giant Serpent, erect and still at the peak of a rise. You soon realize it is some stonework masterpiece! \
+                                     Surrounding its base a great distance in all directions is what can only be described as a paradise of fertile, protected, and wonderous lands.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
             break;
         case 4:
-            $('#Path_Of_Seclusion').hide();
-            $('#Path_Of_War').hide();
-            $('#Path_Of_Peace').hide();
+            $("#IntroDivHeader").hide();
+            $("#IntroDivHeader").text("The Return");
+            $("#IntroDivStory").html("You return to your tribe with an abundance of food and a tale to tell. This revelation could not have come at a better time. Weak leadership and tensions within your tribe from many troubles have caused dissention.\
+                                     You implore that the tribe travel to this new land and make it their own.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#IntroDivHeader").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
             break;
-        default:
-            break;            
+        case 5:
+            $("#IntroDivStory").html("The plan is not well received. Many fear the Serpent is a foul omen. Others do not believe your story. Others still are infirm and do not favor a journey of such lengths rife with uncertainty.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            break;
+        case 6:
+            $("#IntroDivStory").html("Unswayed by their doubts, you remain intent on returning to this new place, certain some beyond your own family will come.  But first, you must gather a few more supplies for the journey.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            break;
+        case 7:
+            $("#IntroDivHeader").hide();
+            $("#IntroDivHeader").text("Preparing for the journey");
+            $("#IntroDivStory").hide();
+            $("#IntroDivStory").html("Select \"Begin\" to begin the Fruition phase. During Fruition, you will reap the labor of your workers. \
+                                     <br/>Right now, you are but a lone Hunter. You will gain 1 <span style=\"color: rgb(178, 0, 0);\">Supply</span> for each hunter you have, multiplied by your Hunter Efficiency.\
+                                     <br/><br/>Collect 5 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
+            $("#IntroDivStory").fadeIn(1500);
+            $("#IntroDivHeader").fadeIn(1500);            
+            $("#HunterPanel").fadeIn(1500);
+            $("#BeginEra").fadeIn(1500);
+            break;
+        case 8:
+            $("#IntroDivHeader").hide();
+            $("#IntroDivHeader").text("Preparing for the journey");
+            $("#IntroDivStory").html("With ample <span style=\"color: rgb(178, 0, 0);\">Supply</span>, you feel prepared. But, you'll need someone to explore and tame this new world.\
+                                     Luckily, an Explorer heads the call and chooses to join you.");
+            $("#IntroDivStory").fadeIn(1500);
+            $("#IntroDivHeader").fadeIn(1500);            
+            $("#ExplorerPanel").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            $("#BeginEra").hide();
+            break;
+        case 9:
+            $("#IntroDivStory").html("Once you finally settle, Explorers accumulate <span style=\"color: rgb(207, 166, 0);\">Domain</span> for your tribe.\
+                                     <span style=\"color: rgb(207, 166, 0);\">Domain</span> can be used to expand your settlement and search the mysterious surroundings.");
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            break;
+        case 10:
+            $("#IntroDivStory").html("A crafter insists you bring her and her young to this giant serpent of stone. Her skills will be invaluable once you arrive.");
+            $("#IntroDivStory").fadeIn(1500);
+            $("#CrafterPanel").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            break;
+        case 11:
+            $("#IntroDivStory").html("Crafters generate <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, which they use to improve the efficiency of endeavors. With enough stashed <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, a crafter could pursue a new invention.<br/><br/>\
+                                     The time has come to embark.");
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            break;
+        case 12:
+            $("#IntroDivStory").html("With these, and a handful of unskilled young and elderly, you are ready to embark.");
+            $("#IntroDivStory").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            break;
+        case 13:
+            $("#IntroDivHeader").text("New World");
+            $("#IntroDivStory").html("You have just led your new tribe from their original home, drawn to the wonder and prosperity of this mysterious place. \
+                                     But, you can see the tell tale signs that your own is not the only kin here.<br/><br/>The oldest of your new tribe presents himself to you as a seasoned warrior.\
+                                     In his eyes you see that he is very serious.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#IntroDivHeader").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            $("#WarriorPanel").fadeIn(1500);
+            break;
+        case 14:
+            $("#IntroDivStory").html("Warriors will serve as raiders, protectors, and diplomats for your tribe. They demand respect and reverence from any outsiders.\
+                                     As time progresses, they produce <span style=\"color: grey;\">Grip</span>, which represents your hold over the territory you have.")
+            $("#IntroDivStory").fadeIn(1500);
+            $("#IntroDivHeader").fadeIn(1500);
+            $("#Intro_Continue").fadeIn(1500);
+            $("#BeginEra").hide();
+            break;
+        case 15:
+            $("#IntroDivStory").html("With a handful of resources and your kin you set out to mark your place. \
+                                     They look to you to make the decision; Where will you settle?")
+            $("#IntroDivStory").fadeIn();
+            $("#IntroDivHeader").fadeIn(1500);
+            $("#IntroDiv .Upgrade").fadeIn(1500);
+            break;
     }
-    RefreshPage();
 }
+
 
 function CalculateNewTribeMemberResult() {
     var UpkeepCost = Math.floor(CurrentPopulation/3)
@@ -691,10 +820,17 @@ function CalculateVictoryConditionGains() {
 
 $('#HarvestContinueButton').click(ContinueToEvent);
 function ContinueToEvent() {
-    CurrentPhase = 2;
-    if (VictoryOrLossAchieved) {CurrentPhase = 5}
-    CalculateEvent();
-    RefreshPage();
+    if (CurrentPhase == 99) {
+        $("#StashedSupply").text(CurrentSupply);
+        $("#IntroDivStory").html("<br/><br/>Collect 3 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
+        RefreshPage();
+        if (CurrentSupply > 4) {IntroContinue();}
+    }else{
+        CurrentPhase = 2;
+        if (VictoryOrLossAchieved) {CurrentPhase = 5}
+        CalculateEvent();
+        RefreshPage();
+    }
 }
 
 //In depth Calculation for turns---------------------------------------------------
@@ -704,7 +840,7 @@ function CalculateHuntingResult() {
     }else if (SupplySurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
-        $('#HunterResult').html("Your hunters return with " +Calc+ " <span style=\"color: rgb(178, 0, 0);\">Supply</span> for the tribe.");
+        $('#HunterResult').html(Calc+ " <span style=\"color: rgb(178, 0, 0);\">Supply</span> was gained through hunting.");
         IncrementSupply(Calc)
         WarRation = 0;
         if (Agenda == 1) {
@@ -724,7 +860,7 @@ function CalculateCraftingResult() {
     }else if (InspirationSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
-        $('#CrafterResult').html("Your crafters gained " +Calc+ " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> for your tribe.");
+        $('#CrafterResult').html(Calc+ " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> was gained through crafting.");
         IncrementInspiration(Calc)
     }else{$('#CrafterResult').html("");}
 }
@@ -735,7 +871,7 @@ function CalculateExploringResult() {
     }else if (DomainSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
-        $('#ExplorerResult').html("Your explorers have expanded your tribe's territory by " +Calc+ " <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
+        $('#ExplorerResult').html(Calc+ " <span style=\"color: rgb(207, 166, 0);\">Domain</span> was gained through exploration.");
         IncrementDomain(Calc)
     }else{$('#ExplorerResult').html("");}
 }
@@ -746,7 +882,7 @@ function CalculateWarResult() {
     }else if (GripSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
-        $('#WarResult').html("Your warriors have secured your tribe's hold by " +Calc+ " <span style=\"color: grey;\">Grip</span>.");
+        $('#WarResult').html(Calc+ " <span style=\"color: grey;\">Grip</span> was secured by your Warriors.");
         IncrementGrip(Calc)
     }else{$('#WarriorResult').html("");}
 }
@@ -805,7 +941,6 @@ function CalculateSpearOfTheAncients() {
 // Supply Upgrade Buttons-------------------------------------------------
 
 $('#Population_Boom').hover(function(){
-    //toggle visibility
     $('#UpgradeInfoBoxCost').html(TotalPopulationBoomCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
     $('#UpgradeInfoBoxHeader').html("Population Boom");
     $('#UpgradeInfoBoxDescription').html("A new tribe member will join your tribe immediately so long as you have the capacity.");
@@ -1073,6 +1208,12 @@ function P_Hill_Expansion(){
 
 function ContinueToIntro2() {
     $('#IntroDiv').hide();
+    $('#DetailsBox').fadeIn(1500);
+    $('.SquarePanel').show();
+    CurrentSupply = 5;
+    CurrentDomain = 5;
+    CurrentInspiration = 5;
+    CurrentGrip = 5;
     CurrentPhase = 2;
     RefreshPage();
     RefreshEvent();
