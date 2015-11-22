@@ -111,7 +111,8 @@ window.onload = function() {
                              But, you quickly realize your own is not the only kin here.<br/>With a handful of resources and your kin you set out to mark your place. \
                              They look to you to make the decision; Where will you settle?")
     PopulateToolTips();
-    RefreshPage();    
+    RefreshPage();
+    $('.GameZone').fadeIn();
 };
 
 
@@ -156,17 +157,22 @@ $('.ToolTip').parent(this).mouseenter(function(){
 $('.ToolTip').parent(this).mouseleave(function(){$('.ToolTip').hide();});
 
 function PopulateToolTips() {
-    var SupremacyString = "Supremacy measures your dominance over the region.<br/><br/>\
+    $('#SupremacyTip').html("Supremacy measures your dominance over the region.<br/><br/>\
                           You will gain twice your number of Expansions in Supremacy each Era. <br/><br/>\
-                          You will gain your number of Expansions (including your Settlement) multiplied by your number of Warriors in Supremacy each time you Raid."
-    $('#SupremacyTip').html(SupremacyString);    
-    var InfluenceString = "Influence measures your cultural presence in the region.<br/><br/>\
-                          You will gain your number of Expansions (including your Settlement) multiplied by your Culture Level in Influence each Era and each time you Barter."
-    $('#InfluenceTip').html(InfluenceString);
-    var DiscoveriesString = "Discoveries are relics from those that came before. Possess and utilize as many of these as you can.<br/><br/>\
-                          You will find Discoveries during the Fruition phase by having an adequate surplus of Domain available."
-    $('#DiscoveriesTip').html(DiscoveriesString);
-}
+                          You will gain your number of Expansions (including your Settlement) multiplied by your number of Warriors in Supremacy each time you Raid.");    
+    $('#InfluenceTip').html("Influence measures your cultural presence in the region.<br/><br/>\
+                          You will gain your number of Expansions (including your Settlement) multiplied by your Culture Level in Influence each Era and each time you Barter.");
+    $('#DiscoveriesTip').html("Discoveries are relics from those that came before. Possess and utilize as many of these as you can.<br/><br/>\
+                          You will find Discoveries during the Fruition phase by having an adequate surplus of Domain available.");
+    
+    $('#LongTalonTip').html("The Long Talons favor military prowess. They also excel in it. The more impressive the target, the more likely they are to strike.\
+                             In this way, they assure none grow too large to handle.");
+    $('#ShiningScalesTip').html("A tribe claiming to have descended from the Ancients of this land, they are friendly enough to who they call newcomers,\
+                                but jealously work to find and protect 'their' relics.");
+    $('#WindingFlowTip').html("The Folk of the Winding Flow are a cultured and artistic tribe. They are relatively peaceful, more interested in spreading their ideas than their bloodline.");
+    
+
+}   
 
 function CannotBeDone() {
     $('#UpgradeInfoBoxCost').html("");
@@ -350,7 +356,7 @@ function CalculateTribalCosts(){
 
     TotalDiscoveryDomainCost = Math.floor((25 * (CurrentDiscovery+1)) * Math.pow(1.07,(CurrentDiscovery)));
     
-    TotalInventionInspirationCost = Math.floor(20 * Math.pow(1.15,InventionLevel));
+    TotalInventionInspirationCost = Math.floor((30 * InventionLevel) * Math.pow(1.15,InventionLevel));
     
     RaidingCost = Math.floor((5 * CurrentRaidBarterThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
     
@@ -1187,13 +1193,6 @@ function P_BarterShiningScales() {
     }else{CannotBeDone()};
 };
 
-$('#ShiningScalesAbout').hover(function(){
-    $('#UpgradeInfoBoxCost').html("<br/>");
-    $('#UpgradeInfoBoxHeader').html("<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>");
-    $('#UpgradeInfoBoxDescription').html("A tribe claiming to have descended from the Ancients of this land, they are friendly enough to who they call newcomers,\
-                                         but jealously work to find and protect 'their' relics.");
-});
-
 $('#LongTalonTribeRaid').hover(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
     $('#UpgradeInfoBoxHeader').html("<span style=\"color: OrangeRed;\">Raid the Long Talon Tribe</span>");
@@ -1269,12 +1268,6 @@ function P_BarterLongTalonTribe() {
         RefreshPage();
     }else{CannotBeDone()};
 }
-$('#LongTalonTribeAbout').hover(function(){
-    $('#UpgradeInfoBoxCost').html("<br/>");
-    $('#UpgradeInfoBoxHeader').html("<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>");
-    $('#UpgradeInfoBoxDescription').html("The Long Talons favor military prowess. They also excel in it. The more impressive the target, the more likely they are to strike.\
-                                         In this way, they assure none grow too large to handle.");
-});
 
 $('#FolkOfTheWindingFlowRaid').hover(function(){
     $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
@@ -1351,17 +1344,12 @@ function P_BarterFolkOfTheWindingFlow() {
     }else{CannotBeDone()};
 }
 
-$('#FolkOfTheWindingFlowAbout').hover(function(){
-    $('#UpgradeInfoBoxCost').html("<br/>");
-    $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">The Folk of the Winding Flow</span>");
-    $('#UpgradeInfoBoxDescription').html("The Folk of the Winding Flow are a cultured and artistic tribe. They are relatively peaceful, more interested in spreading their ideas than their bloodline.");
-})
-
 // Events Logic --------------------------------------------------------------------------------------
 
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
+    
     
     var HostilityCounter = 0;
     while (HostilityCounter < CurrentRaidBarterThisTurn && NeedToFindEvent) {
@@ -1561,29 +1549,12 @@ function CalculateEvent() {
                     }
                     break;
                 case 3:
-                    if (NeedToFindEvent && CurrentInspiration >= TotalInventionInspirationCost) {
-                       var RandomInvention = Math.floor((Math.random() * 3) + 1);
-                       switch (RandomInvention) {
-                           case 1:
-                                if (!(Pottery)) {
-                                    E_Pottery();
-                                    NeedToFindEvent= false;
-                                }
-                            break;
-                           case 2:
-                                if (!(ImprovedRaidTactics)) {
-                                    E_ImprovedRaidTactics();
-                                    NeedToFindEvent= false;
-                                }
-                            break;
-                            case 3:
-                                if (!(Totems)) {
-                                    E_Totems();
-                                    NeedToFindEvent= false;
-                                }
-                            break;
-                       }
-                   }else{E_InventionNotEnough(); NeedToFindEvent= false;}
+                    if (NeedToFindEvent && !Pottery || !Totems || !ImprovedRaidTactics) {
+                        if (CurrentInspiration >= TotalInventionInspirationCost) {
+                            E_Invention();
+                            NeedToFindEvent= false;
+                       }else{E_InventionNotEnough(); NeedToFindEvent= false;}
+                    }
                    break;
                 case 4:
                     if (NeedToFindEvent) {
@@ -1609,12 +1580,6 @@ $('#EventOption1Button').click(function(){
         break;
     case 102:
         EC_Pottery_InventPottery();
-        break;
-    case 103:
-        EC_ImprovedRaidTactics_InventImprovedRaidTactics();
-        break;
-    case 104:
-        EC_Totems_InventTotems();
         break;
     case 111:
         EC_Festival_ThrowFestival();
@@ -1690,13 +1655,7 @@ $('#EventOption2Button').click(function(){
         ShowEventEnd();
         break;
     case 102:
-        ShowEventEnd();
-        break;
-    case 103:
-        ShowEventEnd();
-        break;
-    case 104:
-        ShowEventEnd();
+        EC_ImprovedRaidTactics_InventImprovedRaidTactics();
         break;
     case 111:
         ShowEventEnd();
@@ -1757,6 +1716,9 @@ $('#EventOption3Button').click(function(){
     case 101:
         ShowEventEnd()
         break;
+    case 102:
+        EC_Totems_InventTotems();
+        break;
     case 203:
         EC_HostileWildlife_Migrate();
         break;
@@ -1783,6 +1745,9 @@ $('#EventOption3Button').click(function(){
 $('#EventOption4Button').click(function(){  
    
    switch (EventLoadedValue) {
+    case 102:
+        ShowEventEnd();       
+        break;
     case 203:
         EC_HostileWildlife_StandYourGround();
         break;
@@ -2319,19 +2284,33 @@ function E_InventionNotEnough(){
     $('#EventOption1Button').show(); 
 }
 
-function E_Pottery() {
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Invention: Pottery")
-    $('#EventNar').html("Your crafters claim they have found a way to work clay that will benefit the Tribe. Would you like them to pursue this innovation?");
-    $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Invent Pottery<br/> spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Pottery. This will improve the effectiveness on your Surplus.");
-    $('#EventOption1Button').show();
-    $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Ignore this creative pursuit.");
-    $('#EventOption2Button').show();
-    
-    EventLoadedValue = 102;
+function E_Invention() {
+        $('#EventResultBoxHeader').show()
+        $('#EventResultBoxHeader').html("Invention")
+        $('#EventNar').html("Your crafters would like to explore a unique creative pursuit that could greatly benefit the tribe. Which invention would you like to pursue?");
+        if (!Pottery) {
+            $('#EventOption1Description').show();
+            $('#EventOption1Description').html("Invent Pottery<br/>Spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Pottery. This will improve the effectiveness on your Surplus.");
+            $('#EventOption1Button').show();
+        }
+        if (!ImprovedRaidTactics) {
+            $('#EventOption2Description').show();
+            $('#EventOption2Description').html("Invent Improved Raiding Tactics<br/>Spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Improved Raiding Tactics. This will improve the effectiveness of each Warrior while raiding.");
+            $('#EventOption2Button').show();
+        }
+        if (!Totems) {
+            $('#EventOption3Description').show();
+            $('#EventOption3Description').html("Invent Totems<br/>Spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Totems. This will increase your Supremacy and Influence per region each era.");
+            $('#EventOption3Button').show();
+        }
+
+        $('#EventOption4Description').show();
+        $('#EventOption4Description').html("Ignore these creative pursuits.");
+        $('#EventOption4Button').show();
+        
+        EventLoadedValue = 102;
 }
+
 
 function EC_Pottery_InventPottery() {
     DecrementInspiration(TotalInventionInspirationCost);
@@ -2342,7 +2321,7 @@ function EC_Pottery_InventPottery() {
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Invention: Pottery")    
+    $('#EventResultBoxHeader').html("Invention")    
     $('#EventNar').html("Your crafters invent Pottery! \
                         <br/>This will increase the bonus from Surplus. It has also increased your Influence significantly!");
     EventLoadedValue = 999;
@@ -2361,20 +2340,6 @@ $('#Pottery').mouseleave(function() {ClearUpgradeInfoBox()});
 
 // Improved War Tactics ----------------------------------------
 
-function E_ImprovedRaidTactics() {
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Invention: Improved Raiding Tactics")
-    $('#EventNar').html("New strategies have come about that might grow into a powerful tool for war. Would you like to pursue this innovation?");
-    $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Train in Improved Raiding Tactics<br/>Spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Improved Raiding Tactics. This will improve your effectiveness while raiding.");
-    $('#EventOption1Button').show();
-    $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Ignore this creative pursuit.");
-    $('#EventOption2Button').show();
-    
-    EventLoadedValue = 103;
-}
-
 function EC_ImprovedRaidTactics_InventImprovedRaidTactics() {
     DecrementInspiration(TotalInventionInspirationCost);
     IncrementInfluence(TotalInventionInspirationCost);
@@ -2384,7 +2349,7 @@ function EC_ImprovedRaidTactics_InventImprovedRaidTactics() {
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Invention: Improved Raiding Tactics")    
+    $('#EventResultBoxHeader').html("Invention")    
     $('#EventNar').html("Your have Invented Improved Raiding Tactics! \
                         <br/>This will improve your effectiveness while raiding. It has also increased your Influence significantly!");
     EventLoadedValue = 999;
@@ -2404,20 +2369,6 @@ $('#War_Tactics').mouseleave(function() {ClearUpgradeInfoBox()});
 
 //Totems ------------------------------------------------
 
-function E_Totems() {
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Invention: Totems")
-    $('#EventNar').html("Your crafters claim they have found a way to mark your tribe's presence in a significant way. Would you like to pursue this innovation?");
-    $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Invent Totems<br/> spend "+TotalInventionInspirationCost+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to invent Totems. This will increase your supremacy and influence per region each era.");
-    $('#EventOption1Button').show();
-    $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Ignore this creative pursuit.");
-    $('#EventOption2Button').show();
-    
-    EventLoadedValue = 104;
-}
-
 function EC_Totems_InventTotems() {
     DecrementInspiration(TotalInventionInspirationCost);
     IncrementInfluence(TotalInventionInspirationCost);
@@ -2427,7 +2378,7 @@ function EC_Totems_InventTotems() {
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Invention: Totems")    
+    $('#EventResultBoxHeader').html("Invention")    
     $('#EventNar').html("Your crafters invent Totems! \
                         <br/>This will increase your supremacy and influence per region over time. It has also increased your Influence significantly!");
     EventLoadedValue = 999;
@@ -3942,8 +3893,6 @@ function CalculateWarriorsLost(Strength) {
     
     return WarriorsLostText
 }
-
-
 
 
 }
