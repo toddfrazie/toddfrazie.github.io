@@ -822,7 +822,7 @@ $('#HarvestContinueButton').click(ContinueToEvent);
 function ContinueToEvent() {
     if (CurrentPhase == 99) {
         $("#StashedSupply").text(CurrentSupply);
-        $("#IntroDivStory").html("<br/><br/>Collect 3 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
+        $("#IntroDivStory").html("<br/><br/>Collect 5 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
         RefreshPage();
         if (CurrentSupply > 4) {IntroContinue();}
     }else{
