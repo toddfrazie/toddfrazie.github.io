@@ -45,7 +45,7 @@ var Totems = false;
 var BrushFireInnovation = false;
 
 var Agenda = 4;
-var AgendaDuration = 8;
+var AgendaDuration = 16;
 var WarRation = 0;
 
 var HunterExpansionBonus = 0;
@@ -83,13 +83,11 @@ var BarteringCost = 0;
 
 var LongTalonTribeVictoryLevel = 1;
 var ShiningScalesVictoryLevel = 1;
-var FolkOfTheWindingFlowVictoryLevel = 1;
 var VictoryLevelCap = 50;
 var VictoryOrLossAchieved = false;
 
 var ShiningScalesTension = 1;
 var LongTalonTribeTension = 1;
-var FolkOfTheWindingFlowTension = 1;
 var CurrentRaidBarterThisTurn = 1;
 var CurrentPopulationBoomThisTurn = 1;
 var TensionCap = 30;
@@ -110,7 +108,10 @@ var SelectedSecondRandomResourceValue = 0;
 var WaywardAndDesperateExperienced = false;
 var WaywardKindShiningScales = false;
 var WaywardKindLongTalon = false;
-var WaywardKindWindingFlow = false;
+
+var ShiningScalesPresent = false;
+var LongTalonTribePresent = false;
+var LongTalonArrivalEra = 7;
 
 window.onload = function() {
     PopulateToolTips();
@@ -147,9 +148,13 @@ $('#InspirationUpgrades').mouseleave(function(){
 
 $('#GripUpgrades').mouseenter(function(){
     $('#GripUpgrades').attr('class','ExpandedGripUpgradeBox');
+    if(ShiningScalesPresent){$('#ShiningScalesUpgrades').attr('class','ShownShiningScalesUpgradeBox');};
+    if(LongTalonTribePresent){$('#LongTalonUpgrades').attr('class','ShownLongTalonUpgradeBox');};
 });
 $('#GripUpgrades').mouseleave(function(){
     $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
+    if(ShiningScalesPresent){$('#ShiningScalesUpgrades').attr('class','HiddenShiningScalesUpgradeBox');};
+    if(LongTalonTribePresent){$('#LongTalonUpgrades').attr('class','HiddenLongTalonUpgradeBox');};
     ClearUpgradeInfoBox();
 });
 
@@ -239,7 +244,7 @@ function RefreshPage(){
             $('#SupplyUpgrades').show();
             $('#DomainUpgrades').show();
             $('#InspirationUpgrades').show();
-            if (Agenda != 3){$('#GripUpgrades').show();}
+            if (Agenda != 3 && ShiningScalesPresent){$('#GripUpgrades').show();}
             break;
         case 1:
             $('#BeginEra').hide();
@@ -328,9 +333,6 @@ function DisplayDetails() {
     $('#D_LongTalonTribeVictory').html(LongTalonTribeVictoryLevel);    
     $('#D_ShiningScalesTension').html(ShiningScalesTension);
     $('#D_ShiningScalesVictory').html(ShiningScalesVictoryLevel);
-    $('#D_FolkOfTheWindingFlowTension').html(FolkOfTheWindingFlowTension);
-    $('#D_FolkOfTheWindingFlowVictory').html(FolkOfTheWindingFlowVictoryLevel);
-
     
     //if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
     //    $('#DetailImage').attr("src","http://i.imgur.com/N4Uepe3.jpg");
@@ -403,22 +405,7 @@ function CompetitionDetails() {
         default:
             $('#D_LongTalonTribeTension').css('color','Red')
             break;
-    }
-    
-    switch (true) {
-        case (FolkOfTheWindingFlowTension < (TensionCap / 2.8)):
-            $('#D_FolkOfTheWindingFlowTension').css('color','Green')
-            break;
-        case (FolkOfTheWindingFlowTension < (TensionCap / 1.6)):
-            $('#D_FolkOfTheWindingFlowTension').css('color','Yellow')
-            break;
-        case (FolkOfTheWindingFlowTension < (TensionCap / 1.2)):
-            $('#D_FolkOfTheWindingFlowTension').css('color','Orange')
-            break;
-        default:
-            $('#D_FolkOfTheWindingFlowTension').css('color','Red')
-            break;
-    }
+    }    
 
     //switch (true) {
     //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 2.8)):
@@ -447,21 +434,6 @@ function CompetitionDetails() {
     //        break;
     //    default:
     //        $('#D_LongTalonTribeVictory').css('color','Red')
-    //        break;
-    //}
-    //
-    //switch (true) {
-    //    case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 2.8)):
-    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Green')
-    //        break;
-    //    case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 1.6)):
-    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Yellow')
-    //        break;
-    //    case (FolkOfTheWindingFlowVictoryLevel < (VictoryLevelCap / 1.2)):
-    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Orange')
-    //        break;
-    //    default:
-    //        $('#D_FolkOfTheWindingFlowVictory').css('color','Red')
     //        break;
     //}
  
@@ -527,15 +499,6 @@ function CalculateVictory() {
         $('#DiscoveryVictory').hide();
         $('#SupremacyVictory').show();
         $('#InfluenceVictory').hide();
-        
-    }
-    if (FolkOfTheWindingFlowVictoryLevel >= VictoryLevelCap) {
-        VictoryOrLossAchieved = true;
-        $('#EndOfGameHeader').html("<span style=\"color: Red;\">DEFEAT</span>");
-        $('#EndOfGameParagraph').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow</span> have won the game via Influence");
-        $('#DiscoveryVictory').hide();
-        $('#SupremacyVictory').hide();
-        $('#InfluenceVictory').show();
         
     }
     
@@ -751,9 +714,11 @@ function IntroContinue() {
             $("#BeginEra").hide();
             break;
         case 14:
+            $("#IntroDivHeader").text("New World");
             $("#IntroDivStory").html("With a handful of resources and your kin you set out to mark your place. \
                                      They look to you to make the decision; Where will you settle?")
             $("#IntroDivStory, #IntroDivHeader, #IntroDiv .Upgrade").fadeIn(1000);
+            $("#BeginEra").hide();
             break;
     }
 }
@@ -779,13 +744,11 @@ function CalculateNewTribeMemberResult() {
 
 function CalculateEraTensionIncrease() {
 if (Agenda == 2){
-        LongTalonTribeTension = LongTalonTribeTension + Math.floor(((CurrentEra/10) * ((CurrentSupremacy/100)+1))/2);
-        ShiningScalesTension = ShiningScalesTension + Math.floor(((CurrentEra/10) * (CurrentDiscovery+1))/2);
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor(((CurrentEra/10) * ((CurrentInfluence/100)+1))/2);
+        if(LongTalonTribePresent){LongTalonTribeTension = LongTalonTribeTension + Math.floor(((CurrentEra/8) * ((CurrentSupremacy/100)+1))/2);};
+        ShiningScalesTension = ShiningScalesTension + Math.floor((((CurrentEra/10)+1) * (CurrentDiscovery+1))/2);
     }else{
-        LongTalonTribeTension = LongTalonTribeTension + Math.floor((CurrentEra/10) * ((CurrentSupremacy/100)+1));
-        ShiningScalesTension = ShiningScalesTension + Math.floor((CurrentEra/10) * (CurrentDiscovery+1));
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + Math.floor((CurrentEra/10) * ((CurrentInfluence/100)+1));        
+        if(LongTalonTribePresent){LongTalonTribeTension = LongTalonTribeTension + Math.floor((CurrentEra/8) * ((CurrentSupremacy/100)+1));};
+        ShiningScalesTension = ShiningScalesTension + Math.floor(((CurrentEra/10)+1) * (CurrentDiscovery+1));
     }
 }
 
@@ -865,7 +828,7 @@ function CalculateWarResult() {
     if (Calc > 0) {
         $('#WarResult').html(Calc+ " <span style=\"color: grey;\">Grip</span> was secured by your Warriors.");
         IncrementGrip(Calc)
-    }else{$('#WarriorResult').html("");}
+    }else{$('#WarResult').html("");}
 }
 
 function CalculateMapOfTheAncients() {
@@ -1392,97 +1355,33 @@ function P_BarterLongTalonTribe() {
     }else{CannotBeDone()};
 }
 
-$('#FolkOfTheWindingFlowRaid').hover(function(){
-    $('#UpgradeInfoBoxCost').html(RaidingCost + " <span style=\"color: grey;\">Grip</span>");
-    $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">Raid the Folk of the Winding Flow</span>");
-    $('#UpgradeInfoBoxDescription').html("Send a raiding party to aquire resources from their territory. This will increase the tension between your tribes, but slow their progress toward victory.");
-
-});
-$('#FolkOfTheWindingFlowRaid').click(function(){P_RaidFolkOfTheWindingFlow();});
-function P_RaidFolkOfTheWindingFlow() {
-    if (CurrentGrip >= RaidingCost && CurrentNumberOfWarriors > 0 && Agenda != 2) {
-        CurrentPhase = 4;    
-        var WarriorsLost = CalculateWarriorsLost(CurrentNumberOfWarriors*3);
-        
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 10;
-        FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - Math.floor(CurrentNumberOfWarriors/2);
-        if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0};
-        DecrementGrip(RaidingCost);
-        
-        var WarriorEffectiveness = CurrentNumberOfWarriors;
-        if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)};
-        if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness + WarRation)}
-        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
-        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
-        var GainedDomain = Math.floor(WarriorEffectiveness/2);
-            
-        $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: Aqua;\">Folk of the Winding Flow</span> with the following: \
-                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                    <br/>" + WarriorsLost + "<br/>This raid will slow their progress, but the tension between your tribes increases.");
-        
-        IncrementSupply(GainedSupply);
-        IncrementInspiration(GainedInspiration);
-        IncrementDomain(GainedDomain);
-        CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
-        
-        CurrentRaidBarterThisTurn++;
-        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
-        RefreshPage();
-    }else{CannotBeDone()};
-}
-
-$('#FolkOfTheWindingFlowBarter').hover(function(){
-    $('#UpgradeInfoBoxCost').html(BarteringCost + " <span style=\"color: grey;\">Grip</span>");
-    $('#UpgradeInfoBoxHeader').html("<span style=\"color: Aqua;\">Barter with the Folk of the Winding Flow</span>");
-    $('#UpgradeInfoBoxDescription').html("Send an entourage of warriors, traders, and diplomats to barter with them. This will decrease tension between your tribes and put you both closer to victory.");
-})
-$('#FolkOfTheWindingFlowBarter').click(function(){P_BarterFolkOfTheWindingFlow();});
-function P_BarterFolkOfTheWindingFlow() {
-    if (CurrentGrip >= BarteringCost && CurrentNumberOfWarriors > 0 && Agenda != 1) {
-        CurrentPhase = 4;
-        FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - CultureLevel;
-        FolkOfTheWindingFlowVictoryLevel++
-        FolkOfTheWindingFlowVictoryLevel++
-        if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0};
-        DecrementGrip(BarteringCost); 
-        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1));
-        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
-        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 1) + 1));
-        $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>: \
-                                    <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
-                                    <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
-                                    <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
-                                    <br/>Relations have improved between your tribes as you both progress toward your goals through cooperation.");
-        
-        IncrementSupply(GainedSupply);
-        IncrementInspiration(GainedInspiration);
-        IncrementDomain(GainedDomain);
-        CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
-        
-        CurrentRaidBarterThisTurn++;
-        $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
-        RefreshPage();
-    }else{CannotBeDone()};
-}
-
 // Events Logic --------------------------------------------------------------------------------------
 
 function CalculateEvent() {
     RefreshEvent();
     var NeedToFindEvent = true;
     
+    //timed events
+    if (CurrentEra == 1) {
+        LongTalonArrivalEra = LongTalonArrivalEra + Math.floor((Math.random()*4)+1);
+        ShiningScalesIntroduction();
+        NeedToFindEvent = false;
+    }    
+    if (CurrentEra >= LongTalonArrivalEra && !LongTalonTribePresent) {
+        LongTalonTribeIntroduction();
+        NeedToFindEvent = false;
+    }
     
+    //Raids
     var HostilityCounter = 0;
     while (HostilityCounter < CurrentRaidBarterThisTurn && NeedToFindEvent) {
         HostilityCounter++
-        var RandomRaid = Math.floor((Math.random() * 3) + 1);
+        var RandomRaid = Math.floor((Math.random() * 2) + 1);
         switch (RandomRaid) {
             case 1:
                 var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
                 D_HalfTensionCap = D_HalfTensionCap + LongTalonTribeTension
-                if (D_HalfTensionCap > TensionCap) {
+                if (D_HalfTensionCap > TensionCap && LongTalonTribePresent) {
                     if (WaywardKindLongTalon) {
                         LongTalonRaidKind();
                         NeedToFindEvent= false;
@@ -1495,7 +1394,7 @@ function CalculateEvent() {
             case 2:
                 var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
                 D_HalfTensionCap = D_HalfTensionCap + ShiningScalesTension
-                if (D_HalfTensionCap > TensionCap) {
+                if (D_HalfTensionCap > TensionCap && ShiningScalesPresent) {
                     if (WaywardKindShiningScales) {
                         ShiningScalesRaidKind();
                         NeedToFindEvent= false;
@@ -1505,30 +1404,19 @@ function CalculateEvent() {
                     }
                 }                          
                 break;
-            case 3:
-                var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
-                D_HalfTensionCap = D_HalfTensionCap + FolkOfTheWindingFlowTension
-                if (D_HalfTensionCap > TensionCap) {
-                    if (WaywardKindWindingFlow) {
-                        WindingFlowRaidKind();
-                        NeedToFindEvent= false;
-                    }else{
-                    CalculateFolkOfTheWindingFlowRaided();
-                    NeedToFindEvent= false;
-                    }
-                }                          
-                break; 
         }
     }
-        
+    
+    //Council Of Elders event
     if (NeedToFindEvent && Agenda == 0) {
         var CouncilRandom = Math.floor((Math.random() * 10) + 1);
         if (CouncilRandom > 5) {
             E_CouncilOfElders();
             NeedToFindEvent= false;
         }
-    }        
+    }
     
+    //Random Events    
     var attempts = 0;
     while (attempts < (ExpansionLevel+1) && NeedToFindEvent) {
         attempts++
@@ -1651,14 +1539,14 @@ function CalculateEvent() {
                 case 3:
                     if (CurrentSupply > 4 && NeedToFindEvent && (!WaywardAndDesperateExperienced)) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
-                        if (D10 > 3) {
+                        if (D10 > 5) {
                             E_WaywardAndDesperate();
                             NeedToFindEvent= false;
                         }                   
                     }
                     break;
                 case 4:
-                    if(NeedToFindEvent && Agenda < 2) {
+                    if(NeedToFindEvent && Agenda < 2 && LongTalonTribePresent) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         if (D10 > 3) {
                             E_Alliance();
@@ -1764,9 +1652,6 @@ $('#EventOption1Button').click(function(){
     case 402:
         CalculateShiningScalesRaided_DefendResources();
         break;
-    case 403:
-        CalculateFolkOfTheWindingFlowRaided_DefendResources();
-        break;
     case 997:
         ContinueToBegin();
         break;
@@ -1840,9 +1725,6 @@ $('#EventOption2Button').click(function(){
     case 402:
         CalculateShiningScalesRaided_DefendInterests();
         break;
-    case 403:
-        CalculateFolkOfTheWindingFlowRaided_DefendInterests();
-        break;
     default:
         alert("Ya done broke it.  EventOption2")
    }
@@ -1866,16 +1748,13 @@ $('#EventOption3Button').click(function(){
     case 306:
         EC_CouncilOfElders_PathOfSeclusion();
         break;
-    default:
     case 401:
         CalculateLongTalonTribeRaided_FullDefense();
         break;
     case 402:
         CalculateShiningScalesRaided_FullDefense();
         break;
-    case 403:
-        CalculateFolkOfTheWindingFlowRaided_FullDefense();
-        break;
+    default:
         alert("Ya done broke it.  EventOption3")
    }
 });
@@ -1897,9 +1776,6 @@ $('#EventOption4Button').click(function(){
         break;
     case 402:
         CalculateShiningScalesRaided_Undefended()
-        break;
-    case 403:
-        CalculateFolkOfTheWindingFlowRaided_Undefended();
         break;
     default:
         alert("Ya done broke it.  EventOption4")
@@ -1925,6 +1801,42 @@ function NonEvent() {
     EventLoadedValue = 999;
 }
 //Illness ---------------------------
+
+function ShiningScalesIntroduction() {
+    RefreshEvent();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>")
+    $('#EventNar').html("A stranger approaches your settlement. He is adorned with scales that shine the color of the sun. The old warrior of your tribe steps forward to confront the traveller, waving the rest of the tribe back.\
+                        <br/><br/>After much deliberation, the stranger leaves and you are told of what transpired. His people will be of no threat to us for now. Though we should remain vigilant.\
+                        <br/><br/>You can now Barter with and Raid the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>.  Their tension score will show the dormant hostility with us. With tensions too high, we can expect aggressive action. \
+                        Be mindful also that they are not left unchecked as to grow too powerful and claim this land as their own.");
+    $('#EventOption1Button').show();    
+
+    ShiningScalesPresent = true;
+    $('#ShiningScalesDetails').fadeIn();
+    $('#ShiningScalesUpgrades').css('class','ShownShiningScalesUpgradeBox');
+    EventLoadedValue = 999;
+    RefreshPage();
+}
+
+function LongTalonTribeIntroduction() {
+    RefreshEvent();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>")
+    $('#EventNar').html("You are awakened with the morning mist by the cries of rage and anguish of your kin. \
+                         You come to find that not but moments ago your settlement was raided! Luckily, nothing of great value was lost in the raid. Further still, one of the raiders was killed. \
+                         The slain assailant has skin colored with red dyes. Around their neck hangs the long talon of a bird of prey. \
+                        <br/><br/>You can now Barter with and Raid the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>. The motives of these newcomers is not yet known, \
+                        though it appears they are quite hostile. Still, perhaps peace can yet be attained through cooperation.");
+    $('#EventOption1Button').show();    
+    LongTalonTribeTension = CurrentEra;
+    LongTalonTribePresent = true;
+    $('#LongTalonTribeDetails').fadeIn();
+    $('#LongTalonUpgrades').css('class','ShownLongTalonUpgradeBox');
+    EventLoadedValue = 999;
+    RefreshPage();    
+}
+
 function E_Illness() {
     var TribalNotYetFound = true;
     while (TribalNotYetFound) {
@@ -1963,11 +1875,11 @@ function E_Illness() {
     $('#EventResultBoxHeader').html("Illness")
     $('#EventNar').html("An illness sweeps over your tribe. One of your " + SelectedRandomTribal + "s has already died.");
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Quarantine:<br/>Risk no further tribe members or resources by seperating the sick from the healthy. There is some chance you will lose more.");
+    $('#EventOption1Description').html("Quarantine<br/>Risk no further tribe members or resources by seperating the sick from the healthy. There is some chance you will lose more.");
     $('#EventOption1Button').show();
     if (CurrentSupply >= SupplyCost) {
         $('#EventOption2Description').show();
-        $('#EventOption2Description').html("Treat:<br/> Spend " + SupplyCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span> to treat your sick and prevent further losses.");
+        $('#EventOption2Description').html("Treat<br/> Spend " + SupplyCost + " <span style=\"color: rgb(178, 0, 0);\">Supply</span> to treat your sick and prevent further losses.");
         $('#EventOption2Button').show();
     }
     EventLoadedValue = 201;
@@ -2409,10 +2321,8 @@ function EC_Festival_ThrowFestival() {
     IncrementSupremacy(CurrentPopulation);
     LongTalonTribeTension = LongTalonTribeTension - Math.floor(CurrentPopulation/2);
     ShiningScalesTension = ShiningScalesTension - Math.floor(CurrentPopulation/2);
-    FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - Math.floor(CurrentPopulation/2);
     if (LongTalonTribeTension < 0 ) {LongTalonTribeTension = 0};
     if (ShiningScalesTension < 0 ) {ShiningScalesTension = 0};
-    if (FolkOfTheWindingFlowTension < 0 ) {FolkOfTheWindingFlowTension = 0};
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
@@ -2604,14 +2514,6 @@ function EC_DemandTribute_GiveTribute() {
             DemandedResource = Math.floor(CurrentDomain / 4);
             DecrementDomain(DemandedResource);
             break;
-        case 3:
-            FolkOfTheWindingFlowTension--
-            FolkOfTheWindingFlowTension--
-            if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
-            FolkOfTheWindingFlowVictoryLevel++
-            DemandedResource = Math.floor(CurrentInspiration / 4);
-            DecrementInspiration(DemandedResource);
-            break;
     }    
     RefreshEvent();
     RefreshPage();
@@ -2634,11 +2536,6 @@ function EC_DemandTribute_DenyTribute() {
             ShiningScalesTension++
             ShiningScalesTension++
             ShiningScalesVictoryLevel--
-            break;
-        case 3:
-            FolkOfTheWindingFlowTension++
-            FolkOfTheWindingFlowTension++
-            FolkOfTheWindingFlowVictoryLevel--
             break;
     }
     CurrentSupremacy = CurrentSupremacy + 10
@@ -2733,12 +2630,7 @@ function EC_ProposedTrade_Accept() {
             ShiningScalesVictoryLevel++;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
-        case 3:
-            FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - CultureLevel;
-            FolkOfTheWindingFlowVictoryLevel++;
-            if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
-            break;
-    }  
+    }
     
     RefreshEvent();
     RefreshPage();
@@ -2760,9 +2652,6 @@ function EC_ProposedTrade_Deny() {
             break;
         case 2:
             ShiningScalesTension++;
-            break;
-        case 3:
-            FolkOfTheWindingFlowTension++;
             break;
     }  
     RefreshEvent();
@@ -2813,12 +2702,6 @@ function EC_WaywardAndDesperate_Aid() {
             ShiningScalesTension--;
             WaywardKindShiningScales = true;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
-            break;
-        case 3:
-            FolkOfTheWindingFlowTension--;
-            FolkOfTheWindingFlowTension--;
-            WaywardKindWindingFlow = true;
-            if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
             break;
     }
     
@@ -2885,11 +2768,6 @@ function EC_Alliance_Assist() {
             ShiningScalesVictoryLevel++;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
-        case 3:
-            FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension - 8;
-            FolkOfTheWindingFlowVictoryLevel++;            
-            if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
-            break;
     }
     
     switch (SelectedSecondRandomRivalValue) {
@@ -2902,11 +2780,6 @@ function EC_Alliance_Assist() {
             ShiningScalesTension = ShiningScalesTension + 4;
             ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4;
             if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
-            break;
-        case 3:
-            FolkOfTheWindingFlowTension = FolkOfTheWindingFlowTension + 4;
-            FolkOfTheWindingFlowVictoryLevel = FolkOfTheWindingFlowVictoryLevel - 4;
-            if (FolkOfTheWindingFlowVictoryLevel < 0) {FolkOfTheWindingFlowVictoryLevel = 0}
             break;
     }
     
@@ -2931,10 +2804,6 @@ function EC_Alliance_TurnAway() {
         case 2:
             ShiningScalesTension++;
             ShiningScalesTension++;
-            break;
-        case 3:
-            FolkOfTheWindingFlowTension++;
-            FolkOfTheWindingFlowTension++;
             break;
     }
     
@@ -3582,180 +3451,6 @@ function CalculateShiningScalesRaided_Undefended() {
     RefreshPage();
 }
 
-function CalculateFolkOfTheWindingFlowRaided() {    
-    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
-    var DoubleGripCost = Math.floor(GripCost*2.5)
-    
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
-    $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow</span> are Raiding you! They aim to deface or steal your relics and tools, affecting your Influence and <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.<br/> \
-                        How will you protect what is yours?");
-    
-    if (CurrentInspiration > 0 && CurrentGrip > 0) {
-        $('#EventOption1Description').show();
-        $('#EventOption1Description').html("Defend Resources\
-                                        <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
-        $('#EventOption1Button').show();
-    }    
-    if (CurrentInfluence > 0 && CurrentGrip > 0) {
-        $('#EventOption2Description').show();
-        $('#EventOption2Description').html("Defend Interests\
-                                           <br/>Spend " + GripCost + " <span style=\"color: grey;\">Grip</span> to protect your Influence.");
-        $('#EventOption2Button').show();
-    }
-    if (CurrentGrip >= DoubleGripCost && CurrentInspiration > 0 && CurrentInfluence > 0 && CurrentGrip > 0) {
-        $('#EventOption3Description').show();
-        $('#EventOption3Description').html("Full Defense\
-                                           <br/>Spend " + DoubleGripCost + " <span style=\"color: grey;\">Grip</span> to fully defend.");
-        $('#EventOption3Button').show();
-    }
-    
-    $('#EventOption4Description').show();
-    $('#EventOption4Description').html("Undefended\
-                                       <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
-    $('#EventOption4Button').show();
-    FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
-    EventLoadedValue = 403;    
-}
-
-function WindingFlowRaidKind() {
-    FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
-    RefreshEvent();
-    WaywardKindWindingFlow = false;
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
-    $('#EventNar').html("A device is left at the outskirts of your settlement. Upon inspection you see that it is a sort of makeshift totem\
-                        crafted from the supplies once used to aid a wayward and desperate member of the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>.\
-                        You know now that the debt has been paid. You will not be raided this day.");
-    EventLoadedValue = 998;
-    $('#EventOption1Button').show();
-    RefreshPage();
-}
-
-function CalculateFolkOfTheWindingFlowRaided_DefendResources(){
-    RefreshEvent();
-    var Damage = FolkOfTheWindingFlowVictoryLevel;
-    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
-    var InfluenceDamage = FolkOfTheWindingFlowVictoryLevel;
-    var ProtectedText = ""
-    var UnprotectedText = ""
-    
-    if (GripCost == Damage) {
-        Damage = 0;
-        ProtectedText = ("You were able to protect all of your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>.");
-    }else {
-        Damage = Damage - CurrentGrip;
-        if (Damage > CurrentInspiration) {Damage = CurrentInspiration}
-        ProtectedText = ("In the raid, only "+Damage+" <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> was lost.");
-        DecrementInspiration(Damage);
-        FolkOfTheWindingFlowVictoryLevel++
-    }    
-
-    if (CurrentInfluence != 0) {
-        InfluenceDamage = InfluenceDamage*3
-        if (InfluenceDamage > CurrentInfluence) {InfluenceDamage = CurrentInfluence}
-        DecrementInfluence(InfluenceDamage);
-        UnprotectedText = ("<br/>Encrouching on your territory as they have, defacing and stealing your relics, your Influence has been reduced by "+InfluenceDamage)
-        FolkOfTheWindingFlowVictoryLevel++
-    }else{UnprotectedText = ("<br/>You had no Influence to lose.")}
-    
-    var WarriorsLostText = CalculateWarriorsLost(FolkOfTheWindingFlowVictoryLevel);
-  
-    DecrementGrip(GripCost);
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
-    $('#EventNar').html(ProtectedText + UnprotectedText + WarriorsLostText);
-    EventLoadedValue = 998;
-    $('#EventOption1Button').show();
-    RefreshPage();
-}
-
-function CalculateFolkOfTheWindingFlowRaided_DefendInterests(){
-    RefreshEvent();
-    var Damage = FolkOfTheWindingFlowVictoryLevel;
-    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
-    var InspirationDamage = FolkOfTheWindingFlowVictoryLevel;
-    var LostDiscovery = ""
-    var ProtectedText = ""
-    var UnprotectedText = ""
-    
-    if (GripCost == Damage) {
-        InfluenceDamage = 0;
-        ProtectedText = ("You were able to maintain all of your Influence.");
-    }else {
-        Damage = Damage - CurrentGrip;
-        if (Damage > CurrentInspiration) {Damage = CurrentInspiration}
-        ProtectedText = ("In the raid, only "+Damage+" Influence was lost.");
-        DecrementInspiration(Damage);
-        FolkOfTheWindingFlowVictoryLevel++
-    }    
-
-    if (CurrentInspiration != 0) {
-        InspirationDamage = InspirationDamage*3
-        if (InspirationDamage > CurrentInspiration) {InspirationDamage = CurrentInspiration}
-        DecrementInspiration(InspirationDamage);
-        UnprotectedText = ("<br/>By destroying your crafter's works and resources, your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> has been reduced by "+InspirationDamage)
-        FolkOfTheWindingFlowVictoryLevel++
-    }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to lose.")}
-    
-    var WarriorsLostText = CalculateWarriorsLost(FolkOfTheWindingFlowVictoryLevel);
-    
-    DecrementGrip(GripCost);
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
-    $('#EventNar').html(ProtectedText + UnprotectedText + WarriorsLostText);
-    EventLoadedValue = 998;
-    $('#EventOption1Button').show();
-    RefreshPage();
-}
-
-function CalculateFolkOfTheWindingFlowRaided_FullDefense(){
-    RefreshEvent();
-    var DoubleGripCost = Math.floor(FolkOfTheWindingFlowVictoryLevel*2.5);
-    DecrementGrip(DoubleGripCost);
-    
-    var WarriorsLostText = CalculateWarriorsLost(FolkOfTheWindingFlowVictoryLevel);
-    
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
-    $('#EventNar').html("The <span style=\"color: Aqua;\">Folk of the Winding Flow raid</span> was unnable to shake your grip." + WarriorsLostText);
-    EventLoadedValue = 998;
-    $('#EventOption1Button').show();
-    RefreshPage();
-}
-
-function CalculateFolkOfTheWindingFlowRaided_Undefended(){
-    RefreshEvent();
-    var InspirationDamage = FolkOfTheWindingFlowVictoryLevel;
-    var GripCost = Math.min(FolkOfTheWindingFlowVictoryLevel, CurrentGrip);
-    var InfluenceDamage = FolkOfTheWindingFlowVictoryLevel;
-    var UnProtectedText = ""
-    var UnprotectedText2 = ""
-    
-    if (CurrentInspiration != 0) {
-        InspirationDamage = InspirationDamage*3
-        if (InspirationDamage > CurrentInspiration) {InspirationDamage = CurrentInspiration}
-        DecrementInspiration(InspirationDamage);
-        UnprotectedText = ("<br/>By destroying your crafter's works and resources, your <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> has been reduced by "+InspirationDamage)
-        FolkOfTheWindingFlowVictoryLevel++
-    }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to lose.")}
-
-    if (CurrentInfluence != 0) {
-        InfluenceDamage = InfluenceDamage*3
-        if (InfluenceDamage > CurrentInfluence) {InfluenceDamage = CurrentInfluence}
-        DecrementInfluence(InfluenceDamage);
-        UnprotectedText2 = ("<br/>Encrouching on your territory as they have, defacing and stealing your relics, your Influence has been reduced by "+InfluenceDamage)
-        FolkOfTheWindingFlowVictoryLevel++
-    }else{UnprotectedText2 = ("<br/>You had no Influence to lose.")}
-  
-    DecrementGrip(GripCost);
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
-    $('#EventNar').html(UnprotectedText + UnprotectedText2);
-    EventLoadedValue = 998;
-    $('#EventOption1Button').show();
-    RefreshPage();
-}
 
 // Common Code----------------------------------------
 
@@ -3885,42 +3580,41 @@ function SelectAndAddRandomNeededTribal() {
 }
 
 function SelectRandomRival(){
-
-    var RandomNumber = Math.floor((Math.random()*3)+1)
-    switch (RandomNumber) {
-        case 1:
-            SelectedRandomRival = "<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>"
-            SelectedRandomRivalValue = 1;
-            break;
-        case 2:
-            SelectedRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
-            SelectedRandomRivalValue = 2;
-            break;
-        case 3:
-            SelectedRandomRival = "<span style=\"color: Aqua;\">The Folk of the Winding Flow</span>"
-            SelectedRandomRivalValue = 3;
-            break;
+    if (!LongTalonTribePresent) {
+        SelectedRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
+        SelectedRandomRivalValue = 2;
+    }else{
+        var RandomNumber = Math.floor((Math.random()*2)+1)
+        switch (RandomNumber) {
+            case 1:
+                SelectedRandomRival = "<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>"
+                SelectedRandomRivalValue = 1;
+                break;
+            case 2:
+                SelectedRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
+                SelectedRandomRivalValue = 2;
+                break;
+        }
     }
 }
 
 function SelectSecondRandomRival(){
-
-    var RandomNumber = Math.floor((Math.random()*3)+1)
-    switch (RandomNumber) {
-        case 1:
-            SelectedSecondRandomRival = "<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>"
-            SelectedSecondRandomRivalValue = 1;
-            break;
-        case 2:
-            SelectedSecondRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
-            SelectedSecondRandomRivalValue = 2;
-            break;
-        case 3:
-            SelectedSecondRandomRival = "<span style=\"color: Aqua;\">The Folk of the Winding Flow</span>"
-            SelectedSecondRandomRivalValue = 3;
-            break;
+    if (!LongTalonTribePresent) {
+        SelectedRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
+        SelectedRandomRivalValue = 2;
+    }else{
+        var RandomNumber = Math.floor((Math.random()*2)+1)
+        switch (RandomNumber) {
+            case 1:
+                SelectedSecondRandomRival = "<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>"
+                SelectedSecondRandomRivalValue = 1;
+                break;
+            case 2:
+                SelectedSecondRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
+                SelectedSecondRandomRivalValue = 2;
+                break;
+        }
     }
-    
     if (SelectedSecondRandomRivalValue == SelectedRandomRivalValue) {SelectSecondRandomRival();}
 }
 
@@ -4038,8 +3732,7 @@ function PassXEras(NumberOfEras) {
 
 function CalculateEraVictoryIncrease() {
     ShiningScalesVictoryLevel++
-    LongTalonTribeVictoryLevel++
-    FolkOfTheWindingFlowVictoryLevel++
+    if (LongTalonTribePresent) {LongTalonTribeVictoryLevel++}
 }
 
 //Following Functions Increment Stashes------------------------------------------------------
