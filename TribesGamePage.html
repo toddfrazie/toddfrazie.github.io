@@ -136,15 +136,16 @@
 							<h4><span style="color: grey;">Grip</span> <span id="StashedGrip"></span></h4>
 							<div id="GripUpgrades" class="HiddenGripUpgradeBox">
 							  <h4>&#711;</h4>
-							  <h5 style="color: OrangeRed; font-weight: bold;" id="LongTalonTribeAbout">Long Talon Tribe</h5>
-							  <button id="LongTalonTribeRaid">Raid</button>
-							  <button id="LongTalonTribeBarter">Barter</button>
-							  <h5 style="color: DarkGoldenRod; font-weight: bold;" id="ShiningScalesAbout">Shining Scales</h5>
-							  <button id="ShiningScalesRaid">Raid</button>
-							  <button id="ShiningScalesBarter">Barter</button>
-							  <h5 style="color: Aqua; font-weight: bold;" id="FolkOfTheWindingFlowAbout">Folk Of The Winding Flow</h5>
-							  <button id="FolkOfTheWindingFlowRaid">Raid</button>
-							  <button id="FolkOfTheWindingFlowBarter">Barter</button>
+							  <div id="ShiningScalesUpgrades" class="HiddenShiningScalesUpgradeBox">
+								<h5 style="color: DarkGoldenRod; font-weight: bold;" id="ShiningScalesAbout">Shining Scales</h5>
+								<button id="ShiningScalesRaid">Raid</button>
+								<button id="ShiningScalesBarter">Barter</button>
+							  <div id="LongTalonUpgrades" class="HiddenLongTalonUpgradeBox">
+								<h5 style="color: OrangeRed; font-weight: bold;" id="LongTalonTribeAbout">Long Talon Tribe</h5>
+								<button id="LongTalonTribeRaid">Raid</button>
+								<button id="LongTalonTribeBarter">Barter</button>
+							  </div>
+							  </div>
 							</div>							
 						  </div>
 						</div>
@@ -244,20 +245,7 @@
 							  </tr>
 							</table>
 							<br/>
-							<table style="width: 98%">
-							  <th colspan="3" style="color: OrangeRed;">Long Talon Tribe<span id="LongTalonTip" class="ToolTip"></span></th>
-							  <tr>
-								<td>Tension</td>
-								<td style="text-align: right;"><span id="D_LongTalonTribeTension"></span></td>
-							  </tr>
-							  <tr>
-								<td>Victory</td>
-								<td style="text-align: right;"><span id="D_LongTalonTribeVictory"></span></td>
-								<td><span>/50</span></td>
-							  </tr>
-							</table>
-							<br/>
-							<table style="width: 98%">
+							<table id="ShiningScalesDetails" style="width: 98%">
 							  <th colspan="3" style="color: DarkGoldenRod;">Shining Scales<span id="ShiningScalesTip" class="ToolTip"></span></th>
 							  <tr>
 								<td>Tension</td>
@@ -270,18 +258,19 @@
 							  </tr>
 							</table>
 							<br/>
-							<table style="width: 98%">
-							  <th colspan="3" style="color: Aqua;">Folk Of The Winding Flow<span id="WindingFlowTip" class="ToolTip"></span></th>
+							<table id="LongTalonTribeDetails" style="width: 98%">
+							  <th colspan="3" style="color: OrangeRed;">Long Talon Tribe<span id="LongTalonTip" class="ToolTip"></span></th>
 							  <tr>
 								<td>Tension</td>
-								<td style="text-align: right;"><span id="D_FolkOfTheWindingFlowTension"></span></td>
+								<td style="text-align: right;"><span id="D_LongTalonTribeTension"></span></td>
 							  </tr>
 							  <tr>
 								<td>Victory</td>
-								<td style="text-align: right;"><span id="D_FolkOfTheWindingFlowVictory"></span></td>
+								<td style="text-align: right;"><span id="D_LongTalonTribeVictory"></span></td>
 								<td><span>/50</span></td>
 							  </tr>
 							</table>
+							<br/>
 							<hr>
 							<table style="width: 98%">
 							  <tr>
@@ -361,4 +350,3 @@
 
   </body>
 </html>
-
