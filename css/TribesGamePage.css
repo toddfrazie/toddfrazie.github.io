@@ -144,6 +144,7 @@ button:hover {border-color: white;}
 #GripUpgrades button{
   background-color: #4D4D4D;
   width: 48%;
+  margin-bottom: 3px;
 }
 
 #PurchaseUpgradeButton {
@@ -267,6 +268,12 @@ button:hover {border-color: white;}
   border-radius: 5px;
 }
 
+.HiddenLongTalonUpgradeBox {display: none;}
+.HiddenShiningScalesUpgradeBox {display: none;}
+.ShownLongTalonUpgradeBox {display: block;}
+.ShownShiningScalesUpgradeBox {display: block;}
+
+
 .VictoryImage {
   width: 90%;
 }
@@ -291,4 +298,8 @@ button:hover {border-color: white;}
 
 #River_Expansion_Intro, #Savanna_Expansion_Intro, #Forest_Expansion_Intro, #Hill_Expansion_Intro {
   display:none;  
+}
+
+#ShiningScalesDetails, #LongTalonTribeDetails {
+  display:none;
 }
