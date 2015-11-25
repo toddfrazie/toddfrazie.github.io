@@ -42,6 +42,7 @@ var InventionLevel = 1;
 var Pottery = false;
 var ImprovedRaidTactics = false;
 var Totems = false;
+var BrushFireInnovation = false;
 
 var Agenda = 4;
 var AgendaDuration = 8;
@@ -90,6 +91,7 @@ var ShiningScalesTension = 1;
 var LongTalonTribeTension = 1;
 var FolkOfTheWindingFlowTension = 1;
 var CurrentRaidBarterThisTurn = 1;
+var CurrentPopulationBoomThisTurn = 1;
 var TensionCap = 30;
 
 var EventLoadedValue = 0;
@@ -104,6 +106,11 @@ var SelectedRandomResource = "";
 var SelectedRandomResourceValue = 0;
 var SelectedSecondRandomResource = "";
 var SelectedSecondRandomResourceValue = 0;
+
+var WaywardAndDesperateExperienced = false;
+var WaywardKindShiningScales = false;
+var WaywardKindLongTalon = false;
+var WaywardKindWindingFlow = false;
 
 window.onload = function() {
     PopulateToolTips();
@@ -338,7 +345,7 @@ function DisplayDetails() {
 function CalculateTribalCosts(){
     CurrentPopulation = CurrentNumberOfHunters + CurrentNumberOfCrafters + CurrentNumberOfExplorers + CurrentNumberOfWarriors
     
-    TotalPopulationBoomCost = Math.floor((2 * Math.pow(1.15, CurrentPopulation)));
+    TotalPopulationBoomCost = Math.floor((CurrentPopulation * CurrentPopulationBoomThisTurn) * Math.pow(1.07,CurrentPopulationBoomThisTurn));
  
     TotalInspirationSurplusCost = Math.floor((5 * Math.pow(1.15, CurrentNumberOfCrafters)));
 
@@ -615,8 +622,9 @@ function BeginEra() {
     
         CurrentRaidBarterThisTurn--;
         if (CurrentRaidBarterThisTurn < 1) {CurrentRaidBarterThisTurn = 1}
-        
-    
+        CurrentPopulationBoomThisTurn--;
+        if (CurrentPopulationBoomThisTurn < 1) {CurrentPopulationBoomThisTurn = 1}
+
         CalculateVictoryConditionGains();
         CalculateEraTensionIncrease();
         CalculateEraVictoryIncrease();
@@ -669,40 +677,31 @@ function IntroContinue() {
         case 1:
             $("#IntroDivHeader").html("The Hunt")
             $("#IntroDivStory").html("After falling wayward from your kin on a hunting venture, you find yourself far from your settlement following an alluring and mysterious game.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 2:
             $("#IntroDivStory").html("In hopes of finding its pack and their food supply, your quest carries you astray for many days. Yet ultimately, the trail is lost.\
                                      <br/><br/>Desperate, you seek higher ground in an attempt to spot your game. But, at this new vantage you are faced with something much greater.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 3:
             $("#IntroDivStory").html("At the cusp of a plateau, you are confronted by the red eyed gaze of a Giant Serpent, erect and still at the peak of a rise.\
                                      <br/><br/>Terror subsides as you begin to realize it is not a living creature but a stonework masterpiece! \
                                      Surrounding its base a great distance in all directions is what can only be described as a paradise of fertile, protected, and wonderous lands.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 4:
-            $("#IntroDivHeader").hide();
-            $("#IntroDivHeader").text("The Return");
             $("#IntroDivStory").html("You return to your tribe with an abundance of food and a tale to tell. This revelation could not have come at a better time. Weak leadership and tensions within your tribe from many troubles have caused dissention.\
                                      <br/><br/>You implore that the tribe travel to this new land and make it their own.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#IntroDivHeader").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             break;
         case 5:
             $("#IntroDivStory").html("The plan is not well received. Many fear the Serpent is a foul omen. Others do not believe your story. Others still are infirm and do not favor a journey of such lengths rife with uncertainty.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 6:
             $("#IntroDivStory").html("Unswayed by their doubts, you remain intent on returning to this new place, certain some beyond your own family will come.  But first, you must gather supplies for the journey.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 7:
             $("#IntroDivHeader").hide();
@@ -712,65 +711,49 @@ function IntroContinue() {
                                      <br/>Right now, you are but a lone Hunter. You will gain 1 <span style=\"color: rgb(178, 0, 0);\">Supply</span> for each hunter you have, multiplied by your Hunter Efficiency.\
                                      <br/><br/><span style=\"color: rgb(178, 0, 0);\">Supply</span> will support your population as well as allow spurts in productivity and population by expending your surpluses.\
                                      <br/><br/>Collect 5 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
-            $("#IntroDivStory").fadeIn(1500);
-            $("#IntroDivHeader").fadeIn(1500);            
-            $("#HunterPanel").fadeIn(1500);
-            $("#BeginEra").fadeIn(1500);
+            $("#IntroDivStory, #IntroDivHeader, #HunterPanel, #BeginEra").fadeIn(1000);
             break;
         case 8:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("Preparing for the journey");
             $("#IntroDivStory").html("With ample <span style=\"color: rgb(178, 0, 0);\">Supply</span>, you feel prepared. But, you'll need someone to explore and tame this new world.\
                                      Luckily, an explorer heeds your call and chooses to join you.");
-            $("#IntroDivStory").fadeIn(1500);
-            $("#IntroDivHeader").fadeIn(1500);            
-            $("#ExplorerPanel").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #IntroDivHeader, #ExplorerPanel, #ExplorerPanel, #Intro_Continue").fadeIn(1000);
             $("#BeginEra").hide();
             break;
         case 9:
             $("#IntroDivStory").html("Once you settle, explorers accumulate <span style=\"color: rgb(207, 166, 0);\">Domain</span> for your tribe.\
                                      <span style=\"color: rgb(207, 166, 0);\">Domain</span> can be used to expand your settlement and search the mysterious surroundings.");
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory,#Intro_Continue").fadeIn(1000);
             break;
         case 10:
             $("#IntroDivStory").html("A crafter insists you bring her and her young to this giant serpent of stone. Her skills will be invaluable once you arrive.\
                                      <br/><br/>Crafters generate <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, which they use to improve the efficiency of endeavors. With enough stashed <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, a crafter could pursue a new invention.");
-            $("#IntroDivStory").fadeIn(1500);
-            $("#CrafterPanel").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #CrafterPanel, #Intro_Continue").fadeIn(1000);
             break;
         case 11:
             $("#IntroDivStory").html("With these, and a handful of unskilled young and elderly, the time has come. You are ready to embark.");
-            $("#IntroDivStory").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 12:
+            $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("New World");
             $("#IntroDivStory").html("You have just led your new tribe from their original home, drawn to the wonder and prosperity of this mysterious place. \
                                      But, you can see the tell tale signs that your own is not the only kin here.\
                                      <br/><br/>The oldest of your new tribe presents himself to you as a seasoned warrior.\
                                      Though some laugh at this, in the eyes of the old man you see that he is serious speaks earnestly. He offers his services.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#IntroDivHeader").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
-            $("#WarriorPanel").fadeIn(1500);
+            $("#IntroDivStory, #IntroDivHeader, #Intro_Continue, #WarriorPanel").fadeIn(1000);
             break;
         case 13:
             $("#IntroDivStory").html("Warriors will serve as raiders, protectors, and diplomats for your tribe. They demand respect and reverence from any outsiders.\
                                      As time progresses, they produce <span style=\"color: grey;\">Grip</span>, which represents your hold over the territory you have.")
-            $("#IntroDivStory").fadeIn(1500);
-            $("#IntroDivHeader").fadeIn(1500);
-            $("#Intro_Continue").fadeIn(1500);
+            $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             $("#BeginEra").hide();
             break;
         case 14:
             $("#IntroDivStory").html("With a handful of resources and your kin you set out to mark your place. \
                                      They look to you to make the decision; Where will you settle?")
-            $("#IntroDivStory").fadeIn();
-            $("#IntroDivHeader").fadeIn(1500);
-            $("#IntroDiv .Upgrade").fadeIn(1500);
+            $("#IntroDivStory, #IntroDivHeader, #IntroDiv .Upgrade").fadeIn(1000);
             break;
     }
 }
@@ -831,7 +814,7 @@ function ContinueToEvent() {
     }
 }
 
-//In depth Calculation for turns---------------------------------------------------
+//Bounty Calculations---------------------------------------------------
 function CalculateHuntingResult() {
     var Calc = Math.floor(CurrentNumberOfHunters * HunterMultiplier);
     if (SupplySurplus && !(Pottery)) {Calc = Calc * 2
@@ -949,6 +932,7 @@ function P_Population_Boom(){
         DecrementSupply(TotalPopulationBoomCost);
         SelectAndAddRandomNeededTribal();
         $('#SupplyUpgrades').attr('class','HiddenSupplyUpgradeBox');
+        CurrentPopulationBoomThisTurn++
         RefreshPage();
     }else{CannotBeDone();}
 }
@@ -1499,24 +1483,39 @@ function CalculateEvent() {
                 var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
                 D_HalfTensionCap = D_HalfTensionCap + LongTalonTribeTension
                 if (D_HalfTensionCap > TensionCap) {
-                   CalculateLongTalonTribeRaided();
-                   NeedToFindEvent= false;
+                    if (WaywardKindLongTalon) {
+                        LongTalonRaidKind();
+                        NeedToFindEvent= false;
+                    }else{
+                        CalculateLongTalonTribeRaided();
+                        NeedToFindEvent= false;
+                    }
                 }                          
                 break;
             case 2:
                 var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
                 D_HalfTensionCap = D_HalfTensionCap + ShiningScalesTension
                 if (D_HalfTensionCap > TensionCap) {
-                    CalculateShiningScalesRaided();
-                    NeedToFindEvent= false;
+                    if (WaywardKindShiningScales) {
+                        ShiningScalesRaidKind();
+                        NeedToFindEvent= false;
+                    }else{
+                        CalculateShiningScalesRaided();
+                        NeedToFindEvent= false;
+                    }
                 }                          
                 break;
             case 3:
                 var D_HalfTensionCap = Math.floor((Math.random() * (TensionCap/2)) + 1);
                 D_HalfTensionCap = D_HalfTensionCap + FolkOfTheWindingFlowTension
                 if (D_HalfTensionCap > TensionCap) {
+                    if (WaywardKindWindingFlow) {
+                        WindingFlowRaidKind();
+                        NeedToFindEvent= false;
+                    }else{
                     CalculateFolkOfTheWindingFlowRaided();
                     NeedToFindEvent= false;
+                    }
                 }                          
                 break; 
         }
@@ -1553,7 +1552,7 @@ function CalculateEvent() {
                     }
                     break;
                 case 2:
-                    if (NumberOfRiverExpansions > 0 || Settlement == "River" && NeedToFindEvent) {
+                    if (NumberOfRiverExpansions > 0 || Settlement == "River" && NeedToFindEvent && CurrentDomain + CurrentSupply > 0) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         D10 = D10 + Math.floor(NumberOfRiverExpansions / 2)
                         if (Settlement == "River") {D10 = D10+2};
@@ -1650,7 +1649,7 @@ function CalculateEvent() {
                     }
                     break;
                 case 3:
-                    if (CurrentSupply > 4 && NeedToFindEvent) {
+                    if (CurrentSupply > 4 && NeedToFindEvent && (!WaywardAndDesperateExperienced)) {
                         var D10 = Math.floor((Math.random() * 10) + 1);
                         if (D10 > 3) {
                             E_WaywardAndDesperate();
@@ -2026,40 +2025,51 @@ function EC_Illness_Treat() {
 }
 
 //Rising Waters------------------------------
-function E_RisingWaters() {    
+function E_RisingWaters() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Rising Waters")
     $('#EventNar').html("Water lines begin to rise and your tribe is at risk of losing domain and supplies.");
-    if (CurrentDomain >= NumberOfRiverExpansions*10) {
-        $('#EventOption1Description').show();
-        $('#EventOption1Description').html("Evacuate:<br/>Spend "+(NumberOfRiverExpansions*10)+" <span style=\"color: rgb(207, 166, 0);\">Domain</span>, but lose no time.");
-        $('#EventOption1Button').show();
-    }
+    
+    $('#EventOption1Description').show();
+    $('#EventOption1Description').html("Evacuate<br/>Abandon some of your <span style=\"color: rgb(207, 166, 0);\">Domain</span> and <span style=\"color: rgb(178, 0, 0);\">Supply</span> to the water, but lose no time.");
+    $('#EventOption1Button').show();
 
     $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Fortify:<br/>Spend time to fortify and redirect.");
+    $('#EventOption2Description').html("Fortify<br/>Spend time to fortify and redirect.");
     $('#EventOption2Button').show();
   
     EventLoadedValue = 202;
 }
 
 function EC_RisingWaters_Evacuate() {
-    DecrementDomain(NumberOfRiverExpansions*10);
+    DomainLost = 0;
+    SupplyLost = 0;
+    if (CurrentDomain>0) {DomainLost = Math.max(Math.floor(CurrentDomain/2),1);
+    DecrementDomain(DomainLost);}
+    if (CurrentSupply>0) {SupplyLost = Math.max(Math.floor(CurrentSupply/2),1);
+    DecrementSupply(SupplyLost);}
+    
     RefreshPage();
     RefreshEvent();
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Rising Waters")    
-    $('#EventNar').html("Your Tribe evacuates the riverlands for a time. <br/> You lost 10 <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
+    $('#EventResultBoxHeader').html("Rising Waters")
+    if (DomainLost > 0 && SupplyLost > 0) {
+        $('#EventNar').html("Your tribe evacuates the riverlands for a time, abandoning "+DomainLost+" <span style=\"color: rgb(207, 166, 0);\">Domain</span> and "+SupplyLost+" <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
+    }else if (DomainLost > 0) {
+        $('#EventNar').html("Your tribe evacuates the riverlands for a time, abandoning "+DomainLost+" <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
+    }else{
+        $('#EventNar').html("Your tribe evacuates the riverlands for a time, abandoning "+SupplyLost+" <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
+    }    
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
 
 function EC_RisingWaters_Fortify() {
-    PassXEras(NumberOfRiverExpansions);
+    PassXEras(1);
     RefreshPage();
     RefreshEvent();
     $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Rising Waters")    
+    $('#EventResultBoxHeader').html("Rising Waters")
     $('#EventNar').html("Your tribe takes the time to fortify as well as redirect the flow of the rising waters. Your opponents still progress during this effort.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
@@ -2220,41 +2230,42 @@ function E_BrushFire() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Brush Fire")
     $('#EventNar').html("A brush fire has errupted nearby and is enchroaching on your domain.");
-    if (CurrentDomain > 9) {
-        $('#EventOption1Description').show();
-        $('#EventOption1Description').html("Evacuate:<br/>Spend 10 <span style=\"color: rgb(207, 166, 0);\">Domain</span> to vacate the area.");
-        $('#EventOption1Button').show();
-    }
+
+    $('#EventOption1Description').show();
+    $('#EventOption1Description').html("Evacuate<br/>lose some time to vacate and resettle nearby.");
+    $('#EventOption1Button').show();
+
     if (CurrentInspiration > 9) {
         $('#EventOption2Description').show();
-        $('#EventOption2Description').html("Protect:<br/>Spend 10 <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to protect your domain through enginuity.");
+        $('#EventOption2Description').html("Protect<br/>Spend 10 <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> to protect your domain through enginuity.");
         $('#EventOption2Button').show();
     }
     $('#EventOption3Description').show();
-    $('#EventOption3Description').html("Stand Your Ground:<br/>Risk the loss of your tribe members to stand your ground.");
+    $('#EventOption3Description').html("Stand Your Ground<br/>Risk the loss of your tribe members to stand your ground.");
     $('#EventOption3Button').show();
     
     EventLoadedValue = 204;
 }
 
 function EC_BrushFire_Evacuate() {
-    DecrementDomain(10);
+    PassXEras(1);
     RefreshEvent();
     RefreshPage();  
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Brush Fire")    
-    $('#EventNar').html("Your tribe has vacated the territory for now, safely out of reach of the flames.");
+    $('#EventNar').html("Your tribe has vacated the territory and resettled safely out of reach of the flames and their wake. An Era has passed.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
 
 function EC_BrushFire_Protect() {
     DecrementInspiration(10);
+    BrushFireInnovation = true;
     RefreshEvent();
     RefreshPage();  
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Brush Fire")    
-    $('#EventNar').html("Your tribe has formed a ring of scorched earth around your domain and stopped the wildfire's growth in your direction.");
+    $('#EventNar').html("Your tribe has formed a ring of scorched earth around your domain and stopped the wildfire's growth in your direction. This will prevent future brush fires.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
@@ -2767,6 +2778,7 @@ function EC_ProposedTrade_Deny() {
 // Wayward And Desperate -----------------------------------------------------------
 
 function E_WaywardAndDesperate() {
+    WaywardAndDesperateExperienced = true;
     SelectRandomRival();
     SelectSelectedRandomTribal();
     $('#EventResultBoxHeader').show()
@@ -2775,12 +2787,12 @@ function E_WaywardAndDesperate() {
     $('#EventNar').html("A wayward "+ SelectedRandomTribal +" of "+SelectedRandomRival+" is found lost and desperate.");
     
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Aid:<br/>\
+    $('#EventOption1Description').html("Aid\
                                     <br/>The "+SelectedRandomTribal+" is to be fed and aided and sent on his way. This will cost 4 <span style=\"color: rgb(178, 0, 0);\">Supply</span> and decrease Tension between your tribes");
     $('#EventOption1Button').show();
     
     $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Abandon:<br/>\
+    $('#EventOption2Description').html("Abandon\
                                        <br/>Spend no supply and leave them to their fate or put them out of their misery. The result will be the same. This will have no effect on your tribe.");
     $('#EventOption2Button').show();
     
@@ -2793,16 +2805,19 @@ function EC_WaywardAndDesperate_Aid() {
         case 1:
             LongTalonTribeTension--;
             LongTalonTribeTension--;
+            WaywardKindLongTalon = true;
             if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
             break;
         case 2:
             ShiningScalesTension--;
             ShiningScalesTension--;
+            WaywardKindShiningScales = true;
             if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
             break;
         case 3:
             FolkOfTheWindingFlowTension--;
             FolkOfTheWindingFlowTension--;
+            WaywardKindWindingFlow = true;
             if (FolkOfTheWindingFlowTension < 0) {FolkOfTheWindingFlowTension = 0}
             break;
     }
@@ -2831,13 +2846,13 @@ function E_Alliance() {
                         For your aid, they are offering you " + RewardAmount + " " + SelectedRandomResource + ".");
     
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Assist:<br/>\
+    $('#EventOption1Description').html("Assist<br/>\
                                     Aid "+SelectedRandomRival+" in this endeavor. This will significantly reduce Tension between your tribes and move you both closer to victory\
                                     while increasing tension between you and " + SelectedSecondRandomRival + " and setting them back significantly.");
     $('#EventOption1Button').show();
     
     $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Turn Away:<br/>\
+    $('#EventOption2Description').html("Turn Away<br/>\
                                        This will increase Tension slightly between you and "+SelectedRandomRival+". Otherwise, you will remain unaffected.");
     $('#EventOption2Button').show();
     
@@ -3258,6 +3273,20 @@ function CalculateLongTalonTribeRaided() {
     EventLoadedValue = 401;    
 }
 
+function LongTalonRaidKind() {
+    LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
+    RefreshEvent();
+    WaywardKindLongTalon = false;
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
+    $('#EventNar').html("A device is left at the outskirts of your settlement. Upon inspection you see that it is a sort of makeshift totem\
+                        crafted from the supplies once used to aid a wayward and desperate member of the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>.\
+                        You know now that the debt has been paid. You will not be raided this day.");
+    EventLoadedValue = 998;
+    $('#EventOption1Button').show();
+    RefreshPage();
+}
+
 function CalculateLongTalonTribeRaided_DefendResources(){
     RefreshEvent();
     var Damage = LongTalonTribeVictoryLevel;
@@ -3416,7 +3445,21 @@ function CalculateShiningScalesRaided() {
                                        <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
     $('#EventOption4Button').show();
     ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
-    EventLoadedValue = 402;    
+    EventLoadedValue = 402;  
+}
+
+function ShiningScalesRaidKind() {
+    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
+    RefreshEvent();
+    WaywardKindShiningScales = false;
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
+    $('#EventNar').html("A device is left at the outskirts of your settlement. Upon inspection you see that it is a sort of makeshift totem\
+                        crafted from the supplies once used to aid a wayward and desperate member of the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>.\
+                        You know now that the debt has been paid. You will not be raided this day.");
+    EventLoadedValue = 998;
+    $('#EventOption1Button').show();
+    RefreshPage();
 }
 
 function CalculateShiningScalesRaided_DefendResources(){
@@ -3573,6 +3616,20 @@ function CalculateFolkOfTheWindingFlowRaided() {
     $('#EventOption4Button').show();
     FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
     EventLoadedValue = 403;    
+}
+
+function WindingFlowRaidKind() {
+    FolkOfTheWindingFlowTension = Math.floor((FolkOfTheWindingFlowTension / 3) + 1);
+    RefreshEvent();
+    WaywardKindWindingFlow = false;
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("<span style=\"color: Aqua;\">Folk of the Winding Flow Raid</span>")  
+    $('#EventNar').html("A device is left at the outskirts of your settlement. Upon inspection you see that it is a sort of makeshift totem\
+                        crafted from the supplies once used to aid a wayward and desperate member of the <span style=\"color: Aqua;\">Folk of the Winding Flow</span>.\
+                        You know now that the debt has been paid. You will not be raided this day.");
+    EventLoadedValue = 998;
+    $('#EventOption1Button').show();
+    RefreshPage();
 }
 
 function CalculateFolkOfTheWindingFlowRaided_DefendResources(){
