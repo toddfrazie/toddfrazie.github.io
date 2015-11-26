@@ -157,30 +157,22 @@ button:hover {border-color: white;}
   display: none;
 }
 
-#DiscoveriesBox button {
+#DiscoveriesBox li {
     display: none;
-    width: 98%;
-    background-color: black;
     font-family: "Comic Sans MS", cursive, sans-serif;
-    font-size: xx-small;
-    color: purple;
+    font-size: small;
+
 }
-#InventionsBox button {
+#InventionsBox li {
     display: none;
-    width: 98%;
-    background-color: black;
     font-family: "Comic Sans MS", cursive, sans-serif;
-    font-size: xx-small;
-    color: Blue;
+    font-size: small;
 }
 
-#AgendaBox button {
+#AgendaBox li {
     display: none;
-    width: 98%;
-    background-color: black;
     font-family: "Comic Sans MS", cursive, sans-serif;
-    font-size: xx-small;
-    color: Green;
+    font-size: small;
 }
 
 .CompetitionContainer {
@@ -294,7 +286,6 @@ button:hover {border-color: white;}
 #HunterPanel, #ExplorerPanel, #CrafterPanel, #WarriorPanel, #DetailsBox {
   display:none;
 }
-
 
 #River_Expansion_Intro, #Savanna_Expansion_Intro, #Forest_Expansion_Intro, #Hill_Expansion_Intro {
   display:none;  
