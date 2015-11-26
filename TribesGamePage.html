@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="http://toddfrazie.github.io/css/TribesGamePage.css">
   </head>
 
- <body>
+  <body>
 	  
 	  <div class="Title">
 		<div class="container">
@@ -286,10 +286,6 @@
 								<td><span id="D_Culture"></span></td>
 							  </tr>
 							  <tr>
-								<td>ExpansionLevel</td>
-								<td><span id="D_ExpansionLevel"></span></td>
-							  </tr>
-							  <tr>
 								<td>Upkeep</td>
 								<td><span id="D_Upkeep"></span></td>
 							  </tr>
@@ -323,22 +319,31 @@
 							  </tr>
 							</table>
 							<hr>
-							<div id="DiscoveriesBox"><p style="color: Purple;">Discoveries</p>
-							  <button id="Map_Of_The_Ancients">Map Of The Ancients</button>
-							  <button id="Ancient_Garden">Ancient Garden</button>
-							  <button id="Ancient_Cache">Ancient Cache</button>
-							  <button id="Pinnacle_Stone">Pinnacle Stone</button>
-							  <button id="Spear_Of_The_Ancients">Spear Of The Ancients</button>
+							<div id="DiscoveriesBox">
+							  <h5 style="color: Purple;">Discoveries</h5>
+							  <ul>
+								<li id="Ancient_Cache">Ancient Cache<span id="Ancient_CacheTip" class="ToolTip"></li>								
+								<li id="Ancient_Garden">Ancient Garden<span id="Ancient_GardenTip" class="ToolTip"></li>
+								<li id="Map_Of_The_Ancients">Map Of The Ancients<span id="Map_Of_The_AncientsTip" class="ToolTip"></li>
+								<li id="Pinnacle_Stone">Pinnacle Stone<span id="Pinnacle_StoneTip" class="ToolTip"></li>
+								<li id="Spear_Of_The_Ancients">Spear Of The Ancients<span id="Spear_Of_The_AncientsTip" class="ToolTip"></li>
+							  </ul>
 							</div>
-							<div id="InventionsBox"><p style="color: Blue;">Inventions</p>
-							  <button id="Pottery">Pottery</button>
-							  <button id="War_Tactics">Raiding Tactics</button>
-							  <button id="Totems">Totems</button>
+							<div id="InventionsBox">
+							  <h5 style="color: Blue;">Inventions</h5>
+							  <ul>
+								<li id="Pottery">Pottery<span id="PotteryTip" class="ToolTip"></span></li>
+								<li id="War_Tactics">Raiding Tactics<span id="RaidingTacticsTip" class="ToolTip"></span></li>
+								<li id="Totems">Totems<span id="TotemsTip" class="ToolTip"></span></li>
+							  </ul>
 							</div>
-							<div id="AgendaBox"><p style="color: Green;">Agenda</p>
-							  <button id="Path_Of_War">Path Of War</button>
-							  <button id="Path_Of_Peace">Path Of Peace</button>
-							  <button id="Path_Of_Seclusion">Path Of Seclusion</button>
+							<div id="AgendaBox">
+							  <h5 style="color: Green;">Agenda</h5>
+							  <ul>
+								<li id="Path_Of_War">Path Of War<span id="Path_Of_WarTip" class="ToolTip"></span></li>
+								<li id="Path_Of_Peace">Path Of Peace<span id="Path_Of_PeaceTip" class="ToolTip"></span></li>
+								<li id="Path_Of_Seclusion">Path Of Seclusion<span id="Path_Of_SeclusionTip" class="ToolTip"></span></li>
+							  </ul>
 							</div>
 						  </p>			  
 						</div>
