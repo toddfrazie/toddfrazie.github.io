@@ -117,7 +117,7 @@ window.onload = function() {
     PopulateToolTips();
     RefreshPage();
     $('.GameZone').fadeIn();
-    IntroContinue();
+    IntroContinue();  
 };
 
 
@@ -181,9 +181,65 @@ function PopulateToolTips() {
                              In this way, they assure none grow too large to handle.");
     $('#ShiningScalesTip').html("A tribe claiming to have descended from the Ancients of this land, they are friendly enough to who they call newcomers,\
                                 but jealously work to find and protect 'their' relics.");
-    $('#WindingFlowTip').html("The Folk of the Winding Flow are a cultured and artistic tribe. They are relatively peaceful, more interested in spreading their ideas than their bloodline.");
     
-
+    $('#PotteryTip').html("Pottery, crafted from clay, more easily holds goods for transport and storage.\
+                            <br/><br/>This increases the effectiveness of each Surplus by 0.5.");
+    $('#RaidingTacticsTip').html("Innovative minds have devised methods of war that grant an edge during raids.\
+                                <br/><br/>This increases the effectiveness of your Warriors during raids by 0.5.");
+    $('#TotemsTip').html("Totems, crafted from stone or wood, serve as a reminder of the kin group's ancestry.\
+                          <br/><br/>This increases your Influence and Supremacy gains each era as if you had twice as many regions.");
+    
+    $('#Path_Of_War').mouseenter(function(){
+        $('#Path_Of_WarTip').html("You have chosen the Path of War. May your enemies feel your wrath!\
+                                <br/><br/>A quarter of your <span style=\"color: rgb(178, 0, 0);\">Supply</span> Bounty each Era is given directly to your Raiding efforts as ration.\
+                                The effectiveness of your Warriors is increased in proportion the this ration.<br/>"+AgendaDuration+" turns remaining.");
+    });    
+    $('#Path_Of_Peace').mouseenter(function(){
+    $('#Path_Of_PeaceTip').html("You have chosen the Path of Peace. May you live long and prosper.\
+                                <br/><br/>You cannot Raid, but your tension increases half as fast each era.<br/>"+AgendaDuration+" turns remaining.");
+    });
+    $('#Path_Of_Seclusion').mouseenter(function(){
+        $('#Path_Of_SeclusionTip').html("You have chosen the Path of Seclusion. Security, Solidarity, and inner growth will be your bounty.\
+                                        <br/><br/>You cannot Raid or Barter. But, your Bounty will be multiplied by 1.5. <br/>"+AgendaDuration+" turns remaining.");
+    });
+    
+    $('#Map_Of_The_Ancients').mouseenter(function(){
+            $('#Map_Of_The_AncientsTip').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
+                                                 From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
+                                                 some known but much unknown to your tribe.\
+                                                 <br/><br/>At the start of each Era, gain some Domain. The amount gained increases each Era. \
+                                                 <br/>Current gain: " + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
+    });
+    
+    $('#Ancient_Garden').mouseenter(function(){
+            $('#Ancient_GardenTip').html("Your explorers have discovered a deeply hidden grove marked with the serpent symbol of those that came before. \
+                                                 Within the grove, fruits and berries grow in abundant quantity and to great size. So too do the beasts.\
+                                                 <br/><br/> At the start of each Era, gain some Supply. The amount gained increases each Era. \
+                                                 <br/>Current gain: " + (AncientGarden) + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
+    });
+    
+    $('#Ancient_Cache').mouseenter(function(){
+            var CalculatedBounty = Math.floor((AncientCache + 3)/ 3);
+            $('#Ancient_CacheTip').html("A cave lined with stone carved serpent motif contains a cache of tools made with strange but effective designs and materials.\
+                                                 <br/><br/>At the start of each Era, gain some Overall. The amount gained increases each Era. \
+                                                 <br/>Current gain: " + CalculatedBounty + " to each.");
+    });
+    
+    $('#Pinnacle_Stone').mouseenter(function(){
+        $('#Pinnacle_StoneTip').html("The giant stone monolith at the pinnacle of this great expanse is, at a distance, a towering coiled serpent. \
+                                             But, once the likewise coiling path is ascended and the monolith approached, its base contains pictographs \
+                                             highlighting the life and ways of those who came before.\
+                                             <br/><br/>At the start of each Era, gain some Inspiration. The amount gained increases each Era. \
+                                             <br/>Current gain: " + (PinnacleStone) + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
+    });
+    
+    $('#Spear_Of_The_Ancients').mouseenter(function(){
+        $('#Spear_Of_The_AncientsTip').html("An alien spear is found lodged in the roots of an ancient tree. The shaft of the spear is appears wrapped \
+                                             in serpents and the head shines like the sun. The weapon is found to best any match when tested.\
+                                             <br/><br/> At the start of each Era, gain some Grip. The amount gained increases each Era. \
+                                             <br/>Current gain: " + (SpearOfTheAncients) + " <span style=\"color: grey;\">Grip</span>");
+    });
+    
 }   
 
 function CannotBeDone() {
@@ -307,16 +363,15 @@ function RefreshPage(){
         
     }   
 
-        CompetitionDetails();
-        DisplayDetails();
-        ClearUpgradeInfoBox();   
+    CompetitionDetails();
+    DisplayDetails();
+    ClearUpgradeInfoBox();   
         
 }
 
 function DisplayDetails() {
     $('#D_Population').html(CurrentPopulation);
     $('#D_Era').html(CurrentEra);
-    $('#D_ExpansionLevel').html(ExpansionLevel);
     $('#D_Culture').html(CultureLevel);
     $('#D_Upkeep').html(Math.floor(CurrentPopulation/3));
     
@@ -2016,14 +2071,15 @@ function E_HostileWildlife() {
 }
 
 function EC_HostileWildlife_HuntingParty() {
-    var HuntersLost = (Math.floor((Math.random() * CurrentNumberOfHunters) + 1)) - (HunterMultiplier);
+    var HuntersLost = Math.floor(((Math.random() * CurrentNumberOfHunters) + 1)) - (HunterMultiplier);
     var ResultText = "";
     if (HuntersLost <= 0) {
         HuntersLost = 0;
         ResultText = "Your hunters return with no loses!"
-    }else
-    {
+    }else if (HuntersLost == 1){
         ResultText = "The hunt proves tragic. " + HuntersLost + " of your Hunters has been killed."
+    }else{
+        ResultText = "The hunt proves tragic. " + HuntersLost + " Hunters of your Hunting party have been killed."
     }
     CurrentNumberOfHunters = CurrentNumberOfHunters - HuntersLost;
     var Bounty = CurrentNumberOfHunters * 4
@@ -2388,16 +2444,6 @@ function EC_Pottery_InventPottery() {
     $('#EventOption1Button').show();
 }
 
-$('#Pottery').mouseenter(function() {
-    if (CurrentPhase == 0) {
-        $('#UpgradeInfoBoxCost').html("");
-        $('#UpgradeInfoBoxHeader').html("Pottery");
-        $('#UpgradeInfoBoxDescription').html("Pottery, crafted from clay, more easily holds goods for transport and storage.\
-                                             <br/><span class=\"OOC\">Increases the effectiveness of Surplus by 0.5.</span>");
-    }    
-});
-$('#Pottery').mouseleave(function() {ClearUpgradeInfoBox()});
-
 // Improved War Tactics ----------------------------------------
 
 function EC_ImprovedRaidTactics_InventImprovedRaidTactics() {
@@ -2416,17 +2462,6 @@ function EC_ImprovedRaidTactics_InventImprovedRaidTactics() {
     $('#EventOption1Button').show();
 }
 
-$('#War_Tactics').mouseenter(function() {
-    if (CurrentPhase == 0) {    
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("War Tactics");
-    $('#UpgradeInfoBoxDescription').html("Innovative minds have devised methods of war that grant an edge during raids.\
-                                         <br/><span class=\"OOC\">Increases the effectiveness of your Warriors during raids by 0.5.</span>");
-    }
-});
-$('#War_Tactics').mouseleave(function() {ClearUpgradeInfoBox()});
-
-
 //Totems ------------------------------------------------
 
 function EC_Totems_InventTotems() {
@@ -2444,16 +2479,6 @@ function EC_Totems_InventTotems() {
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
 }
-
-$('#Totems').mouseenter(function() {
-    if (CurrentPhase == 0) {
-        $('#UpgradeInfoBoxCost').html("");
-        $('#UpgradeInfoBoxHeader').html("Totems");
-        $('#UpgradeInfoBoxDescription').html("Totems, crafted from stone or wood, serve as a reminder of the kin group's ancestry.\
-                                             <br/><span class=\"OOC\">Increases your Influence and Supremacy gains each era as if you had twice as many regions.</span>");
-    }    
-});
-$('#Totems').mouseleave(function() {ClearUpgradeInfoBox()});
 
 // Demand Tribute----------------------------------------
 
@@ -2908,35 +2933,6 @@ function EC_CouncilOfElders_MiddlePath() {
     $('#EventOption1Button').show();
 }
 
-$('#Path_Of_War').mouseenter(function(){
-    if (CurrentPhase == 0) {
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Path of War");
-    $('#UpgradeInfoBoxDescription').html("You have chosen the Path of War. May your enemies feel your wrath!\
-                                         <br/><span class=\"OOC\"> A quarter of your <span style=\"color: rgb(178, 0, 0);\">Supply</span> Bounty each Era is given directly to your Raiding efforts as ration. The effectiveness of your Warriors is increased in proportion the this ration.<br/>"+AgendaDuration+" turns remaining.</span>");
-    }
-})
-$('#Path_Of_War').mouseleave(function(){ClearUpgradeInfoBox();})
-
-$('#Path_Of_Peace').mouseenter(function(){
-    if (CurrentPhase == 0) {
-    $('#UpgradeInfoBoxHeader').html("Path of Peace");
-    $('#UpgradeInfoBoxDescription').html("You have chosen the Path of Peace. May you live long and prosper.\
-                                         <br/><span class=\"OOC\"> You cannot Raid, but your tension increases half as fast each era.<br/>"+AgendaDuration+" turns remaining.</span>");
-    }
-})
-$('#Path_Of_Peace').mouseleave(function(){ClearUpgradeInfoBox();})
-
-$('#Path_Of_Seclusion').mouseenter(function(){
-    if (CurrentPhase == 0) {
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Path of Seclusion");
-    $('#UpgradeInfoBoxDescription').html("You have chosen the Path of Seclusion. Security, Solidarity, and inner growth will be your bounty.\
-                                         <br/><span class=\"OOC\"> You cannot Raid or Barter. But, your Bounty will be multiplied by 1.5. <br/>"+AgendaDuration+" turns remaining.</span>");
-    }
-})
-$('#Path_Of_Seclusion').mouseleave(function(){ClearUpgradeInfoBox();})
-
 // Discovery Logic ---------------------------------------------------------------
 
 function E_Discover() {
@@ -3031,69 +3027,6 @@ function EC_ClaimDiscovery(){
     EventLoadedValue = 999;
     $('#EventOption1Button').show();  
 }
-
-$('#Map_Of_The_Ancients').mouseenter(function(){
-    if (CurrentPhase == 0) {
-        $('#UpgradeInfoBoxCost').html("");
-        $('#UpgradeInfoBoxHeader').html("Map of the Ancients");
-        $('#UpgradeInfoBoxDescription').html("A giant plate-like stone was uncovered from its shallow grave. On this stone, several symbols come together. \
-                                             From an elevated perch nearby, the symbols make what clearly seem to be a map encompassing much of the surrounding area, \
-                                             some known but much unknown to your tribe.\
-                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Domain. The amount gained increases each Era. \
-                                             <br/>Current gain: </span>" + (MapOfTheAncients) + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>");
-    }
-});
-$('#Map_Of_The_Ancients').mouseleave(function(){ClearUpgradeInfoBox();})
-
-$('#Ancient_Garden').mouseenter(function(){
-    if (CurrentPhase == 0) {
-        $('#UpgradeInfoBoxCost').html("");
-        $('#UpgradeInfoBoxHeader').html("Ancient Garden");
-        $('#UpgradeInfoBoxDescription').html("Your explorers have discovered a deeply hidden grove marked with the serpent symbol of those that came before. \
-                                             Within the grove, fruits and berries grow in abundant quantity and to great size. So too do the beasts.\
-                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Supply. The amount gained increases each Era. \
-                                             <br/>Current gain: </span>" + (AncientGarden) + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>");
-    }
-});
-$('#Ancient_Garden').mouseleave(function(){ClearUpgradeInfoBox();})
-
-$('#Ancient_Cache').mouseenter(function(){
-    if (CurrentPhase == 0) {
-        var CalculatedBounty = Math.floor((AncientCache + 3)/ 3);
-        $('#UpgradeInfoBoxCost').html("");
-        $('#UpgradeInfoBoxHeader').html("Ancient Cache");
-        $('#UpgradeInfoBoxDescription').html("A cave lined with stone carved serpent motif contains a cache of tools made with strange but effective designs and materials.\
-                                             <br/><span class=\"OOC\"> At the start of each Era, gain some Overall. The amount gained increases each Era. \
-                                             <br/>Current gain: </span>" + CalculatedBounty + " to each.");
-    }
-});
-$('#Ancient_Cache').mouseleave(function(){ClearUpgradeInfoBox();})
-
-$('#Pinnacle_Stone').mouseenter(function(){
-    if (CurrentPhase == 0) {
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Pinnacle Stone");
-    $('#UpgradeInfoBoxDescription').html("The giant stone monolith at the pinnacle of this great expanse is, at a distance, a towering coiled serpent. \
-                                         But, once the likewise coiling path is ascended and the monolith approached, its base contains pictographs \
-                                         highlighting the life and ways of those who came before.\
-                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Inspiration. The amount gained increases each Era. \
-                                         <br/>Current gain: </span>" + (PinnacleStone) + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
-    }
-});
-$('#Pinnacle_Stone').mouseleave(function(){ClearUpgradeInfoBox();})
-
-$('#Spear_Of_The_Ancients').mouseenter(function(){
-    if (CurrentPhase == 0) {
-    $('#UpgradeInfoBoxCost').html("");
-    $('#UpgradeInfoBoxHeader').html("Spear Of The Ancients");
-    $('#UpgradeInfoBoxDescription').html("An alien spear is found lodged in the roots of an ancient tree. The shaft of the spear is appears wrapped \
-                                         in serpents and the head shines like the sun. The weapon is found to best any match when tested.\
-                                         <br/><span class=\"OOC\"> At the start of each Era, gain some Grip. The amount gained increases each Era. \
-                                         <br/>Current gain: </span>" + (SpearOfTheAncients) + " <span style=\"color: grey;\">Grip</span>");
-    }
-});
-$('#Spear_Of_The_Ancients').mouseleave(function(){ClearUpgradeInfoBox();})
-
 //Competition-----------
 
 function ShowEventEnd() {
