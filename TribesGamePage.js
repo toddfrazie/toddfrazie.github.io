@@ -4,7 +4,7 @@ var main = function() {
 
 var CurrentPhase = 99;
 var CurrentEra = 1;
-var IntroPhase = 0;
+var IntroPhase = 13;
 
 var CurrentNumberOfHunters = 1;
 var CurrentNumberOfCrafters = 1;
@@ -221,7 +221,7 @@ function PopulateToolTips() {
     $('#Ancient_Cache').mouseenter(function(){
             var CalculatedBounty = Math.floor((AncientCache + 3)/ 3);
             $('#Ancient_CacheTip').html("A cave lined with stone carved serpent motif contains a cache of tools made with strange but effective designs and materials.\
-                                                 <br/><br/>At the start of each Era, gain some Overall. The amount gained increases each Era. \
+                                                 <br/><br/>At the start of each Era, gain some of each resource. The amount gained increases each Era. \
                                                  <br/>Current gain: " + CalculatedBounty + " to each.");
     });
     
@@ -240,6 +240,17 @@ function PopulateToolTips() {
                                              <br/>Current gain: " + (SpearOfTheAncients) + " <span style=\"color: grey;\">Grip</span>");
     });
     
+    $('#LongTalonTribeTensionTip').html("Tension represents dormant hostility between your tribes. The higher the Tension score, the more likely you are to be raided by this rival.\
+                                        <br/><br/>Tension with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span> will increase at a faster rate as your Supremacy increases. Tensions increase at a faster rate as the game progresses. Raiding a Tribe will increase Tension significantly.\
+                                        <br/><br/>Bartering with a rival will decrease Tensions in proportion to your Culture score.");
+    
+    $('#ShiningScalesTensionTip').html("Tension represents dormant hostility between your tribes. The higher the Tension score, the more likely you are to be raided by this rival.\
+                                        <br/><br/>Tension with the <span style=\"color: GoldenRod;\">Shining Scales</span> will increase at a faster rate as you uncover more discoveries. Tensions increase at a faster rate as the game progresses. Raiding a Tribe will increase Tension significantly.\
+                                        <br/><br/>Bartering with a rival will decrease Tensions in proportion to your Culture score.");
+    
+    $('#ShiningScalesVictoryTip, #LongTalonTribeVictoryTip').html("If a Rival reaches their victory cap, the game ends and your tribe is lost to history.\
+                                    <br/><br/>Furthermore, the closer a rival is to victory, the more potent their raids will be.\
+                                    <br/><br/>Raiding a rival will decrease their Victory level in proportion to your number of warriors.");
 }   
 
 function CannotBeDone() {
@@ -1085,7 +1096,8 @@ $('#Improve_Culture').hover(function(){
     $('#UpgradeInfoBoxCost').html(TotalCultureInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Cultural Innovation");
     $('#UpgradeInfoBoxDescription').html("Advancing in art and sophistication, your tribe begins to leave its mark on the surrounding land and peoples.\
-                                         <br/><span class=\"OOC\">This upgrade will increase your culture. Each Era, your culture will be added to your Influence. Higher Culture will give larger returns when Bartering</span>");
+                                         <br/><span class=\"OOC\">This upgrade will increase your culture. Each Era, your culture will be added to your Influence. \
+                                         In addition, when Bartering, higher Culture will give larger returns and increase the amount of tension reduced.</span>");
 });
 $('#Improve_Culture').click(function(){P_Improve_Culture();});
 function P_Improve_Culture(){
@@ -3031,12 +3043,14 @@ function EC_ClaimDiscovery(){
 
 function ShowEventEnd() {
     RefreshEvent();
-    EventLoadedValue = 1000;
-    $('#EventResultBoxHeader').show()
-    $('#EventResultBoxHeader').html("Calm")    
-    $('#EventNar').html("A new Era Begins.");        
-    $('#EventOption1Button').show();
+    CurrentPhase = 0;
+    CurrentEra++
     RefreshPage();
+    //$('#EventResultBoxHeader').show()
+    //$('#EventResultBoxHeader').html("Calm")    
+    //$('#EventNar').html("A new Era Begins.");        
+    //$('#EventOption1Button').show();
+    //RefreshPage();
 }
 
 function CalculateLongTalonTribeRaided() {
