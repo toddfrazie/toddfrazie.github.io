@@ -4,7 +4,7 @@ var main = function() {
 
 var CurrentPhase = 99;
 var CurrentEra = 1;
-var IntroPhase = 13;
+var IntroPhase = 0;
 
 var CurrentNumberOfHunters = 1;
 var CurrentNumberOfCrafters = 1;
