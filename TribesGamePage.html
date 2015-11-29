@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="http://toddfrazie.github.io/css/TribesGamePage.css">
   </head>
 
-  <body>
+   <body>
 	  
 	  <div class="Title">
 		<div class="container">
@@ -162,6 +162,9 @@
 							<h4 id="IntroDivHeader"></h4>
 							<p id="IntroDivStory"></p>							
 							<button id="Intro_Continue">Continue</button>
+							<button id="Intro_Skip">Skip Intro</button>
+							<button id="Difficulty_Normal">Normal</button>
+							<button id="Difficulty_Extreme">Extreme</button>
 							<button id="River_Expansion_Intro" class="Upgrade">River Region</button>
 							<button id="Savanna_Expansion_Intro" class="Upgrade">Savanna Region</button>
 							<button id="Forest_Expansion_Intro" class="Upgrade">Forest Region</button>
@@ -254,7 +257,7 @@
 							  <tr>
 								<td>Victory<span id="ShiningScalesVictoryTip" class="ToolTip"></span></td>
 								<td style="text-align: right;"><span id="D_ShiningScalesVictory"></span></td>
-								<td><span>/50</span></td>
+								<td>/<span class="VictoryLevelCap">50</span></td>
 							  </tr>
 							</table>
 							<br/>
@@ -267,7 +270,7 @@
 							  <tr>
 								<td>Victory<span id="LongTalonTribeVictoryTip" class="ToolTip"></span></td>
 								<td style="text-align: right;"><span id="D_LongTalonTribeVictory"></span></td>
-								<td><span>/50</span></td>
+								<td>/<span class="VictoryLevelCap">50</span></td>
 							  </tr>
 							</table>
 							<br/>
