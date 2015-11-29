@@ -91,6 +91,7 @@ var LongTalonTribeTension = 1;
 var CurrentRaidBarterThisTurn = 1;
 var CurrentPopulationBoomThisTurn = 1;
 var TensionCap = 30;
+var ExtremeDifficulty = false;
 
 var EventLoadedValue = 0;
 
@@ -360,7 +361,7 @@ function RefreshPage(){
             break;
         case 99:
             $('#IntroDiv').fadeIn(1500);
-            if (IntroPhase > 5) {$('#BeginEra').fadeIn();}
+            if (IntroPhase > 8) {$('#BeginEra').fadeIn();}
             else{$('#BeginEra').hide();}
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -400,20 +401,12 @@ function DisplayDetails() {
     $('#D_ShiningScalesTension').html(ShiningScalesTension);
     $('#D_ShiningScalesVictory').html(ShiningScalesVictoryLevel);
     
-    //if (CurrentSupremacy > CurrentInfluence && CurrentSupremacy > CurrentDiscovery * 100) {
-    //    $('#DetailImage').attr("src","http://i.imgur.com/N4Uepe3.jpg");
-    //}else if (CurrentInfluence > CurrentSupremacy && CurrentInfluence > CurrentDiscovery * 100) {
-    //    $('#DetailImage').attr("src","http://i.imgur.com/MzfHbw2.jpg");
-    //}else if (CurrentDiscovery * 100 > CurrentInfluence && CurrentDiscovery * 100 > CurrentSupremacy) {
-    //    $('#DetailImage').attr("src","http://i.imgur.com/DnKwg6g.jpg");
-    //}
-    
 }
 
 function CalculateTribalCosts(){
     CurrentPopulation = CurrentNumberOfHunters + CurrentNumberOfCrafters + CurrentNumberOfExplorers + CurrentNumberOfWarriors
     
-    TotalPopulationBoomCost = Math.floor((CurrentPopulation * CurrentPopulationBoomThisTurn) * Math.pow(1.07,CurrentPopulationBoomThisTurn));
+    TotalPopulationBoomCost = Math.floor(((CurrentPopulation/2) * CurrentPopulationBoomThisTurn) * Math.pow(1.07,CurrentPopulationBoomThisTurn));
  
     TotalInspirationSurplusCost = Math.floor((5 * Math.pow(1.15, CurrentNumberOfCrafters)));
 
@@ -426,7 +419,7 @@ function CalculateTribalCosts(){
     ExplorerToolInspirationCost = Math.floor((10 * ExplorerMultiplier) * Math.pow(1.07,ImprovedToolsLevel));
     WarriorToolInspirationCost = Math.floor((10 * WarriorMultiplier) * Math.pow(1.07,ImprovedToolsLevel));    
     
-    TotalExpansionDomainCost = Math.floor((10 * ExpansionLevel) * Math.pow(1.07,ExpansionLevel));
+    TotalExpansionDomainCost = Math.floor(8 * Math.pow(1.15,ExpansionLevel));
     
     TotalCultureInspirationCost = Math.floor((5 * CultureLevel) * Math.pow(1.07,CultureLevel));
 
@@ -434,9 +427,9 @@ function CalculateTribalCosts(){
     
     TotalInventionInspirationCost = Math.floor((30 * InventionLevel) * Math.pow(1.15,InventionLevel));
     
-    RaidingCost = Math.floor((5 * CurrentRaidBarterThisTurn) * Math.pow(1.07,CurrentNumberOfWarriors));
+    RaidingCost = Math.floor((4 * CurrentRaidBarterThisTurn) * Math.pow(1.15,CurrentRaidBarterThisTurn));
     
-    BarteringCost = Math.floor((2 * CurrentRaidBarterThisTurn) * Math.pow(1.15,CultureLevel));
+    BarteringCost = Math.floor((4 * CurrentRaidBarterThisTurn) * Math.pow(1.15,CurrentRaidBarterThisTurn));
     
     FestivalCost = Math.floor(2 * Math.pow(1.15,CurrentPopulation));
 }
@@ -473,36 +466,7 @@ function CompetitionDetails() {
             break;
     }    
 
-    //switch (true) {
-    //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 2.8)):
-    //        $('#D_ShiningScalesVictory').css('color','Green')
-    //        break;
-    //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 1.6)):
-    //        $('#D_ShiningScalesVictory').css('color','Yellow')
-    //        break;
-    //    case (ShiningScalesVictoryLevel < (VictoryLevelCap / 1.2)):
-    //        $('#D_ShiningScalesVictory').css('color','Orange')
-    //        break;
-    //    default:
-    //        $('#D_ShiningScalesVictory').css('color','Red')
-    //        break;
-    //}
-    //
-    //switch (true) {
-    //    case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 2.8)):
-    //        $('#D_LongTalonTribeVictory').css('color','Green')
-    //        break;
-    //    case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 1.6)):
-    //        $('#D_LongTalonTribeVictory').css('color','Yellow')
-    //        break;
-    //    case (LongTalonTribeVictoryLevel < (VictoryLevelCap / 1.2)):
-    //        $('#D_LongTalonTribeVictory').css('color','Orange')
-    //        break;
-    //    default:
-    //        $('#D_LongTalonTribeVictory').css('color','Red')
-    //        break;
-    //}
- 
+
 }
 
 function CalculateSurplusDisplay(){
@@ -704,35 +668,48 @@ function IntroContinue() {
     $("#Intro_Continue").hide();
     switch (IntroPhase) {
         case 1:
-            $("#IntroDivHeader").html("The Hunt")
-            $("#IntroDivStory").html("After falling wayward from your kin on a hunting venture, you find yourself far from your settlement following an alluring and mysterious game.")
-            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
+            $("#IntroDivHeader").html("Before we begin...");
+            $("#IntroDivStory").html("<br/><br/>Select A Difficulty.");
+            $("#IntroDivStory, #IntroDivHeader, #Difficulty_Normal, #Difficulty_Extreme").fadeIn(1000);
             break;
         case 2:
+            $("#IntroDivHeader").html("Before we begin...");
+            $("#IntroDivStory").html("If you know the introduction story and are familiar with the rules of Pinnacle Stone, \
+              select the \'skip intro\' button. Otherwise, select \'Continue\'.");
+            $("#IntroDivStory, #Intro_Continue, #Intro_Skip").fadeIn(1000);
+            break;
+        case 3:
+            $("#Intro_Skip").hide();
+            $("#IntroDivHeader").hide();
+            $("#IntroDivHeader").html("The Hunt");
+            $("#IntroDivStory").html("After falling wayward from your kin on a hunting venture, you find yourself far from your settlement following an alluring and mysterious game.")
+            $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
+            break;
+        case 4:
             $("#IntroDivStory").html("In hopes of finding its pack and their food supply, your quest carries you astray for many days. Yet ultimately, the trail is lost.\
                                      <br/><br/>Desperate, you seek higher ground in an attempt to spot your game. But, at this new vantage you are faced with something much greater.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
-        case 3:
+        case 5:
             $("#IntroDivStory").html("At the cusp of a plateau, you are confronted by the red eyed gaze of a Giant Serpent, erect and still at the peak of a rise.\
                                      <br/><br/>Terror subsides as you begin to realize it is not a living creature but a stonework masterpiece! \
                                      Surrounding its base a great distance in all directions is what can only be described as a paradise of fertile, protected, and wonderous lands.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
-        case 4:
+        case 6:
             $("#IntroDivStory").html("You return to your tribe with an abundance of food and a tale to tell. This revelation could not have come at a better time. Weak leadership and tensions within your tribe from many troubles have caused dissention.\
                                      <br/><br/>You implore that the tribe travel to this new land and make it their own.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             break;
-        case 5:
+        case 7:
             $("#IntroDivStory").html("The plan is not well received. Many fear the Serpent is a foul omen. Others do not believe your story. Others still are infirm and do not favor a journey of such lengths rife with uncertainty.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
-        case 6:
+        case 8:
             $("#IntroDivStory").html("Unswayed by their doubts, you remain intent on returning to this new place, certain some beyond your own family will come.  But first, you must gather supplies for the journey.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
-        case 7:
+        case 9:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("Preparing for the journey");
             $("#IntroDivStory").hide();
@@ -742,29 +719,29 @@ function IntroContinue() {
                                      <br/><br/>Collect 5 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
             $("#IntroDivStory, #IntroDivHeader, #HunterPanel, #BeginEra").fadeIn(1000);
             break;
-        case 8:
+        case 10:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("Preparing for the journey");
             $("#IntroDivStory").html("With ample <span style=\"color: rgb(178, 0, 0);\">Supply</span>, you feel prepared. But, you'll need someone to explore and tame this new world.\
                                      Luckily, an explorer heeds your call and chooses to join you.");
-            $("#IntroDivStory, #IntroDivHeader, #ExplorerPanel, #ExplorerPanel, #Intro_Continue").fadeIn(1000);
+            $("#IntroDivStory, #IntroDivHeader, #ExplorerPanel, #Intro_Continue").fadeIn(1000);
             $("#BeginEra").hide();
             break;
-        case 9:
+        case 11:
             $("#IntroDivStory").html("Once you settle, explorers accumulate <span style=\"color: rgb(207, 166, 0);\">Domain</span> for your tribe.\
                                      <span style=\"color: rgb(207, 166, 0);\">Domain</span> can be used to expand your settlement and search the mysterious surroundings.");
             $("#IntroDivStory,#Intro_Continue").fadeIn(1000);
             break;
-        case 10:
+        case 12:
             $("#IntroDivStory").html("A crafter insists you bring her and her young to this giant serpent of stone. Her skills will be invaluable once you arrive.\
                                      <br/><br/>Crafters generate <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, which they use to improve the efficiency of endeavors. With enough stashed <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, a crafter could pursue a new invention.");
             $("#IntroDivStory, #CrafterPanel, #Intro_Continue").fadeIn(1000);
             break;
-        case 11:
+        case 13:
             $("#IntroDivStory").html("With these, and a handful of unskilled young and elderly, the time has come. You are ready to embark.");
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
-        case 12:
+        case 14:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("New World");
             $("#IntroDivStory").html("You have just led your new tribe from their original home, drawn to the wonder and prosperity of this mysterious place. \
@@ -773,13 +750,13 @@ function IntroContinue() {
                                      Though some laugh at this, in the eyes of the old man you see that he is serious speaks earnestly. He offers his services.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue, #WarriorPanel").fadeIn(1000);
             break;
-        case 13:
+        case 15:
             $("#IntroDivStory").html("Warriors will serve as raiders, protectors, and diplomats for your tribe. They demand respect and reverence from any outsiders.\
                                      As time progresses, they produce <span style=\"color: grey;\">Grip</span>, which represents your hold over the territory you have.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             $("#BeginEra").hide();
             break;
-        case 14:
+        case 16:
             $("#IntroDivHeader").text("New World");
             $("#IntroDivStory").html("With a handful of resources and your kin you set out to mark your place. \
                                      They look to you to make the decision; Where will you settle?")
@@ -789,6 +766,28 @@ function IntroContinue() {
     }
 }
 
+$('#Difficulty_Normal').click(function(){DifficultyNormal()});
+function DifficultyNormal() {
+    $("#Difficulty_Normal, #Difficulty_Extreme").hide();
+    IntroContinue()
+};
+
+$('#Difficulty_Extreme').click(function(){DifficultyExtreme()});
+function DifficultyExtreme() {
+    ExtremeDifficulty = true;
+    TensionCap = 20;
+    VictoryLevelCap = 40;
+    $('.VictoryLevelCap').text("40");
+    $("#Difficulty_Normal, #Difficulty_Extreme").hide();
+    IntroContinue();
+};
+
+$('#Intro_Skip').click(function(){SkipIntro()});
+function SkipIntro() {
+    $('#Intro_Skip').hide();
+    IntroPhase= 15;
+    IntroContinue();
+};
 
 function CalculateNewTribeMemberResult() {
     var UpkeepCost = Math.floor(CurrentPopulation/3)
@@ -3620,6 +3619,7 @@ function SelectRandomFoundDiscovery(){
                     {
                         MapOfTheAncients = 0;
                         $("#Map_Of_The_Ancients").hide();
+                        $('#MapOfTheAncientsResult').html("");
                         TryAgain = false;
                         DiscoveryString = "Map of the Ancients";
                     }                
@@ -3629,6 +3629,7 @@ function SelectRandomFoundDiscovery(){
                     {
                         AncientGarden = 0;
                         $("#Ancient_Garden").hide();
+                        $('#AncientGardenResult').html("");
                         TryAgain = false;
                         DiscoveryString = "Ancient Garden";
                     } 
@@ -3638,6 +3639,7 @@ function SelectRandomFoundDiscovery(){
                     {
                         AncientCache = 0;
                         $("#Ancient_Cache").hide();
+                        $('#AncientCacheResult').html("");
                         TryAgain = false;
                         DiscoveryString = "Ancient Cache";
                     } 
@@ -3647,6 +3649,7 @@ function SelectRandomFoundDiscovery(){
                     {
                         PinnacleStone = 0;
                         $("#Pinnacle_Stone").hide();
+                        $('#PinnacleStoneResult').html("");
                         TryAgain = false;
                         DiscoveryString = "Pinnacle Stone";
                     } 
@@ -3656,6 +3659,7 @@ function SelectRandomFoundDiscovery(){
                     {
                         SpearOfTheAncients = 0;
                         $("#Spear_Of_The_Ancients").hide();
+                        $('#SpearOfTheAncientsResult').html("");
                         TryAgain = false;
                         DiscoveryString = "Spear of the Ancients";
                     } 
