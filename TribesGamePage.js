@@ -99,8 +99,6 @@ var SelectedRandomTribal = "";
 var SelectedRandomTribalValue = 0;
 var SelectedRandomRival = "";
 var SelectedRandomRivalValue = 0;
-var SelectedSecondRandomRival = "";
-var SelectedSecondRandomRivalValue = 0;
 var SelectedRandomResource = "";
 var SelectedRandomResourceValue = 0;
 var SelectedSecondRandomResource = "";
@@ -687,18 +685,18 @@ function IntroContinue() {
             break;
         case 4:
             $("#IntroDivStory").html("In hopes of finding its pack and their food supply, your quest carries you astray for many days. Yet ultimately, the trail is lost.\
-                                     <br/><br/>Desperate, you seek higher ground in an attempt to spot your game. But, at this new vantage you are faced with something much greater.")
+                                     <br/><br/>Desperate, you seek higher ground in an attempt to spot your game. Yet, at this new vantage you are faced with something much greater.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 5:
-            $("#IntroDivStory").html("At the cusp of a plateau, you are confronted by the red eyed gaze of a Giant Serpent, erect and still at the peak of a rise.\
+            $("#IntroDivStory").html("At the cusp of a plateau, you are confronted by the red eyed gaze of a Giant Serpent some distance away, erect and still at the peak of a rise.\
                                      <br/><br/>Terror subsides as you begin to realize it is not a living creature but a stonework masterpiece! \
                                      Surrounding its base a great distance in all directions is what can only be described as a paradise of fertile, protected, and wonderous lands.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 6:
             $("#IntroDivStory").html("You return to your tribe with an abundance of food and a tale to tell. This revelation could not have come at a better time. Weak leadership and tensions within your tribe from many troubles have caused dissention.\
-                                     <br/><br/>You implore that the tribe travel to this new land and make it their own.")
+                                     <br/><br/>You implore those inclined to travel with you to this new land and make it their own.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             break;
         case 7:
@@ -747,7 +745,7 @@ function IntroContinue() {
             $("#IntroDivStory").html("You have just led your new tribe from their original home, drawn to the wonder and prosperity of this mysterious place. \
                                      But, you can see the tell tale signs that your own is not the only kin here.\
                                      <br/><br/>The oldest of your new tribe presents himself to you as a seasoned warrior.\
-                                     Though some laugh at this, in the eyes of the old man you see that he is serious speaks earnestly. He offers his services.")
+                                     Though his age shows him as weak, in the eyes of the old man you see that he speaks earnestly. He offers his services and you feel inclined to accept.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue, #WarriorPanel").fadeIn(1000);
             break;
         case 15:
@@ -819,11 +817,11 @@ if (Agenda == 2){
 
 function CalculateVictoryConditionGains() {    
     if (Totems) {
-        CurrentSupremacy = CurrentSupremacy + (ExpansionLevel * 4);
-        CurrentInfluence = CurrentInfluence + (CultureLevel * (ExpansionLevel * 2));
-    }else {
         CurrentSupremacy = CurrentSupremacy + (ExpansionLevel * 2);
-        CurrentInfluence = CurrentInfluence + (CultureLevel * ExpansionLevel);
+        CurrentInfluence = CurrentInfluence + (CultureLevel * 2);
+    }else {
+        CurrentSupremacy = CurrentSupremacy + (ExpansionLevel);
+        CurrentInfluence = CurrentInfluence + (CultureLevel);
     }
 }
 
@@ -1019,7 +1017,7 @@ $('#Improve_Hunting_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(HunterToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Hunting Tools");
     $('#UpgradeInfoBoxDescription').html("With improved hunting tools, your Tribe can hunt more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the Efficiency of your Hunters by 0.5. \
+                                         <br/><span class=\"OOC\">This upgrade will increase the Efficiency of your Hunters by 1. \
                                          Your Supply bounty will be the product of your number of Hunters and your Hunting Efficiency.</span>");
 });
 $('#Improve_Hunting_Tools').click(function(){P_Improve_Hunting_Tools();});
@@ -1027,7 +1025,7 @@ function P_Improve_Hunting_Tools(){
     if (CurrentInspiration >= HunterToolInspirationCost) {
         DecrementInspiration(HunterToolInspirationCost);
         ImprovedToolsLevel++
-        HunterMultiplier = HunterMultiplier + 0.5
+        HunterMultiplier = HunterMultiplier + 1
         CurrentInfluence = CurrentInfluence + Math.floor(HunterMultiplier * 5)
         $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
@@ -1038,7 +1036,7 @@ $('#Improve_Crafting_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(CrafterToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Crafting Tools");
     $('#UpgradeInfoBoxDescription').html("With improved crafting tools, your Tribe can craft more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Crafters by 0.5. \
+                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Crafters by 1. \
                                          Your Inspiration bounty will be the product of your number of Crafters and your Crafting Efficiency.</span>");
 });
 $('#Improve_Crafting_Tools').click(function(){P_Improve_Crafting_Tools();});
@@ -1046,7 +1044,7 @@ function P_Improve_Crafting_Tools(){
     if (CurrentInspiration >= CrafterToolInspirationCost) {
         DecrementInspiration(CrafterToolInspirationCost);
         ImprovedToolsLevel++
-        CrafterMultiplier = CrafterMultiplier + 0.5
+        CrafterMultiplier = CrafterMultiplier + 1
         CurrentInfluence = CurrentInfluence + Math.floor(CrafterMultiplier * 5)
         $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
@@ -1057,7 +1055,7 @@ $('#Improve_Exploring_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(ExplorerToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve Exploring Tools");
     $('#UpgradeInfoBoxDescription').html("With improved exploring tools, your Tribe can explore more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Explorers by 0.5. \
+                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Explorers by 1. \
                                          Your Domain bounty will be the product of your number of Explorers and your Exploring Efficiency.</span>");
 });
 $('#Improve_Exploring_Tools').click(function(){P_Improve_Exploring_Tools();});
@@ -1065,7 +1063,7 @@ function P_Improve_Exploring_Tools(){
     if (CurrentInspiration >= ExplorerToolInspirationCost) {
         DecrementInspiration(ExplorerToolInspirationCost);
         ImprovedToolsLevel++
-        ExplorerMultiplier = ExplorerMultiplier + 0.5
+        ExplorerMultiplier = ExplorerMultiplier + 1
         CurrentInfluence = CurrentInfluence + Math.floor(ExplorerMultiplier * 5)
         $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
@@ -1076,7 +1074,7 @@ $('#Improve_War_Tools').hover(function(){
     $('#UpgradeInfoBoxCost').html(WarriorToolInspirationCost + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>");
     $('#UpgradeInfoBoxHeader').html("Improve War Tools");
     $('#UpgradeInfoBoxDescription').html("With improved war tools, your Tribe can maintain its grip on the its assets more efficiently.\
-                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Warriors by 0.5. \
+                                         <br/><span class=\"OOC\">This upgrade will increase the Effieciency of your Warriors by 1. \
                                          Your Grip bounty will be the product of your number of Warriors and your War Efficiency.</span>");
 });
 $('#Improve_War_Tools').click(function(){P_Improve_War_Tools();});
@@ -1084,7 +1082,7 @@ function P_Improve_War_Tools(){
     if (CurrentInspiration >= WarriorToolInspirationCost) {
         DecrementInspiration(WarriorToolInspirationCost);    
         ImprovedToolsLevel++
-        WarriorMultiplier = WarriorMultiplier + 0.5
+        WarriorMultiplier = WarriorMultiplier + 1
         CurrentInfluence = CurrentInfluence + Math.floor(WarriorMultiplier * 5)
         $('#InspirationUpgrades').attr('class','HiddenInspirationUpgradeBox');
         RefreshPage();
@@ -1290,11 +1288,13 @@ function P_RaidShiningScales() {
         var WarriorEffectiveness = CurrentNumberOfWarriors    
         if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)}
         if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness + WarRation)}
-        var GainedSupply = Math.floor(WarriorEffectiveness/2);
-        var GainedInspiration = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
+
+        var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
         var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
+        var GainedInspiration = Math.floor(WarriorEffectiveness/2);
            
-        $('#RaidBarterResult').html("Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
+        $('#RaidBarterResult').html("<span class=\"LargerText\" style=\"color: DarkGoldenRod;\">Raiding the Shining Scales</span>\
+                                    <br/>Your warriors return from raiding the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1303,7 +1303,7 @@ function P_RaidShiningScales() {
         IncrementSupply(GainedSupply);
         IncrementInspiration(GainedInspiration);
         IncrementDomain(GainedDomain);
-        CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness * ExpansionLevel);
+        CurrentSupremacy = CurrentSupremacy + (WarriorEffectiveness);
         
         CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
@@ -1325,10 +1325,13 @@ function P_BarterShiningScales() {
         ShiningScalesVictoryLevel++
         if (ShiningScalesTension < 0) {ShiningScalesTension = 0};
         DecrementGrip(BarteringCost);
-        var GainedSupply = Math.floor(CultureLevel/2);
-        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1));
-        var GainedDomain = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
-        $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
+
+        var GainedSupply = Math.floor((CultureLevel) * ((Math.random() * 2) + 1));
+        var GainedDomain = Math.floor((CultureLevel) * ((Math.random() * 3) + 1));
+        var GainedInspiration = Math.floor(CultureLevel);
+                
+        $('#RaidBarterResult').html("<span class=\"LargerText\" style=\"color: DarkGoldenRod;\">Barter with the Shining Scales</span>\
+                                    <br/>Your diplomats return with some gains after a season of bartering with the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1365,10 +1368,11 @@ function P_RaidLongTalonTribe() {
         if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)};
         if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness + WarRation)}
         var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
-        var GainedInspiration = Math.floor(WarriorEffectiveness/2);
         var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
+        var GainedInspiration = Math.floor(WarriorEffectiveness/2);
         
-        $('#RaidBarterResult').html("Your warriors return from raiding the Long Talon Tribe with the following: \
+        $('#RaidBarterResult').html("<span class=\"LargerText\" style=\"color: OrangeRed;\">Raid the Long Talon Tribe</span>\
+                                    <br/>Your warriors return from raiding the Long Talon Tribe with the following: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1377,7 +1381,7 @@ function P_RaidLongTalonTribe() {
         IncrementSupply(GainedSupply);
         IncrementInspiration(GainedInspiration);
         IncrementDomain(GainedDomain);
-        CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors * ExpansionLevel);
+        CurrentSupremacy = CurrentSupremacy + (CurrentNumberOfWarriors);
         
         CurrentRaidBarterThisTurn++;
         $('#GripUpgrades').attr('class','HiddenGripUpgradeBox');
@@ -1401,10 +1405,11 @@ function P_BarterLongTalonTribe() {
         LongTalonTribeVictoryLevel++
         if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0};
         DecrementGrip(BarteringCost); 
-        var GainedSupply = Math.floor((CultureLevel/2) * ((Math.random() * 3) + 1));
-        var GainedInspiration = Math.floor((CultureLevel/2) * ((Math.random() * 2) + 1));
-        var GainedDomain = Math.floor(CultureLevel/2);
-        $('#RaidBarterResult').html("Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
+        var GainedSupply = Math.floor((CultureLevel) * ((Math.random() * 3) + 1));
+        var GainedDomain = Math.floor((CultureLevel) * ((Math.random() * 2) + 1));
+        var GainedInspiration = Math.floor(CultureLevel);
+        $('#RaidBarterResult').html("<span class=\"LargerText\" style=\"color: OrangeRed;\">Barter with the Long Talon Tribe</span>\
+                                    <br/>Your diplomats return with some gains after a season of bartering with the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>: \
                                     <br/>" + GainedSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span>\
                                     <br/>" + GainedDomain + " <span style=\"color: rgb(207, 166, 0);\">Domain</span>\
                                     <br/>" + GainedInspiration + " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>\
@@ -1707,7 +1712,7 @@ $('#EventOption1Button').click(function(){
         EC_WaywardAndDesperate_Aid();
         break;
     case 305:
-        EC_Alliance_Assist();
+        EC_Alliance_AssistLongTalonTribe();
         break;
     case 306:
         EC_CouncilOfElders_PathOfWar();
@@ -1780,7 +1785,7 @@ $('#EventOption2Button').click(function(){
         ShowEventEnd();
         break;
     case 305:
-        EC_Alliance_TurnAway();
+        EC_Alliance_AssistShiningScales();
         break;
     case 306:
         EC_CouncilOfElders_PathOfPeace();
@@ -1810,6 +1815,9 @@ $('#EventOption3Button').click(function(){
         break;
     case 204:
         EC_BrushFire_StandYourGround();
+        break;
+    case 305:
+        EC_Alliance_TurnAway();
         break;
     case 306:
         EC_CouncilOfElders_PathOfSeclusion();
@@ -2566,12 +2574,10 @@ function EC_DemandTribute_DenyTribute() {
         case 1:
             LongTalonTribeTension++
             LongTalonTribeTension++
-            LongTalonTribeVictoryLevel--
             break;
         case 2:
             ShiningScalesTension++
             ShiningScalesTension++
-            ShiningScalesVictoryLevel--
             break;
     }
     CurrentSupremacy = CurrentSupremacy + 10
@@ -2753,97 +2759,116 @@ function EC_WaywardAndDesperate_Aid() {
 
 // Assist ----------------------------------------------------------------------
 
+
 function E_Alliance() {
-    var RewardAmount = (CurrentPopulation)
-    SelectRandomResource();
-    SelectRandomRival();
-    SelectSecondRandomRival();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Alliance")
-
-    $('#EventNar').html(SelectedRandomRival + " is asking for your assistance in a conflict with " + SelectedSecondRandomRival + "\
-                        For your aid, they are offering you " + RewardAmount + " " + SelectedRandomResource + ".");
+    $('#EventNar').html("Tensions between the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> and the <span style=\"color: OrangeRed;\">Long Talon Tribe</span> are high. You could support one side over the other to sway the outcome of their rivalry in your favor.");
     
     $('#EventOption1Description').show();
-    $('#EventOption1Description').html("Assist<br/>\
-                                    Aid "+SelectedRandomRival+" in this endeavor. This will significantly reduce Tension between your tribes and move you both closer to victory\
-                                    while increasing tension between you and " + SelectedSecondRandomRival + " and setting them back significantly.");
+    $('#EventOption1Description').html("Assist the <span style=\"color: DarkGoldenRod;\">Shining Scales</span><br/>\
+                                    Aid the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> in their endeavors. This will significantly reduce Tension between your tribes and move you both closer to victory \
+                                    while increasing tension between you and the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>, setting them back significantly.");
     $('#EventOption1Button').show();
     
     $('#EventOption2Description').show();
-    $('#EventOption2Description').html("Turn Away<br/>\
-                                       This will increase Tension slightly between you and "+SelectedRandomRival+". Otherwise, you will remain unaffected.");
+    $('#EventOption2Description').html("Assist the <span style=\"color: OrangeRed;\">Long Talon Tribe</span><br/>\
+                                    Aid the <span style=\"color: OrangeRed;\">Long Talon Tribe</span> in their endeavors. This will significantly reduce Tension between your tribes and move you both closer to victory \
+                                    while increasing tension between you and the Shining Scales, setting them back significantly.");
     $('#EventOption2Button').show();
+    
+    $('#EventOption3Description').show();
+    $('#EventOption3Description').html("Turn Away<br/>\
+                                       You will play no part. The outcome will be left to fate.");
+    $('#EventOption3Button').show();
     
     EventLoadedValue = 305;
     
 }
 
-function EC_Alliance_Assist() {
-    var RewardAmount = (CurrentPopulation * 2)
-    switch (SelectedRandomResourceValue) {
-        case 1:
-            IncrementSupply(RewardAmount);
-            break;
-        case 2:
-            IncrementDomain(RewardAmount);
-            break;
-        case 3:
-            IncrementInspiration(RewardAmount);
-            break;
-    }
+function EC_Alliance_AssistShiningScales() {
     
-    switch (SelectedRandomRivalValue) {
-        case 1:
-            LongTalonTribeTension = LongTalonTribeTension - 8;
-            LongTalonTribeVictoryLevel++;
-            if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
-            break;
-        case 2:
-            ShiningScalesTension = ShiningScalesTension - 8;
-            ShiningScalesVictoryLevel++;
-            if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
-            break;
-    }
+    ShiningScalesTension = ShiningScalesTension - 8;
+    ShiningScalesVictoryLevel++;
+    ShiningScalesVictoryLevel++;
+    if (ShiningScalesTension < 0) {ShiningScalesTension = 0}
+
+    LongTalonTribeTension = LongTalonTribeTension + 4;
+    LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4;
+    if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0}
     
-    switch (SelectedSecondRandomRivalValue) {
-        case 1:
-            LongTalonTribeTension = LongTalonTribeTension + 4;
-            LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4;
-            if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0}
-            break;
-        case 2:
-            ShiningScalesTension = ShiningScalesTension + 4;
-            ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4;
-            if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
-            break;
-    }
+    var WarriorEffectiveness = CurrentNumberOfWarriors;
+    if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)};
+    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness + WarRation)}
+    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
+    var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
     
     RefreshEvent();
     RefreshPage();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Alliance")   
-    $('#EventNar').html("You assist the "+SelectedRandomRival+ ". \
-                        They are greatful for your support. " +SelectedSecondRandomRival+ " less so.");
+    $('#EventNar').html("You assist the <span style=\"color: DarkGoldenRod;\">Shining Scales</span>. \
+                        With your support, significant damage was done to the <span style=\"color: OrangeRed;\">Long Talon Tribe</span> and your reputation with them. The bond between you and the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> was strengthened\
+                        <br/><br/>Your share of the spoils includes "+GainedSupply+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> and "+GainedDomain+" <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
+    EventLoadedValue = 999;
+    $('#EventOption1Button').show();
+    
+}
+
+function EC_Alliance_AssistLongTalonTribe() {
+    
+    LongTalonTribeTension = LongTalonTribeTension - 8;
+    LongTalonTribeVictoryLevel++;
+    LongTalonTribeVictoryLevel++;
+    if (LongTalonTribeTension < 0) {LongTalonTribeTension = 0}
+
+    ShiningScalesTension = ShiningScalesTension + 4;
+    ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4;
+    if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
+    
+    var WarriorEffectiveness = CurrentNumberOfWarriors;
+    if (ImprovedRaidTactics) {WarriorEffectiveness = Math.floor(WarriorEffectiveness * 1.5)};
+    if (Agenda == 1) {WarriorEffectiveness = Math.floor(WarriorEffectiveness + WarRation)}
+    var GainedSupply = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 2) + 1));
+    var GainedDomain = Math.floor((WarriorEffectiveness/2) * ((Math.random() * 3) + 1));
+    
+    RefreshEvent();
+    RefreshPage();
+    $('#EventResultBoxHeader').show()
+    $('#EventResultBoxHeader').html("Alliance")   
+    $('#EventNar').html("You assist the <span style=\"color: OrangeRed;\">Long Talon Tribe</span>. \
+                        With your support, significant damage was done to the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> and your reputation with them. The bond between you and the <span style=\"color: OrangeRed;\">Long Talon Tribe</span> was strengthened\
+                        <br/><br/>Your share of the spoils includes "+GainedSupply+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> and "+GainedDomain+" <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
     EventLoadedValue = 999;
     $('#EventOption1Button').show();
     
 }
 
 function EC_Alliance_TurnAway() {
+    RefreshEvent();
+    var ShiningScalesRoll = Math.floor((Math.random()*10)+1) + ShiningScalesVictoryLevel
+    var LongTalonTribeRoll = Math.floor((Math.random()*10)+1) + LongTalonTribeVictoryLevel
  
-    switch (SelectedRandomRivalValue) {
-        case 1:
-            LongTalonTribeTension++;
-            LongTalonTribeTension++;
-            break;
-        case 2:
-            ShiningScalesTension++;
-            ShiningScalesTension++;
-            break;
+    if (ShiningScalesRoll > LongTalonTribeRoll) {
+        $('#EventNar').html("The rival tribes are left to their own devices. Ultimately, the <span style=\"color: DarkGoldenRod;\">Shining Scales</span> come out on top.");
+        ShiningScalesVictoryLevel = ShiningScalesVictoryLevel + 4; 
+        LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 4;
+        if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0}
+    }else if (LongTalonTribeRoll > ShiningScalesRoll) {
+        $('#EventNar').html("The rival tribes are left to their own devices. Ultimately, the <span style=\"color: OrangeRed;\">Long Talon Tribe</span> comes out on top.");
+        LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel + 4;
+        ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 4;       
+        if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
+        
+    }else{
+        LongTalonTribeVictoryLevel = LongTalonTribeVictoryLevel - 3;
+        if (LongTalonTribeVictoryLevel < 0) {LongTalonTribeVictoryLevel = 0}
+        ShiningScalesVictoryLevel = ShiningScalesVictoryLevel - 3;
+        if (ShiningScalesVictoryLevel < 0) {ShiningScalesVictoryLevel = 0}
+        $('#EventNar').html("The rival tribes are left to their own devices. Ultimately, there is no clear victor and both tribes suffer mutual loss.");
     }
     
-    RefreshEvent();
+
     RefreshPage();
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("Alliance")   
@@ -3053,7 +3078,7 @@ function ShowEventEnd() {
 }
 
 function CalculateLongTalonTribeRaided() {
-    var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
+    var GripCost = Math.min(LongTalonTribeTension, CurrentGrip);
     var DoubleGripCost = Math.floor(GripCost*2.5)
     
     $('#EventResultBoxHeader').show()
@@ -3083,8 +3108,7 @@ function CalculateLongTalonTribeRaided() {
     $('#EventOption4Description').show();
     $('#EventOption4Description').html("Undefended\
                                        <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
-    $('#EventOption4Button').show();
-    LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
+    $('#EventOption4Button').show();    
     EventLoadedValue = 401;    
 }
 
@@ -3104,9 +3128,9 @@ function LongTalonRaidKind() {
 
 function CalculateLongTalonTribeRaided_DefendResources(){
     RefreshEvent();
-    var Damage = LongTalonTribeVictoryLevel;
-    var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
-    var SupremacyDamage = LongTalonTribeVictoryLevel;
+    var Damage = LongTalonTribeTension;
+    var GripCost = Math.min(LongTalonTribeTension, CurrentGrip);
+    var SupremacyDamage = LongTalonTribeTension;
     var ProtectedText = ""
     var UnprotectedText = ""    
     
@@ -3115,7 +3139,7 @@ function CalculateLongTalonTribeRaided_DefendResources(){
         Damage = 0;
         ProtectedText = ("You were able to protect all of your <span style=\"color: rgb(178, 0, 0);\">Supply</span>.");
     }else {
-        Damage = Damage - CurrentGrip;
+        Damage = Damage - GripCost;
         if (Damage > CurrentSupply) {Damage = CurrentSupply}
         ProtectedText = ("In the raid, only "+Damage+" <span style=\"color: rgb(178, 0, 0);\">Supply</span> was lost.");
         DecrementSupply(Damage);
@@ -3135,6 +3159,7 @@ function CalculateLongTalonTribeRaided_DefendResources(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText + WarriorsLostText);
+    LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
@@ -3142,9 +3167,9 @@ function CalculateLongTalonTribeRaided_DefendResources(){
 
 function CalculateLongTalonTribeRaided_DefendInterests(){
     RefreshEvent();
-    var Damage = LongTalonTribeVictoryLevel;
-    var GripCost = Math.min(LongTalonTribeVictoryLevel, CurrentGrip);
-    var SupremacyDamage = LongTalonTribeVictoryLevel;
+    var Damage = LongTalonTribeTension;
+    var GripCost = Math.min(LongTalonTribeTension, CurrentGrip);
+    var SupremacyDamage = LongTalonTribeTension;
     var ProtectedText = ""
     var UnprotectedText = ""
     
@@ -3152,7 +3177,7 @@ function CalculateLongTalonTribeRaided_DefendInterests(){
         SupremacyDamage = 0;
         ProtectedText = ("You were able to maintain all of your Supremacy.");
     }else {
-        SupremacyDamage = SupremacyDamage - CurrentGrip;
+        SupremacyDamage = SupremacyDamage - GripCost;
         if (SupremacyDamage > CurrentSupremacy) {SupremacyDamage = CurrentSupremacy}
         ProtectedText = ("In the raid, only "+SupremacyDamage+" Supremacy was lost.");
         DecrementSupremacy(SupremacyDamage);
@@ -3168,11 +3193,12 @@ function CalculateLongTalonTribeRaided_DefendInterests(){
         LongTalonTribeVictoryLevel++
     }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(178, 0, 0);\">Supply</span> to lose.")}
     
-    var WarriorsLostText = CalculateWarriorsLost(LongTalonTribeVictoryLevel);
+    var WarriorsLostText = CalculateWarriorsLost(LongTalonTribeTension);
     
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText + WarriorsLostText);
+    LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
@@ -3180,14 +3206,15 @@ function CalculateLongTalonTribeRaided_DefendInterests(){
 
 function CalculateLongTalonTribeRaided_FullDefense(){
     RefreshEvent();
-    var DoubleGripCost = Math.floor(LongTalonTribeVictoryLevel*2.5);
+    var DoubleGripCost = Math.floor(LongTalonTribeTension*2.5);
     DecrementGrip(DoubleGripCost);
     
-    var WarriorsLostText = CalculateWarriorsLost(LongTalonTribeVictoryLevel);
+    var WarriorsLostText = CalculateWarriorsLost(LongTalonTribeTension);
     
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html("The <span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span> was unnable to shake your grip." + WarriorsLostText);
+    LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
@@ -3195,8 +3222,8 @@ function CalculateLongTalonTribeRaided_FullDefense(){
 
 function CalculateLongTalonTribeRaided_Undefended() {
     RefreshEvent();
-    var Damage = LongTalonTribeVictoryLevel*3;
-    var SupremacyDamage = LongTalonTribeVictoryLevel*3;
+    var Damage = LongTalonTribeTension*3;
+    var SupremacyDamage = LongTalonTribeTension*3;
     var UnProtectedText = ""
     var UnProtectedText2 = ""
     
@@ -3222,13 +3249,14 @@ function CalculateLongTalonTribeRaided_Undefended() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: OrangeRed;\">Long Talon Tribe Raid</span>")  
     $('#EventNar').html(UnProtectedText + UnProtectedText2);
+    LongTalonTribeTension = Math.floor((LongTalonTribeTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
 }
 
 function CalculateShiningScalesRaided() {    
-    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var GripCost = Math.min(ShiningScalesTension, CurrentGrip);
     var DoubleGripCost = Math.floor(GripCost*2.5)
     
     $('#EventResultBoxHeader').show()
@@ -3259,7 +3287,7 @@ function CalculateShiningScalesRaided() {
     $('#EventOption4Description').html("Undefended\
                                        <br/>Spend no <span style=\"color: grey;\">Grip</span> to conserve your warriors' efforts.");
     $('#EventOption4Button').show();
-    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
+    
     EventLoadedValue = 402;  
 }
 
@@ -3279,8 +3307,8 @@ function ShiningScalesRaidKind() {
 
 function CalculateShiningScalesRaided_DefendResources(){
     RefreshEvent();
-    var Damage = ShiningScalesVictoryLevel;
-    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var Damage = ShiningScalesTension;
+    var GripCost = Math.min(ShiningScalesTension, CurrentGrip);
     var LostDiscovery = ""
     var ProtectedText = ""
     var UnprotectedText = ""
@@ -3289,7 +3317,7 @@ function CalculateShiningScalesRaided_DefendResources(){
         Damage = 0;
         ProtectedText = ("You were able to protect all of your <span style=\"color: rgb(207, 166, 0);\">Domain</span>.");
     }else {
-        Damage = Damage - CurrentGrip;
+        Damage = Damage - GripCost;
         if (Damage > CurrentDomain) {Damage = CurrentDomain}
         ProtectedText = ("In the raid, only "+Damage+" <span style=\"color: rgb(207, 166, 0);\">Domain</span> was lost.");
         DecrementDomain(Damage);
@@ -3298,18 +3326,19 @@ function CalculateShiningScalesRaided_DefendResources(){
     DecrementGrip(GripCost);
     if (CurrentDiscovery != 0) {
         var DiscoveryLostChance =  Math.floor((Math.random()*50)+1)
-        if (DiscoveryLostChance < ShiningScalesVictoryLevel) {
+        if (DiscoveryLostChance < ShiningScalesTension) {
             LostDiscovery = SelectRandomFoundDiscovery();
             UnprotectedText = ("<br/>While your focus was elsewhere, they were able to claim the "+LostDiscovery+"!")
             ShiningScalesVictoryLevel++            
         }else{UnprotectedText = ("<br/>Despite their best efforts, they were unnable to claim one of your discoveries.")}
     }else{UnprotectedText = ("<br/>You had no Discoveries to lose.")}
     
-    var WarriorsLostText = CalculateWarriorsLost(ShiningScalesVictoryLevel);
+    var WarriorsLostText = CalculateWarriorsLost(ShiningScalesTension);
     
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText + WarriorsLostText);
+    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
@@ -3317,15 +3346,15 @@ function CalculateShiningScalesRaided_DefendResources(){
 
 function CalculateShiningScalesRaided_DefendInterests(){
     RefreshEvent();
-    var Damage = ShiningScalesVictoryLevel;
-    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var Damage = ShiningScalesTension;
+    var GripCost = Math.min(ShiningScalesTension, CurrentGrip);
     var LostDiscovery = ""
     var ProtectedText = ""
     var UnprotectedText = ""
  
     if (GripCost < Damage) {
-        var DiscoveryLostChance =  ((Math.floor((Math.random()*50)+1)) + (CurrentGrip))
-        if (DiscoveryLostChance < ShiningScalesVictoryLevel) {
+        var DiscoveryLostChance =  ((Math.floor((Math.random()*50)+1)) + (GripCost))
+        if (DiscoveryLostChance < ShiningScalesTension) {
             LostDiscovery = SelectRandomFoundDiscovery();
             ProtectedText = ("<br/>Dispite your best efforts, they were able to claim the "+LostDiscovery+"!")
             ShiningScalesVictoryLevel++            
@@ -3340,7 +3369,7 @@ function CalculateShiningScalesRaided_DefendInterests(){
         ShiningScalesVictoryLevel++
     }else{UnprotectedText = ("<br/>You had no <span style=\"color: rgb(207, 166, 0);\">Domain</span> to lose.")}
     
-    var WarriorsLostText = CalculateWarriorsLost(ShiningScalesVictoryLevel);
+    var WarriorsLostText = CalculateWarriorsLost(ShiningScalesTension);
     
     DecrementGrip(GripCost);
     $('#EventResultBoxHeader').show()
@@ -3354,11 +3383,12 @@ function CalculateShiningScalesRaided_DefendInterests(){
 function CalculateShiningScalesRaided_FullDefense(){
     RefreshEvent();
     var DoubleGripCost = Math.floor(ShiningScalesVictoryLevel*2.5);
-    var WarriorsLostText = CalculateWarriorsLost(ShiningScalesVictoryLevel);
+    var WarriorsLostText = CalculateWarriorsLost(ShiningScalesTension);
     DecrementGrip(DoubleGripCost);
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html("The <span style=\"color: DarkGoldenRod;\">Shining Scales raid</span> was unnable to shake your grip." + WarriorsLostText);
+    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
@@ -3366,15 +3396,15 @@ function CalculateShiningScalesRaided_FullDefense(){
 
 function CalculateShiningScalesRaided_Undefended() {
     RefreshEvent();
-    var Damage = ShiningScalesVictoryLevel;
-    var GripCost = Math.min(ShiningScalesVictoryLevel, CurrentGrip);
+    var Damage = ShiningScalesTension;
+    var GripCost = Math.min(ShiningScalesTension, CurrentGrip);
     var LostDiscovery = ""
     var UnProtectedText = ""
     var UnprotectedText2 = ""
  
     if (CurrentDiscovery > 0) {
         var DiscoveryLostChance =  Math.floor((Math.random()*50)+1)
-        if (DiscoveryLostChance < ShiningScalesVictoryLevel) {
+        if (DiscoveryLostChance < ShiningScalesTension) {
             LostDiscovery = SelectRandomFoundDiscovery();
             UnProtectedText = ("<br/>They were able to claim the "+LostDiscovery+"!")
             ShiningScalesVictoryLevel++            
@@ -3392,6 +3422,7 @@ function CalculateShiningScalesRaided_Undefended() {
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html(UnProtectedText + UnprotectedText2);
+    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
@@ -3543,27 +3574,6 @@ function SelectRandomRival(){
         }
     }
 }
-
-function SelectSecondRandomRival(){
-    if (!LongTalonTribePresent) {
-        SelectedRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
-        SelectedRandomRivalValue = 2;
-    }else{
-        var RandomNumber = Math.floor((Math.random()*2)+1)
-        switch (RandomNumber) {
-            case 1:
-                SelectedSecondRandomRival = "<span style=\"color: OrangeRed;\">The Long Talon Tribe</span>"
-                SelectedSecondRandomRivalValue = 1;
-                break;
-            case 2:
-                SelectedSecondRandomRival = "<span style=\"color: DarkGoldenRod;\">The Shining Scales</span>"
-                SelectedSecondRandomRivalValue = 2;
-                break;
-        }
-    }
-    if (SelectedSecondRandomRivalValue == SelectedRandomRivalValue) {SelectSecondRandomRival();}
-}
-
 
 function SelectRandomResource(){
 
