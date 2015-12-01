@@ -468,17 +468,17 @@ function CompetitionDetails() {
 }
 
 function CalculateSurplusDisplay(){
-    if (SupplySurplus && !(Pottery)) {$('#SupplySurplusDenotion').html("<span style=\"color: Gold;\"> x2</span>")
-    }else if (SupplySurplus && Pottery) {$('#SupplySurplusDenotion').html("<span style=\"color: Gold;\"> x2.5</span>")
+    if (SupplySurplus && !(Pottery)) {$('#SupplySurplusDenotion').html("<span style=\"color: Gold;\"> +2</span>")
+    }else if (SupplySurplus && Pottery) {$('#SupplySurplusDenotion').html("<span style=\"color: Gold;\"> +2.5</span>")
     }else{$('#SupplySurplusDenotion').html("")}
-    if (DomainSurplus && !(Pottery)) {$('#DomainSurplusDenotion').html("<span style=\"color: Gold;\"> x2</span>")
-    }else if (DomainSurplus && Pottery) {$('#DomainSurplusDenotion').html("<span style=\"color: Gold;\"> x2.5</span>")
+    if (DomainSurplus && !(Pottery)) {$('#DomainSurplusDenotion').html("<span style=\"color: Gold;\"> +2</span>")
+    }else if (DomainSurplus && Pottery) {$('#DomainSurplusDenotion').html("<span style=\"color: Gold;\"> +2.5</span>")
     }else {$('#DomainSurplusDenotion').html("")}
-    if (InspirationSurplus && !(Pottery)) {$('#InspirationSurplusDenotion').html("<span style=\"color: Gold;\"> x2</span>")
-    }else if (InspirationSurplus && Pottery) {$('#InspirationSurplusDenotion').html("<span style=\"color: Gold;\"> x2.5</span>")
+    if (InspirationSurplus && !(Pottery)) {$('#InspirationSurplusDenotion').html("<span style=\"color: Gold;\"> +2</span>")
+    }else if (InspirationSurplus && Pottery) {$('#InspirationSurplusDenotion').html("<span style=\"color: Gold;\"> +2.5</span>")
     }else {$('#InspirationSurplusDenotion').html("")}
-    if (GripSurplus  && !(Pottery)) {$('#GripSurplusDenotion').html("<span style=\"color: Gold;\"> x2</span>")
-    }else if (GripSurplus && Pottery) {$('#GripSurplusDenotion').html("<span style=\"color: Gold;\"> x2.5</span>")
+    if (GripSurplus  && !(Pottery)) {$('#GripSurplusDenotion').html("<span style=\"color: Gold;\"> +2</span>")
+    }else if (GripSurplus && Pottery) {$('#GripSurplusDenotion').html("<span style=\"color: Gold;\"> +2.5</span>")
     }else {$('#GripSurplusDenotion').html("")}
 }
 
@@ -842,9 +842,10 @@ function ContinueToEvent() {
 
 //Bounty Calculations---------------------------------------------------
 function CalculateHuntingResult() {
-    var Calc = Math.floor(CurrentNumberOfHunters * HunterMultiplier);
-    if (SupplySurplus && !(Pottery)) {Calc = Calc * 2
-    }else if (SupplySurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    var MultiplierBoon = HunterMultiplier
+    if (SupplySurplus) {MultiplierBoon = MultiplierBoon + 2}
+    if (SupplySurplus && Pottery) {MultiplierBoon = MultiplierBoon + 0.5}
+    var Calc = Math.floor(CurrentNumberOfHunters * MultiplierBoon);
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#HunterResult').html(Calc+ " <span style=\"color: rgb(178, 0, 0);\">Supply</span> was gained through hunting.");
@@ -862,9 +863,10 @@ function CalculateHuntingResult() {
 }
 
 function CalculateCraftingResult() {
-    var Calc = Math.floor(CurrentNumberOfCrafters * CrafterMultiplier);
-    if (InspirationSurplus && !(Pottery)) {Calc = Calc * 2
-    }else if (InspirationSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    var MultiplierBoon = CrafterMultiplier
+    if (InspirationSurplus) {MultiplierBoon = MultiplierBoon + 2}
+    if (InspirationSurplus && Pottery) {MultiplierBoon = MultiplierBoon + 0.5}
+    var Calc = Math.floor(CurrentNumberOfCrafters * MultiplierBoon);
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#CrafterResult').html(Calc+ " <span style=\"color: rgb(36, 71, 178);\">Inspiration</span> was gained through crafting.");
@@ -873,9 +875,10 @@ function CalculateCraftingResult() {
 }
 
 function CalculateExploringResult() {
-    var Calc = Math.floor(CurrentNumberOfExplorers * ExplorerMultiplier);
-    if (DomainSurplus && !(Pottery)) {Calc = Calc * 2
-    }else if (DomainSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    var MultiplierBoon = ExplorerMultiplier
+    if (DomainSurplus) {MultiplierBoon = MultiplierBoon + 2}
+    if (DomainSurplus && Pottery) {MultiplierBoon = MultiplierBoon + 0.5}
+    var Calc = Math.floor(CurrentNumberOfExplorers * MultiplierBoon);
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#ExplorerResult').html(Calc+ " <span style=\"color: rgb(207, 166, 0);\">Domain</span> was gained through exploration.");
@@ -884,9 +887,10 @@ function CalculateExploringResult() {
 }
 
 function CalculateWarResult() {
-    var Calc = Math.floor(CurrentNumberOfWarriors * WarriorMultiplier);
-    if (GripSurplus && !(Pottery)) {Calc = Calc * 2
-    }else if (GripSurplus && Pottery) {Calc = Math.floor(Calc * 2.5)}
+    var MultiplierBoon = WarriorMultiplier
+    if (GripSurplus) {MultiplierBoon = MultiplierBoon + 2}
+    if (GripSurplus && Pottery) {MultiplierBoon = MultiplierBoon + 0.5}
+    var Calc = Math.floor(CurrentNumberOfWarriors * MultiplierBoon);
     if (Agenda == 3) {Calc = Math.floor(Calc * 1.5)}
     if (Calc > 0) {
         $('#WarResult').html(Calc+ " <span style=\"color: grey;\">Grip</span> was secured by your Warriors.");
@@ -3375,6 +3379,7 @@ function CalculateShiningScalesRaided_DefendInterests(){
     $('#EventResultBoxHeader').show()
     $('#EventResultBoxHeader').html("<span style=\"color: DarkGoldenRod;\">Shining Scales Raid</span>")  
     $('#EventNar').html(ProtectedText + UnprotectedText + WarriorsLostText);
+    ShiningScalesTension = Math.floor((ShiningScalesTension / 3) + 1);
     EventLoadedValue = 998;
     $('#EventOption1Button').show();
     RefreshPage();
