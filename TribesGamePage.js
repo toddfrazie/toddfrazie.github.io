@@ -359,7 +359,7 @@ function RefreshPage(){
             break;
         case 99:
             $('#IntroDiv').fadeIn(1500);
-            if (IntroPhase > 8) {$('#BeginEra').fadeIn();}
+            if (IntroPhase > 5) {$('#BeginEra').fadeIn();}
             else{$('#BeginEra').hide();}
             $('#HarvestResultBox').hide();
             $('#EventResultBox').hide();
@@ -679,35 +679,19 @@ function IntroContinue() {
         case 3:
             $("#Intro_Skip").hide();
             $("#IntroDivHeader").hide();
-            $("#IntroDivHeader").html("The Hunt");
-            $("#IntroDivStory").html("After falling wayward from your kin on a hunting venture, you find yourself far from your settlement following an alluring and mysterious game.")
+            $("#IntroDivHeader").html("The Plan");
+            $("#IntroDivStory").html("So few agreed to come.  Fewer still will heed the call when it is truly time to embark. Many called you a liar.  Others still said the serpent was a foul vision through the veil of a fever dream.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             break;
         case 4:
-            $("#IntroDivStory").html("In hopes of finding its pack and their food supply, your quest carries you astray for many days. Yet ultimately, the trail is lost.\
-                                     <br/><br/>Desperate, you seek higher ground in an attempt to spot your game. Yet, at this new vantage you are faced with something much greater.")
+            $("#IntroDivStory").html("It was no mere vision.  No, it was a sight of some glory. You saw it with clear eyes and a clear mind. A giant stone serpent with eyes the color of blood sat perched and still atop a rise; a stonework creature surrounded by land ripe for settling.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 5:
-            $("#IntroDivStory").html("At the cusp of a plateau, you are confronted by the red eyed gaze of a Giant Serpent some distance away, erect and still at the peak of a rise.\
-                                     <br/><br/>Terror subsides as you begin to realize it is not a living creature but a stonework masterpiece! \
-                                     Surrounding its base a great distance in all directions is what can only be described as a paradise of fertile, protected, and wonderous lands.")
+            $("#IntroDivStory").html("You are going.  You must. You are taking your kin and those bravery and wisdom to join. First, though, you must gather supplies.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 6:
-            $("#IntroDivStory").html("You return to your tribe with an abundance of food and a tale to tell. This revelation could not have come at a better time. Weak leadership and tensions within your tribe from many troubles have caused dissention.\
-                                     <br/><br/>You implore those inclined to travel with you to this new land and make it their own.")
-            $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
-            break;
-        case 7:
-            $("#IntroDivStory").html("The plan is not well received. Many fear the Serpent is a foul omen. Others do not believe your story. Others still are infirm and do not favor a journey of such lengths rife with uncertainty.")
-            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
-            break;
-        case 8:
-            $("#IntroDivStory").html("Unswayed by their doubts, you remain intent on returning to this new place, certain some beyond your own family will come.  But first, you must gather supplies for the journey.")
-            $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
-            break;
-        case 9:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("Preparing for the journey");
             $("#IntroDivStory").hide();
@@ -717,7 +701,7 @@ function IntroContinue() {
                                      <br/><br/>Collect 5 <span style=\"color: rgb(178, 0, 0);\">Supply</span> to begin recruiting.");
             $("#IntroDivStory, #IntroDivHeader, #HunterPanel, #BeginEra").fadeIn(1000);
             break;
-        case 10:
+        case 7:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("Preparing for the journey");
             $("#IntroDivStory").html("With ample <span style=\"color: rgb(178, 0, 0);\">Supply</span>, you feel prepared. But, you'll need someone to explore and tame this new world.\
@@ -725,21 +709,21 @@ function IntroContinue() {
             $("#IntroDivStory, #IntroDivHeader, #ExplorerPanel, #Intro_Continue").fadeIn(1000);
             $("#BeginEra").hide();
             break;
-        case 11:
+        case 8:
             $("#IntroDivStory").html("Once you settle, explorers accumulate <span style=\"color: rgb(207, 166, 0);\">Domain</span> for your tribe.\
                                      <span style=\"color: rgb(207, 166, 0);\">Domain</span> can be used to expand your settlement and search the mysterious surroundings.");
             $("#IntroDivStory,#Intro_Continue").fadeIn(1000);
             break;
-        case 12:
+        case 9:
             $("#IntroDivStory").html("A crafter insists you bring her and her young to this giant serpent of stone. Her skills will be invaluable once you arrive.\
                                      <br/><br/>Crafters generate <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, which they use to improve the efficiency of endeavors. With enough stashed <span style=\"color: rgb(36, 71, 178);\">Inspiration</span>, a crafter could pursue a new invention.");
             $("#IntroDivStory, #CrafterPanel, #Intro_Continue").fadeIn(1000);
             break;
-        case 13:
+        case 10:
             $("#IntroDivStory").html("With these, and a handful of unskilled young and elderly, the time has come. You are ready to embark.");
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
-        case 14:
+        case 11:
             $("#IntroDivHeader").hide();
             $("#IntroDivHeader").text("New World");
             $("#IntroDivStory").html("You have just led your new tribe from their original home, drawn to the wonder and prosperity of this mysterious place. \
@@ -748,13 +732,13 @@ function IntroContinue() {
                                      Though his age shows him as weak, in the eyes of the old man you see that he speaks earnestly. He offers his services and you feel inclined to accept.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue, #WarriorPanel").fadeIn(1000);
             break;
-        case 15:
+        case 12:
             $("#IntroDivStory").html("Warriors will serve as raiders, protectors, and diplomats for your tribe. They demand respect and reverence from any outsiders.\
                                      As time progresses, they produce <span style=\"color: grey;\">Grip</span>, which represents your hold over the territory you have.")
             $("#IntroDivStory, #IntroDivHeader, #Intro_Continue").fadeIn(1000);
             $("#BeginEra").hide();
             break;
-        case 16:
+        case 13:
             $("#IntroDivHeader").text("New World");
             $("#IntroDivStory").html("With a handful of resources and your kin you set out to mark your place. \
                                      They look to you to make the decision; Where will you settle?")
@@ -783,7 +767,7 @@ function DifficultyExtreme() {
 $('#Intro_Skip').click(function(){SkipIntro()});
 function SkipIntro() {
     $('#Intro_Skip').hide();
-    IntroPhase= 15;
+    IntroPhase= 12;
     IntroContinue();
 };
 
@@ -801,7 +785,7 @@ function CalculateNewTribeMemberResult() {
         $("#UpkeepResult").html(CurrentSupply + " <span style=\"color: rgb(178, 0, 0);\">Supply</span> was consumed for Upkeep but it wasn't enough to stay hunger and the elements for all.")
         DecrementSupply(CurrentSupply)
          SelectAndRemoveSelectedRandomTribal();
-        $('#NewTribeMemberResult').html("A "+ SelectedRandomTribal +" has died.")
+        $('#NewTribeMemberResult').html("A "+ SelectedRandomTribal +" has died do to a lack of <span style=\"color: rgb(178, 0, 0);\">Supply</span>.")
     }
 }
 
