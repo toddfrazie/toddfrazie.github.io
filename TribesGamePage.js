@@ -688,7 +688,7 @@ function IntroContinue() {
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 5:
-            $("#IntroDivStory").html("You are going.  You must. You are taking your kin and those bravery and wisdom to join. First, though, you must gather supplies.")
+            $("#IntroDivStory").html("You are going.  You must. You are taking your kin and those with the bravery and wisdom to join. First, though, you must gather supplies.")
             $("#IntroDivStory, #Intro_Continue").fadeIn(1000);
             break;
         case 6:
